@@ -85,7 +85,7 @@ Desemprego → Vulnerabilidade Econômica → Risco de Retráfico
 │  ✅ Sistema de Quiz e Certificação              │
 │  ✅ Dashboard de Progresso Visual               │
 │  ✅ Dashboard ONG (ativação + monitoramento)    │
-│  ✅ Acesso via USSD (simulado com Figma)        │
+│  ✅ Acesso via USSD funcional (Africa's Talking API)        │
 └─────────────────────────────────────────────────┘
                       ↓
 ┌─────────────────────────────────────────────────┐
@@ -297,13 +297,13 @@ ANTES de notificar Maria, o sistema:
 │  - Row Level Security                       │
 ├─────────────────────────────────────────────┤
 │         DASHBOARD WEB - ONG                 │
-│  Next.js + React + Tailwind                 │
+│  React + TypeScript + Tailwind              │
 │  - Ativar códigos de acesso                │
 │  - Monitorar progresso de vítimas           │
 │  - [FASE 2] Validar vagas                   │
 ├─────────────────────────────────────────────┤
 │         ACESSO UNIVERSAL (SIMULADO)         │
-│  USSD: Protótipo Figma interativo          │
+│  USSD: Integração funcional Africa's Talking │
 │  SMS: Sistema de notificações               │
 │  - Para quem não tem smartphone             │
 │  - Implementação real: 30 dias              │
@@ -597,7 +597,7 @@ Empresas signatárias comprometem-se a:
 ✅ 3 cursos completos (Costura, Culinária, Agricultura)
 ✅ Sistema de quiz e certificação
 ✅ Dashboard ONG básico
-✅ Protótipo Figma do USSD
+✅ Integração funcional USSD com Africa's Talking
 ✅ Mockup de vagas (dados fake)
 ```
 
@@ -613,7 +613,7 @@ Empresas signatárias comprometem-se a:
 ### **Dias 31-60: TRANSIÇÃO PARA FASE 2**
 
 ```
-🔄 Implementar USSD real (Africa's Talking)
+✅ USSD funcional (Africa's Talking)
 🔄 Ativar algoritmo de matching
 🔄 Integrar dashboard de validação de vagas
 🔄 Estabelecer protocolo com ONGs validadoras
@@ -1207,10 +1207,10 @@ TELA 3: Monitorar Progresso
 [Mostrar gráfico de engajamento]
 ```
 
-**3. SIMULAÇÃO USSD (30 segundos)**
+**3. USSD FUNCIONAL (30 segundos)**
 
 ```
-[Mostrar vídeo ou protótipo Figma]
+[Acessar USSD no dispositivo ou demonstrar via Africa's Talking sandbox]
 
 "Para quem não tem smartphone..."
 
@@ -1218,9 +1218,9 @@ TELA 3: Monitorar Progresso
 → "Bem-vinda ao WIRA"
 → "1. Ver meus cursos"
 → "2. Meu progresso"
-→ [Navegar pelo menu]
+→ [Navegar pelo menu funcional em tempo real]
 
-"Em 30 dias, isso estará funcional com Africa's Talking."
+"Funcional hoje com Africa's Talking API."
 ```
 
 **4. MOCKUP DE MATCHING (30 segundos)**
@@ -1700,11 +1700,12 @@ SEGUNDA: Apoio presencial.
 As ONGs têm 'Facilitadores WIRA' que ajudam no primeiro uso.
 Depois, as vítimas ensinam umas às outras.
 
-TERCEIRA: USSD simplificado.
-Para analfabetas totais, temos linha telefônica com atendimento humano.
-Elas ligam gratuitamente, e uma operadora lê o menu.
+TERCEIRA: USSD funcional.
+Para analfabetas totais ou usuários de telemóveis básicos,
+disponibilizamos acesso via *130*555# com menu em português de Moçambique.
+Operação completamente funcional via Africa's Talking API.
 
-[Mostrar protótipo]
+[Mostrar funcionamento real]
 
 E estamos desenvolvendo para Fase 3
 um sistema de reconhecimento de voz em Português moçambicano:
@@ -1715,7 +1716,7 @@ um sistema de reconhecimento de voz em Português moçambicano:
 
 Nossa meta é ZERO exclusão.
 Se ela tem um telemóvel, ela acessa WIRA.
-Se não tem, a ONG empresta."
+Se não tem smartphone, usa USSD."
 ```
 
 ---
@@ -1929,18 +1930,19 @@ wira-platform/
 │   │   └── seed.ts                   # Dados de demo
 │   └── package.json
 │
-├── dashboard/                        # Next.js
+├── dashboard/                        # React
 │   ├── src/
-│   │   ├── app/
-│   │   │   ├── page.tsx              # Dashboard principal
-│   │   │   ├── activate/page.tsx     # Ativar códigos
-│   │   │   └── monitor/page.tsx      # Monitorar progresso
+│   │   ├── App.tsx                   # Dashboard principal
+│   │   ├── pages/
+│   │   │   ├── Dashboard.tsx         # Dashboard principal
+│   │   │   ├── Activate.tsx          # Ativar códigos
+│   │   │   └── Monitor.tsx           # Monitorar progresso
 │   │   ├── components/
 │   │   └── lib/
 │   └── package.json
 │
-├── ussd-simulator/                   # Protótipo Figma exportado
-│   └── wira-ussd-flow.fig
+├── ussd-integration/                 # Integração funcional com Africa's Talking
+│   └── wira-ussd-api.ts              # Endpoint para *130*555#
 │
 ├── docs/                             # Documentação
 │   ├── README.md

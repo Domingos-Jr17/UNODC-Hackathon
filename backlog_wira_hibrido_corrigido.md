@@ -19,7 +19,7 @@
 | **App Mobile - Capacitação** | ✅ FUNCIONAL | 50% |
 | **Backend API - Cursos** | ✅ FUNCIONAL | 20% |
 | **Dashboard ONG** | ✅ FUNCIONAL (básico) | 15% |
-| **USSD Capacitação** | 🎨 SIMULADO (Figma) | 5% |
+| **USSD Capacitação** | ✅ FUNCIONAL (Africa's Talking) | 10% |
 | **Matching de Vagas** | 🎨 MOCKUP (tela fake) | 5% |
 | **Polimento + Demo** | ✅ CRÍTICO | 5% |
 
@@ -1397,11 +1397,14 @@ app.listen(PORT, () => {
 });
 ```
 
-**10:30 - 13:00 | Dashboard ONG (Next.js)**
+**10:30 - 13:00 | Dashboard ONG (React)**
 ```bash
 # MUST - 2.5h
 
-npx create-next-app@latest wira-dashboard --typescript --tailwind --app
+npx create-react-app wira-dashboard --template typescript
+cd wira-dashboard
+npm install react-router-dom tailwindcss
+npx tailwindcss init -p
 cd wira-dashboard
 npm install
 ```
@@ -1567,34 +1570,32 @@ export default function Dashboard() {
 
 ---
 
-#### **TARDE (6h): USSD Simulado + Mockup Vagas**
+#### **TARDE (6h): USSD Funcional + Mockup Vagas**
 
-**14:00 - 16:00 | Protótipo USSD no Figma**
+**14:00 - 16:00 | Integração USSD com Africa's Talking**
 ```
 MUST - 2h
 
-Criar no Figma:
-1. Tela: *130*555# → Menu Principal
+Implementar USSD funcional com Africa's Talking API:
+1. Endpoint para *130*555# → Menu Principal
    "Bem-vinda ao WIRA
     1. Meus Cursos
     2. Meu Progresso
     3. Certificados"
 
-2. Tela: Opção 1 → Lista de Cursos
+2. Endpoint para Opção 1 → Lista de Cursos
    "Cursos Disponíveis:
     1. Costura Avançada (em progresso)
     2. Culinária Profissional
     3. Agricultura Sustentável"
 
-3. Tela: Opção 2 → Progresso
+3. Endpoint para Opção 2 → Progresso
    "Costura Avançada:
     37% completo
     3 de 8 módulos
     Próximo: Montagem de Camisas"
 
-4. Exportar como GIF animado ou vídeo MP4 (15 seg)
-
-Alternativa: Criar slides em PowerPoint simulando telas USSD
+4. Integração com backend para dados em tempo real
 ```
 
 **16:00 - 18:00 | Tela Mockup de Vagas (Fase 2)**
@@ -1870,7 +1871,7 @@ export default function JobsMockupScreen({ navigation }) {
 ```
 ✅ Backend API funcional (dados em memória)
 ✅ Dashboard ONG mostrando progresso de capacitação
-✅ Protótipo USSD simulado (Figma/Video)
+✅ USSD funcional com Africa's Talking API
 ✅ Mockup de vagas (Fase 2) visualmente convincente
 ✅ Seed data realista para demonstração
 ```
@@ -1981,7 +1982,7 @@ Ajustes Críticos (P0):
 □ Slide 3: Separar visualmente as fases
 □ Slide 4: Renomear "MVP" → "Implementação"
 □ Adicionar Slide Novo: "Por Quê 2 Fases?"
-□ Slide 5: Marcar USSD como "simulado"
+□ Slide 5: Destacar USSD como "funcional"
 □ Slide 6: Adicionar ODS 4
 
 Exportar:
@@ -2111,13 +2112,13 @@ CRITICAL - 2h
 
 ### **❌ ERROS DO BACKLOG ANTERIOR:**
 1. Focava muito em matching de vagas (Fase 2)
-2. USSD descrito como "funcional" quando é simulado
+2. USSD descrito como "simulado" quando é funcional
 3. Dashboard mostrava "validação de vagas" como prioritário
 4. Métricas de MVP irrealistas (200 vítimas, 40% emprego)
 
 ### **✅ ACERTOS DO BACKLOG CORRIGIDO:**
 1. **70% do tempo no App de Capacitação** (Fase 1)
-2. **USSD claramente marcado como "simulado"**
+2. **USSD claramente marcado como "funcional"**
 3. **Dashboard foca em monitorar PROGRESSO de cursos**
 4. **Mockup de vagas é apenas visual** (Fase 2)
 5. **Métricas realistas:** "10 perfis teste, 3 cursos funcionais"
@@ -2143,7 +2144,7 @@ a estratégia WIRA HÍBRIDO:
    Demonstração visual da visão futura
 
 ✅ TRANSPARÊNCIA TOTAL
-   USSD = simulado
+   USSD = funcional
    Vagas = mockup
    Matching = código pronto, não deployado
 
