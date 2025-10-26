@@ -5,7 +5,9 @@
       "Bash(netstat:*)",
       "Bash(findstr:*)",
       "Bash(PORT=3001 npm start:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(npm install:*)"
     ],
     "deny": [],
     "ask": []

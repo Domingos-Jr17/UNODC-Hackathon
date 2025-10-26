@@ -1,0 +1,32 @@
+import { ValidationChain } from 'express-validator';
+import winston from 'winston';
+import { Request, Response, NextFunction } from 'express';
+import { AuthenticatedRequest } from '@/types';
+declare const logger: winston.Logger;
+export declare const authLimiter: any;
+export declare const generalLimiter: any;
+export declare const ussdLimiter: any;
+export declare const validateLogin: ValidationChain[];
+export declare const validateCertificateGeneration: ValidationChain[];
+export declare const validateQuizSubmission: ValidationChain[];
+export declare const handleValidationErrors: (req: Request, res: Response, next: NextFunction) => void;
+export declare const requestLogger: (req: Request, res: Response, next: NextFunction) => void;
+export declare const corsOptions: {
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => void;
+    credentials: boolean;
+    optionsSuccessStatus: number;
+};
+export declare const authenticateToken: (req: AuthenticatedRequest, res: Response, next: NextFunction) => void;
+export declare const sanitizeInput: (req: Request, res: Response, next: NextFunction) => void;
+export declare const securityHeaders: (req: Request, res: Response, next: NextFunction) => void;
+export declare const requestId: (req: Request, res: Response, next: NextFunction) => void;
+export declare const errorLogger: (err: Error, req: Request, res: Response, next: NextFunction) => void;
+export declare const developmentErrorHandler: (err: Error, req: Request, res: Response, next: NextFunction) => void;
+export declare const productionErrorHandler: (err: Error, req: Request, res: Response, next: NextFunction) => void;
+export declare const notFoundHandler: (req: Request, res: Response) => void;
+export declare const userRateLimit: (max: number, windowMs: number) => (req: AuthenticatedRequest, res: Response, next: NextFunction) => Promise<void>;
+export declare const ipRateLimit: (max: number, windowMs: number) => any;
+export declare const validateAnonymousCode: (code: string) => boolean;
+export declare const maskSensitiveData: (data: any) => any;
+export { logger };
+//# sourceMappingURL=security.d.ts.map
