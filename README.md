@@ -35,7 +35,7 @@ Plataforma híbrida para capacitação e reintegração econômica de vítimas d
 - [x] Estatísticas de uso
 
 ### USSD Integration
-- [x] Acesso via *130*555# 
+- [x] Acesso via *130# 
 - [x] Menu texto: cursos, progresso, certificados
 - [x] SMS notificações
 

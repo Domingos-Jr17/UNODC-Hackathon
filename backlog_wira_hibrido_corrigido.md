@@ -1577,7 +1577,7 @@ export default function Dashboard() {
 MUST - 2h
 
 Implementar USSD funcional com Africa's Talking API:
-1. Endpoint para *130*555# → Menu Principal
+1. Endpoint para *130# → Menu Principal
    "Bem-vinda ao WIRA
     1. Meus Cursos
     2. Meu Progresso

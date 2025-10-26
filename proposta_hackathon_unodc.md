@@ -117,7 +117,7 @@ Desemprego → Vulnerabilidade Econômica → Risco de Retráfico
 📱 "Olá! Bem-vinda ao WIRA.
     Seu código: V0042
     Baixe o app: bit.ly/wira-app
-    Ou acesse: *130*555#"
+    Ou acesse: *130#"
 ```
 
 #### **Dia 2: Primeiro Acesso ao App**
@@ -1214,7 +1214,7 @@ TELA 3: Monitorar Progresso
 
 "Para quem não tem smartphone..."
 
-*130*555#
+*130#
 → "Bem-vinda ao WIRA"
 → "1. Ver meus cursos"
 → "2. Meu progresso"
@@ -1702,7 +1702,7 @@ Depois, as vítimas ensinam umas às outras.
 
 TERCEIRA: USSD funcional.
 Para analfabetas totais ou usuários de telemóveis básicos,
-disponibilizamos acesso via *130*555# com menu em português de Moçambique.
+disponibilizamos acesso via *130# com menu em português de Moçambique.
 Operação completamente funcional via Africa's Talking API.
 
 [Mostrar funcionamento real]
@@ -1942,7 +1942,7 @@ wira-platform/
 │   └── package.json
 │
 ├── ussd-integration/                 # Integração funcional com Africa's Talking
-│   └── wira-ussd-api.ts              # Endpoint para *130*555#
+│   └── wira-ussd-api.ts              # Endpoint para *130#
 │
 ├── docs/                             # Documentação
 │   ├── README.md
