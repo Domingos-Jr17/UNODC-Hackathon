@@ -65,3 +65,6 @@ config/credentials.yml
 coverage/
 .nyc_output/
 junit.xml
+
+#claude
+.claude/

@@ -1,112 +1,147 @@
-import { get, all, run } from '../database';
+import prismaService from '../services/prisma';
 import encryptionService from '../services/encryption';
 import { User as UserInterface } from '../types';
 
+const prisma = prismaService.getClient();
+
 class UserModel {
   static async findByAnonymousCode(anonymousCode: string): Promise<UserInterface | null> {
-    const query = 'SELECT * FROM users WHERE anonymous_code = ?';
-    return await get<UserInterface>(query, [anonymousCode]);
+    try {
+      const user = await prisma.user.findUnique({
+        where: { anonymous_code: anonymousCode }
+      });
+      
+      return user as UserInterface | null;
+    } catch (error) {
+      throw error;
+    }
   }
 
   static async create(userData: Partial<UserInterface>): Promise<number> {
     try {
       const encryptedData = encryptionService.encryptUserData(userData);
 
-      const query = `
-        INSERT INTO users (anonymous_code, real_name, phone, email, ngo_id, created_at)
-        VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
-      `;
+      const user = await prisma.user.create({
+        data: {
+          anonymous_code: encryptedData.anonymous_code,
+          real_name: encryptedData.real_name,
+          phone: encryptedData.phone,
+          email: encryptedData.email,
+          ngo_id: encryptedData.ngo_id,
+          created_at: new Date(),
+          updated_at: new Date()
+        }
+      });
 
-      const result = await run(query, [
-        encryptedData.anonymous_code,
-        encryptedData.real_name,
-        encryptedData.phone,
-        encryptedData.email,
-        encryptedData.ngo_id
-      ]);
-
-      return result.lastID;
+      return user.id;
     } catch (error) {
       throw error;
     }
   }
 
   static async updateLoginAttempt(anonymousCode: string): Promise<void> {
-    const query = `
-      UPDATE users 
-      SET login_attempts = login_attempts + 1, 
-          last_login_at = CURRENT_TIMESTAMP 
-      WHERE anonymous_code = ?
-    `;
-    await run(query, [anonymousCode]);
+    try {
+      await prisma.user.update({
+        where: { anonymous_code: anonymousCode },
+        data: {
+          login_attempts: { increment: 1 },
+          last_login_at: new Date()
+        }
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 
   static async resetLoginAttempts(anonymousCode: string): Promise<void> {
-    const query = `
-      UPDATE users 
-      SET login_attempts = 0, 
-          locked_until = NULL 
-      WHERE anonymous_code = ?
-    `;
-    await run(query, [anonymousCode]);
+    try {
+      await prisma.user.update({
+        where: { anonymous_code: anonymousCode },
+        data: {
+          login_attempts: 0,
+          locked_until: null
+        }
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 
   static async lockAccount(anonymousCode: string, until: string): Promise<void> {
-    const query = `
-      UPDATE users 
-      SET locked_until = ? 
-      WHERE anonymous_code = ?
-    `;
-    await run(query, [until, anonymousCode]);
+    try {
+      await prisma.user.update({
+        where: { anonymous_code: anonymousCode },
+        data: {
+          locked_until: new Date(until)
+        }
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 
   static async validateCredentials(anonymousCode: string, password?: string): Promise<UserInterface | null> {
     return await this.findByAnonymousCode(anonymousCode);
   }
 
-  // New ORM-like methods
+  // New ORM-like methods using Prisma
   static async findUnique(where: { anonymous_code: string }): Promise<UserInterface | null> {
-    return await this.findByAnonymousCode(where.anonymous_code);
+    try {
+      const user = await prisma.user.findUnique({
+        where
+      });
+      
+      return user as UserInterface | null;
+    } catch (error) {
+      throw error;
+    }
   }
 
   static async findMany(): Promise<UserInterface[]> {
-    const query = 'SELECT * FROM users';
-    return await all<UserInterface>(query);
+    try {
+      const users = await prisma.user.findMany({
+        where: { is_active: true }
+      });
+      
+      return users as UserInterface[];
+    } catch (error) {
+      throw error;
+    }
   }
 
   static async update(
     where: { anonymous_code: string }, 
     data: Partial<UserInterface>
   ): Promise<UserInterface | null> {
-    const updates: string[] = [];
-    const values: any[] = [];
-    
-    Object.entries(data).forEach(([key, value]) => {
-      if (key !== 'id' && key !== 'anonymous_code') {
-        updates.push(`${key} = ?`);
-        values.push(value);
-      }
-    });
-    
-    if (updates.length === 0) {
-      return await this.findByAnonymousCode(where.anonymous_code);
+    try {
+      // Remove fields that shouldn't be updated directly
+      const updateData: any = { ...data };
+      delete updateData.id;
+      delete updateData.anonymous_code;
+      delete updateData.created_at;
+      
+      // Add updated timestamp
+      updateData.updated_at = new Date();
+
+      const user = await prisma.user.update({
+        where,
+        data: updateData
+      });
+
+      return user as UserInterface;
+    } catch (error) {
+      throw error;
     }
-    
-    values.push(where.anonymous_code);
-    
-    const query = `
-      UPDATE users 
-      SET ${updates.join(', ')}, updated_at = CURRENT_TIMESTAMP
-      WHERE anonymous_code = ?
-    `;
-    
-    await run(query, values);
-    return await this.findByAnonymousCode(where.anonymous_code);
   }
 
   static async delete(where: { anonymous_code: string }): Promise<void> {
-    const query = 'DELETE FROM users WHERE anonymous_code = ?';
-    await run(query, [where.anonymous_code]);
+    try {
+      await prisma.user.delete({
+        where
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 }
 

@@ -1,0 +1,94 @@
+import { PrismaClient } from '@prisma/client';
+import winston from 'winston';
+
+// Logger setup
+const logger = winston.createLogger({
+  level: process.env.LOG_LEVEL ?? 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.errors({ stack: true }),
+    winston.format.json()
+  ),
+  transports: [
+    new winston.transports.Console({
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.simple()
+      )
+    }),
+    new winston.transports.File({
+      filename: 'logs/prisma.log'
+    })
+  ]
+});
+
+class PrismaService {
+  private prisma: PrismaClient;
+
+  constructor() {
+    this.prisma = new PrismaClient({
+      log: [
+        { level: 'query', emit: 'event' },
+        { level: 'info', emit: 'event' },
+        { level: 'warn', emit: 'event' },
+        { level: 'error', emit: 'event' }
+      ]
+    });
+
+    // Log Prisma events
+    this.prisma.$on('query', (e) => {
+      logger.debug('Prisma Query', {
+        query: e.query,
+        duration: e.duration
+      });
+    });
+
+    this.prisma.$on('info', (e) => {
+      logger.info('Prisma Info', {
+        message: e.message
+      });
+    });
+
+    this.prisma.$on('warn', (e) => {
+      logger.warn('Prisma Warning', {
+        message: e.message
+      });
+    });
+
+    this.prisma.$on('error', (e) => {
+      logger.error('Prisma Error', {
+        message: e.message
+      });
+    });
+  }
+
+  getClient(): PrismaClient {
+    return this.prisma;
+  }
+
+  async disconnect(): Promise<void> {
+    await this.prisma.$disconnect();
+    logger.info('Prisma client disconnected');
+  }
+
+  async healthCheck(): Promise<{ status: 'healthy' | 'unhealthy'; latency?: number; error?: string }> {
+    try {
+      const start = Date.now();
+      await this.prisma.$queryRaw`SELECT 1`;
+      const latency = Date.now() - start;
+
+      return { status: 'healthy', latency };
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        error: (error as Error).message
+      };
+    }
+  }
+}
+
+// Singleton instance
+const prismaService = new PrismaService();
+
+export default prismaService;
+export { PrismaService };
