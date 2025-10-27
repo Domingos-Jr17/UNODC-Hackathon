@@ -1,6 +1,6 @@
 import { createClient, RedisClientType } from 'redis'
 import winston from 'winston'
-import { Course, Progress, USSDSession, CacheStats, RateLimitResult } from '@/types'
+import { Course, Progress, USSDSession, CacheStats, RateLimitResult } from '../types'
 
 // Logger setup
 const logger = winston.createLogger({
@@ -32,11 +32,15 @@ class CacheService {
     try {
       const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379'
 
-      this.client = createClient({
-        url: redisUrl,
-        password: process.env.REDIS_PASSWORD || undefined
-        // Note: retry_strategy is deprecated in Redis v4, using built-in retry logic
-      })
+      const clientOptions: any = {
+        url: redisUrl
+      }
+
+      if (process.env.REDIS_PASSWORD) {
+        clientOptions.password = process.env.REDIS_PASSWORD
+      }
+
+      this.client = createClient(clientOptions)
 
       this.client.on('connect', () => {
         logger.info('Redis client connected')
@@ -72,7 +76,7 @@ class CacheService {
   }
 
   isReady (): boolean {
-    return this.isConnected && this.client && this.client.isOpen
+    return !!(this.isConnected && this.client && this.client.isOpen)
   }
 
   // Basic cache operations
@@ -308,11 +312,21 @@ class CacheService {
       const info = await this.client!.info('memory')
       const keyspace = await this.client!.info('keyspace')
 
-      return {
-        connected: true,
-        memory: this.parseMemoryInfo(info),
-        keyspace: this.parseKeyspaceInfo(keyspace)
+      const stats: CacheStats = {
+        connected: true
       }
+
+      const memoryInfo = this.parseMemoryInfo(info)
+      if (memoryInfo) {
+        stats.memory = memoryInfo
+      }
+
+      const keyspaceInfo = this.parseKeyspaceInfo(keyspace)
+      if (keyspaceInfo) {
+        stats.keyspace = keyspaceInfo
+      }
+
+      return stats
     } catch (error) {
       logger.error('Error getting Redis stats', { error: (error as Error).message })
       return { connected: false, error: (error as Error).message }
@@ -331,7 +345,7 @@ class CacheService {
       }
     }
 
-    return memory.used && memory.peak ? memory : undefined
+    return memory.used && memory.peak ? { used: memory.used, peak: memory.peak } : undefined
   }
 
   private parseKeyspaceInfo (info: string): Record<string, { keys: number; expires: number }> | undefined {
