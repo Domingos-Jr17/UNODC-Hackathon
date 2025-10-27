@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert, Image } from 'react-native';
 
 export default function JobsMockupScreen({ navigation }) {
     const jobs = [
@@ -148,7 +148,6 @@ export default function JobsMockupScreen({ navigation }) {
               </View>
               <Text style={styles.compatibilityText}>{job.compatibility}%</Text>
             </View>
-            </View>
             
             <View style={styles.jobDetails}>
               <View style={styles.detailRow}>
@@ -187,12 +186,9 @@ export default function JobsMockupScreen({ navigation }) {
               ))}
             </View>
             
-            <TouchableOpacity
-              style={styles.applyButton}
-              onPress={() => handleJobPress(job.id)}
-            >
+            <View style={styles.applyButton}>
               <Text style={styles.applyButtonText}>Ver Detalhes</Text>
-            </TouchableOpacity>
+            </View>
           </TouchableOpacity>
         ))}
       </View>
