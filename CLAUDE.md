@@ -37,7 +37,7 @@ npm run web                   # Start web development
 
 ### ONG Dashboard (React/Vite)
 ```bash
-cd wira-platform/ong-dashboard-simple
+cd wira-platform/frontend
 npm install                    # Install dependencies
 npm run dev                    # Start Vite development server
 npm run build                  # Build for production

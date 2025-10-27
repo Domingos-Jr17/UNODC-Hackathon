@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Card, CardContent, TextField, Button, Typography, Box } from '@mui/material';
 import { PersonAdd, Check } from '@mui/icons-material';
 
-// Add typed form data interface and useState generic
+
 interface FormData {
-    anonymousCode: string;
     realName: string;
     ngoId: string;
     initialSkills: string;
@@ -12,24 +11,23 @@ interface FormData {
 
 export default function ActivateUser() {
     const [formData, setFormData] = useState<FormData>({
-        anonymousCode: '',
         realName: '',
         ngoId: '',
         initialSkills: ''
     });
 
-    const [generatedCode, setGeneratedCode] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [generatedCode, setGeneratedCode] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
 
-    // Type the input change handler event
-    const handleInputChange = (field: keyof FormData) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFormData({
-            ...formData,
-            [field]: event.target.value
-        });
-    };
+    const handleInputChange = useCallback((field: keyof FormData) => 
+        (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+            setFormData(prev => ({
+                ...prev,
+                [field]: event.target.value
+            }));
+    }, []);
 
-    const handleGenerateCode = () => {
+    const handleGenerateCode = useCallback(() => {
         if (!formData.realName || !formData.ngoId) {
             alert('Por favor, preencha todos os campos obrigatórios');
             return;
@@ -45,9 +43,9 @@ export default function ActivateUser() {
 
             alert(`Código gerado: ${newCode}\n\nUsuário ativado com sucesso!`);
         }, 1000);
-    };
+    }, [formData]);
 
-    const handleSendSMS = () => {
+    const handleSendSMS = useCallback(() => {
         if (!generatedCode) {
             alert('Gere um código primeiro');
             return;
@@ -55,10 +53,10 @@ export default function ActivateUser() {
 
         // Simular envio de SMS
         alert(`SMS enviado para o usuário com código: ${generatedCode}`);
-    };
+    }, [generatedCode]);
 
     return (
-        <Box sx={{ p: 3, bgcolor: 'background.default', minHeight: '100vh' }}>
+        <Box sx={(theme) => ({ p: 3, bgcolor: theme.palette.background.default, minHeight: '100vh' })}>
             <Typography variant="h4" component="h1" gutterBottom>
                 Ativar Novo Usuário
             </Typography>
@@ -73,6 +71,7 @@ export default function ActivateUser() {
 
                             <Box sx={{ mb: 2 }}>
                                 <TextField
+                                    required
                                     fullWidth
                                     label="Nome Completo"
                                     value={formData.realName}
@@ -83,6 +82,7 @@ export default function ActivateUser() {
 
                             <Box sx={{ mb: 2 }}>
                                 <TextField
+                                    required
                                     fullWidth
                                     label="ONG de Acolhimento"
                                     value={formData.ngoId}
@@ -126,14 +126,14 @@ export default function ActivateUser() {
                             </Button>
 
                             {generatedCode && (
-                                <Box sx={{ p: 2, bgcolor: 'success.light', borderRadius: 1, mt: 2 }}>
-                                    <Typography variant="body2" sx={{ color: 'success.contrastText' }}>
+                                <Box sx={(theme) => ({ p: 2, bgcolor: theme.palette.success.light, borderRadius: 1, mt: 2 })}>
+                                    <Typography variant="body2" sx={(theme) => ({ color: theme.palette.success.contrastText })}>
                                         Código Gerado:
                                     </Typography>
-                                    <Typography variant="h5" sx={{ color: 'success.dark' }}>
+                                    <Typography variant="h5" sx={(theme) => ({ color: theme.palette.success.dark })}>
                                         {generatedCode}
                                     </Typography>
-                                    <Typography variant="body2" sx={{ color: 'success.contrastText', mt: 1 }}>
+                                    <Typography variant="body2" sx={(theme) => ({ color: theme.palette.success.contrastText, mt: 1 })}>
                                         Guarde este código para o usuário. Ele será necessário para acessar o aplicativo.
                                     </Typography>
                                 </Box>
@@ -155,7 +155,7 @@ export default function ActivateUser() {
             </Box>
 
             <Box sx={{ mt: 3, textAlign: 'center' }}>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                <Typography variant="body2" sx={(theme) => ({ color: theme.palette.text.secondary })}>
                     O usuário receberá um código anônimo (ex: V0042) para acessar o aplicativo WIRA.
                     Seu nome real nunca será exposto.
                 </Typography>

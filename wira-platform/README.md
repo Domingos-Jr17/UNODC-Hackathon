@@ -104,9 +104,9 @@ npm start  # Expo development server
 
 ### Dashboard ONG
 ```bash
-cd dashboard
+cd  frontend
 npm install
-npm run dev  # Next.js development server
+npm run dev  # vite+react development server
 ```
 
 ### Backend API
