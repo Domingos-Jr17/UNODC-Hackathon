@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, Typography, Button, Grid, Box, CircularProgress } from '@mui/material';
+import { useState} from 'react';
+import { Card, CardContent, Typography, Button, Grid, Box} from '@mui/material';
 import { People, School, TrendingUp, Assessment, Work } from '@mui/icons-material';
 
 export default function Dashboard() {
-    const [stats, setStats] = useState({
+    const [stats] = useState({
         totalUsers: 42,
         activeUsers: 38,
         coursesCompleted: 15,
@@ -11,20 +11,20 @@ export default function Dashboard() {
         averageCompletionTime: 45 // days
     });
 
-    const [recentActivity, setRecentActivity] = useState([
+    const [recentActivity] = useState([
         { id: 1, user: 'V0042', action: 'Completou módulo Costura', time: '2 horas atrás' },
         { id: 2, user: 'V0038', action: 'Iniciou curso Culinária', time: '5 horas atrás' },
         { id: 3, user: 'V0031', action: 'Gerou certificado', time: '1 dia atrás' },
         { id: 4, user: 'V0042', action: 'Baixou vídeo offline', time: '3 horas atrás' }
     ]);
 
-    const [users, setUsers] = useState([
+    const [users] = useState([
         { id: 1, code: 'V0042', name: 'Maria Silva', ngo: 'ONG-001', status: 'Ativo', lastActivity: '2 horas atrás', coursesCompleted: 1, certificatesEarned: 1 },
         { id: 2, code: 'V0038', name: 'Ana Machel', ngo: 'ONG-001', status: 'Ativo', lastActivity: '5 horas atrás', coursesCompleted: 0, certificatesEarned: 0 },
         { id: 3, code: 'V0031', name: 'João Sitoe', ngo: 'ONG-002', status: 'Ativo', lastActivity: '1 dia atrás', coursesCompleted: 0, certificatesEarned: 0 }
     ]);
 
-    const [courses, setCourses] = useState([
+    const [courses] = useState([
         { id: 'costura', title: 'Costura Avançada', activeUsers: 25, completionRate: 75 },
         { id: 'culinaria', title: 'Culinária Profissional', activeUsers: 18, completionRate: 60 },
         { id: 'agricultura', title: 'Agricultura Sustentável', activeUsers: 8, completionRate: 40 }
