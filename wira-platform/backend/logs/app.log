@@ -1,0 +1,2 @@
+{"environment":"development","level":"info","memory":{"arrayBuffers":216126,"external":2488059,"heapTotal":99065856,"heapUsed":48735112,"rss":118648832},"message":"🚀 WIRA Platform TypeScript Server started","nodeVersion":"v24.9.0","platform":"win32","port":"3000","timestamp":"2025-10-26T18:47:46.143Z","typescript":"enabled"}
+{"environment":"development","level":"info","message":"Database connected successfully","path":"./data/wira.db","timestamp":"2025-10-26T18:47:46.164Z"}

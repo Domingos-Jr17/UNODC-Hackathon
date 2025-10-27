@@ -4,7 +4,7 @@ import { Course, Progress, USSDSession, CacheStats, RateLimitResult } from '../t
 
 // Logger setup
 const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || 'info',
+  level: process.env.LOG_LEVEL ?? 'info',
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.errors({ stack: true }),
@@ -24,15 +24,15 @@ class CacheService {
   private client: RedisClientType | null = null
   private isConnected: boolean = false
 
-  constructor () {
-    this.connect()
+  constructor() {
+    void this.connect()
   }
 
-  async connect (): Promise<void> {
+  async connect(): Promise<void> {
     try {
-      const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379'
+      const redisUrl = process.env.REDIS_URL ?? 'redis://localhost:6379'
 
-      const clientOptions: any = {
+      const clientOptions: { url: string; password?: string } = {
         url: redisUrl
       }
 
@@ -47,7 +47,7 @@ class CacheService {
         this.isConnected = true
       })
 
-      this.client.on('error', (err) => {
+      this.client.on('error', (err: Error) => {
         logger.error('Redis connection error', { error: err.message })
         this.isConnected = false
       })
@@ -68,19 +68,19 @@ class CacheService {
     }
   }
 
-  async disconnect (): Promise<void> {
+  async disconnect(): Promise<void> {
     if (this.client) {
       await this.client.quit()
       this.isConnected = false
     }
   }
 
-  isReady (): boolean {
+  isReady(): boolean {
     return !!(this.isConnected && this.client && this.client.isOpen)
   }
 
   // Basic cache operations
-  async set<T = any> (key: string, value: T, ttl: number = 3600): Promise<boolean> {
+  async set<T = unknown>(key: string, value: T, ttl = 3600): Promise<boolean> {
     try {
       if (!this.isReady()) {
         logger.warn('Redis not ready, skipping cache set', { key })
@@ -98,7 +98,7 @@ class CacheService {
     }
   }
 
-  async get<T = any> (key: string): Promise<T | null> {
+  async get<T = unknown>(key: string): Promise<T | null> {
     try {
       if (!this.isReady()) {
         logger.warn('Redis not ready, skipping cache get', { key })
@@ -121,7 +121,7 @@ class CacheService {
     }
   }
 
-  async del (key: string): Promise<boolean> {
+  async del(key: string): Promise<boolean> {
     try {
       if (!this.isReady()) {
         logger.warn('Redis not ready, skipping cache delete', { key })
@@ -137,7 +137,7 @@ class CacheService {
     }
   }
 
-  async exists (key: string): Promise<boolean> {
+  async exists(key: string): Promise<boolean> {
     try {
       if (!this.isReady()) {
         return false
@@ -152,7 +152,7 @@ class CacheService {
   }
 
   // Hash operations for complex data
-  async hSet (key: string, field: string, value: any, ttl: number = 3600): Promise<boolean> {
+  async hSet(key: string, field: string, value: unknown, ttl = 3600): Promise<boolean> {
     try {
       if (!this.isReady()) {
         return false
@@ -171,7 +171,7 @@ class CacheService {
     }
   }
 
-  async hGet<T = any> (key: string, field: string): Promise<T | null> {
+  async hGet<T = unknown>(key: string, field: string): Promise<T | null> {
     try {
       if (!this.isReady()) {
         return null
@@ -185,14 +185,14 @@ class CacheService {
     }
   }
 
-  async hGetAll (key: string): Promise<Record<string, any>> {
+  async hGetAll(key: string): Promise<Record<string, unknown>> {
     try {
       if (!this.isReady()) {
         return {}
       }
 
       const hash = await this.client!.hGetAll(key)
-      const parsed: Record<string, any> = {}
+      const parsed: Record<string, unknown> = {}
 
       for (const [field, value] of Object.entries(hash)) {
         try {
@@ -210,7 +210,7 @@ class CacheService {
   }
 
   // Cache warming strategies
-  async warmCoursesCache (courses: Course[]): Promise<void> {
+  async warmCoursesCache(courses: Course[]): Promise<void> {
     try {
       const promises = courses.map(course =>
         this.set(`course:${course.id}`, course, 1800) // 30 minutes
@@ -223,7 +223,7 @@ class CacheService {
     }
   }
 
-  async warmUserProgressCache (userCode: string, progressData: Progress[]): Promise<void> {
+  async warmUserProgressCache(userCode: string, progressData: Progress[]): Promise<void> {
     try {
       await this.set(`progress:${userCode}`, progressData, 600) // 10 minutes
       logger.debug('User progress cache warmed', { userCode })
@@ -233,7 +233,7 @@ class CacheService {
   }
 
   // Cache invalidation
-  async invalidateUserCache (userCode: string): Promise<void> {
+  async invalidateUserCache(userCode: string): Promise<void> {
     try {
       const pattern = `*:${userCode}:*`
       const keys = await this.client!.keys(pattern)
@@ -247,7 +247,7 @@ class CacheService {
     }
   }
 
-  async invalidateCourseCache (courseId: string): Promise<void> {
+  async invalidateCourseCache(courseId: string): Promise<void> {
     try {
       const keys = [
         `course:${courseId}`,
@@ -263,20 +263,20 @@ class CacheService {
   }
 
   // USSD session management
-  async setUSSDSession (sessionId: string, sessionData: USSDSession, ttl: number = 300): Promise<boolean> {
+  async setUSSDSession(sessionId: string, sessionData: USSDSession, ttl = 300): Promise<boolean> {
     return this.hSet(`ussd:${sessionId}`, 'data', sessionData, ttl)
   }
 
-  async getUSSDSession (sessionId: string): Promise<USSDSession | null> {
+  async getUSSDSession(sessionId: string): Promise<USSDSession | null> {
     return this.hGet<USSDSession>(`ussd:${sessionId}`, 'data')
   }
 
-  async deleteUSSDSession (sessionId: string): Promise<boolean> {
+  async deleteUSSDSession(sessionId: string): Promise<boolean> {
     return this.del(`ussd:${sessionId}`)
   }
 
   // Rate limiting with Redis
-  async checkRateLimit (key: string, limit: number, windowMs: number): Promise<RateLimitResult> {
+  async checkRateLimit(key: string, limit: number, windowMs: number): Promise<RateLimitResult> {
     try {
       if (!this.isReady()) {
         return { allowed: true, remaining: limit }
@@ -303,7 +303,7 @@ class CacheService {
   }
 
   // Statistics and monitoring
-  async getStats (): Promise<CacheStats> {
+  async getStats(): Promise<CacheStats> {
     try {
       if (!this.isReady()) {
         return { connected: false }
@@ -333,7 +333,7 @@ class CacheService {
     }
   }
 
-  private parseMemoryInfo (info: string): { used: string; peak: string } | undefined {
+  private parseMemoryInfo(info: string): { used: string; peak: string } | undefined {
     const memory: { used?: string; peak?: string } = {}
     const lines = info.split('\r\n')
 
@@ -348,7 +348,7 @@ class CacheService {
     return memory.used && memory.peak ? { used: memory.used, peak: memory.peak } : undefined
   }
 
-  private parseKeyspaceInfo (info: string): Record<string, { keys: number; expires: number }> | undefined {
+  private parseKeyspaceInfo(info: string): Record<string, { keys: number; expires: number }> | undefined {
     const keyspace: Record<string, { keys: number; expires: number }> = {}
     const lines = info.split('\r\n')
 
@@ -369,7 +369,7 @@ class CacheService {
   }
 
   // Health check for Redis
-  async healthCheck (): Promise<{ status: 'healthy' | 'unhealthy'; latency?: number; error?: string }> {
+  async healthCheck(): Promise<{ status: 'healthy' | 'unhealthy'; latency?: number; error?: string }> {
     try {
       if (!this.isReady()) {
         return { status: 'unhealthy', error: 'Redis not connected' }
@@ -389,7 +389,7 @@ class CacheService {
   }
 
   // Cache utilities
-  async clearAll (): Promise<boolean> {
+  async clearAll(): Promise<boolean> {
     try {
       if (!this.isReady()) {
         return false
@@ -404,7 +404,7 @@ class CacheService {
     }
   }
 
-  async getKeysByPattern (pattern: string): Promise<string[]> {
+  async getKeysByPattern(pattern: string): Promise<string[]> {
     try {
       if (!this.isReady()) {
         return []
@@ -418,7 +418,7 @@ class CacheService {
   }
 
   // Batch operations
-  async mSet (entries: Array<{ key: string; value: any; ttl?: number }>): Promise<boolean> {
+  async mSet(entries: Array<{ key: string; value: unknown; ttl?: number }>): Promise<boolean> {
     try {
       if (!this.isReady()) {
         return false
@@ -428,7 +428,7 @@ class CacheService {
 
       entries.forEach(({ key, value, ttl }) => {
         const serializedValue = JSON.stringify(value)
-        pipeline.setEx(key, ttl || 3600, serializedValue)
+        pipeline.setEx(key, ttl ?? 3600, serializedValue)
       })
 
       await pipeline.exec()
@@ -440,7 +440,7 @@ class CacheService {
     }
   }
 
-  async mGet (keys: string[]): Promise<Array<any | null>> {
+  async mGet<T = unknown>(keys: string[]): Promise<Array<T | null>> {
     try {
       if (!this.isReady()) {
         return keys.map(() => null)
@@ -451,9 +451,9 @@ class CacheService {
       return values.map(value => {
         if (!value) return null
         try {
-          return JSON.parse(value)
+          return JSON.parse(value) as T
         } catch {
-          return value
+          return value as T
         }
       })
     } catch (error) {

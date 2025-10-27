@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express'
-import { get } from '@/database'
-import cacheService from '@/services/cache'
-import { logger } from '@/middleware/security'
-import { Course, CourseModule, QuizQuestion } from '@/types'
+import { get } from '../database'
+import cacheService from '../services/cache'
+import { logger } from '../middleware/security'
+import { Course, CourseModule, QuizQuestion } from '../types'
 
 const router = express.Router()
 
@@ -22,7 +22,7 @@ const cacheMiddleware = (ttl: number = 1800) => {
 
       // Store res.json to intercept response
       const originalJson = res.json
-      res.json = function(data: any) {
+      res.json = function (data: unknown) {
         // Cache the response
         cacheService.set(cacheKey, data, ttl).catch(err => {
           logger.error('Failed to cache response', { error: (err as Error).message, key: cacheKey })
@@ -41,7 +41,7 @@ const cacheMiddleware = (ttl: number = 1800) => {
 }
 
 // Get all courses with caching
-router.get('/', cacheMiddleware(1800), async (req: Request, res: Response): Promise<void> => {
+router.get('/', cacheMiddleware(1800), async (_req: Request, res: Response): Promise<void> => {
   try {
     const rows = await get<Course[]>('SELECT * FROM courses WHERE is_active = 1')
 

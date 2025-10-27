@@ -1,4 +1,4 @@
-import { User, EncryptedData, EncryptionResult } from '@/types';
+import { User, EncryptedData, EncryptionResult } from '../types';
 declare class EncryptionService {
     private readonly algorithm;
     private readonly key;

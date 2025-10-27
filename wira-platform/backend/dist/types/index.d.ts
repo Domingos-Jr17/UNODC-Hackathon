@@ -38,6 +38,7 @@ export interface Progress {
     last_activity: string;
     completed_at?: string;
 }
+export { Progress as UserProgress };
 export interface Certificate {
     id: string;
     anonymous_code: string;
@@ -175,8 +176,8 @@ export interface AuthenticatedRequest extends Request {
 export interface CacheStats {
     connected: boolean;
     memory?: {
-        used: string;
-        peak: string;
+        used?: string;
+        peak?: string;
     };
     keyspace?: {
         [key: string]: {
@@ -184,6 +185,7 @@ export interface CacheStats {
             expires: number;
         };
     };
+    error?: string;
 }
 export interface RateLimitResult {
     allowed: boolean;
@@ -200,6 +202,7 @@ export interface HealthCheckResponse {
         api: 'online' | 'offline' | 'error';
         ussd: 'online' | 'offline' | 'error';
         database: 'connected' | 'disconnected' | 'error';
+        cache: 'online' | 'offline' | 'error';
         security: {
             rateLimiting: 'active' | 'inactive';
             encryption: 'enabled' | 'disabled';

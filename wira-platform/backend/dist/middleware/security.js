@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.logger = exports.maskSensitiveData = exports.validateAnonymousCode = exports.ipRateLimit = exports.userRateLimit = exports.notFoundHandler = exports.productionErrorHandler = exports.developmentErrorHandler = exports.errorLogger = exports.requestId = exports.securityHeaders = exports.sanitizeInput = exports.authenticateToken = exports.corsOptions = exports.requestLogger = exports.handleValidationErrors = exports.validateQuizSubmission = exports.validateCertificateGeneration = exports.validateLogin = exports.ussdLimiter = exports.generalLimiter = exports.authLimiter = void 0;
 const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 const express_validator_1 = require("express-validator");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const winston_1 = __importDefault(require("winston"));
 const logger = winston_1.default.createLogger({
     level: process.env.LOG_LEVEL || 'info',
@@ -25,7 +26,7 @@ const logger = winston_1.default.createLogger({
 });
 exports.logger = logger;
 const createRateLimit = (windowMs, max, message) => {
-    return (0, express_rate_limit_1.default)({
+    return express_rate_limit_1.default({
         windowMs,
         max,
         message: {
@@ -92,8 +93,8 @@ const handleValidationErrors = (req, res, next) => {
         });
         res.status(400).json({
             error: 'Dados inválidos',
-            details: errors.array().map(err => ({
-                field: err.param,
+            details: errors.array().map((err) => ({
+                field: err.param || err.path,
                 message: err.msg,
                 value: err.value
             }))
@@ -129,8 +130,7 @@ exports.corsOptions = {
         }
         else {
             logger.warn('CORS violation', {
-                origin,
-                ip: req.ip
+                origin
             });
             callback(new Error('Não permitido por CORS'));
         }
@@ -147,7 +147,7 @@ const authenticateToken = (req, res, next) => {
         });
         return;
     }
-    jwt.verify(token, process.env.JWT_SECRET || '', (err, user) => {
+    jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET || '', (err, user) => {
         if (err) {
             logger.warn('Invalid token attempt', {
                 error: err.message,
@@ -164,7 +164,7 @@ const authenticateToken = (req, res, next) => {
     });
 };
 exports.authenticateToken = authenticateToken;
-const sanitizeInput = (req, res, next) => {
+const sanitizeInput = (req, _res, next) => {
     if (req.query) {
         Object.keys(req.query).forEach(key => {
             if (typeof req.query[key] === 'string') {
@@ -182,7 +182,7 @@ const sanitizeInput = (req, res, next) => {
     next();
 };
 exports.sanitizeInput = sanitizeInput;
-const securityHeaders = (req, res, next) => {
+const securityHeaders = (_req, res, next) => {
     res.removeHeader('X-Powered-By');
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('X-Frame-Options', 'DENY');
@@ -197,7 +197,7 @@ const requestId = (req, res, next) => {
     next();
 };
 exports.requestId = requestId;
-const errorLogger = (err, req, res, next) => {
+const errorLogger = (err, req, _res, next) => {
     logger.error('Unhandled error', {
         error: err.message,
         stack: err.stack,
@@ -250,12 +250,11 @@ const notFoundHandler = (req, res) => {
     });
 };
 exports.notFoundHandler = notFoundHandler;
-const userRateLimit = (max, windowMs) => {
-    return async (req, res, next) => {
+const userRateLimit = (_max, _windowMs) => {
+    return async (req, _res, next) => {
         if (!req.user) {
             return next();
         }
-        const userKey = `user_rate_limit_${req.user.anonymousCode}_${Math.floor(Date.now() / windowMs)}`;
         next();
     };
 };

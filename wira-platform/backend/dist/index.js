@@ -8,10 +8,10 @@ require("dotenv/config");
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
-const auth_1 = __importDefault(require("@/routes/auth"));
-const courses_1 = __importDefault(require("@/routes/courses"));
-const security_1 = require("@/middleware/security");
-const cache_1 = __importDefault(require("@/services/cache"));
+const auth_1 = __importDefault(require("./routes/auth"));
+const courses_1 = __importDefault(require("./routes/courses"));
+const security_1 = require("./middleware/security");
+const cache_1 = __importDefault(require("./services/cache"));
 const app = (0, express_1.default)();
 let server;
 app.set('trust proxy', 1);
@@ -40,7 +40,7 @@ app.use(security_1.requestLogger);
 app.use('/api/', security_1.generalLimiter);
 app.use('/api/auth', auth_1.default);
 app.use('/api/courses', courses_1.default);
-app.get('/health', async (req, res) => {
+app.get('/health', async (_req, res) => {
     const healthCheck = {
         status: 'OK',
         timestamp: new Date().toISOString(),
@@ -51,6 +51,7 @@ app.get('/health', async (req, res) => {
             api: 'online',
             ussd: 'online',
             database: 'connected',
+            cache: 'online',
             security: {
                 rateLimiting: 'active',
                 encryption: 'enabled',
@@ -79,7 +80,7 @@ app.get('/health', async (req, res) => {
     const statusCode = healthCheck.status === 'OK' ? 200 : 503;
     res.status(statusCode).json(healthCheck);
 });
-app.get('/api/security/info', (req, res) => {
+app.get('/api/security/info', (_req, res) => {
     res.json({
         security: {
             rateLimiting: {
@@ -102,7 +103,7 @@ app.get('/api/security/info', (req, res) => {
         lastUpdated: new Date().toISOString()
     });
 });
-app.get('/api', (req, res) => {
+app.get('/api', (_req, res) => {
     res.json({
         name: 'WIRA Platform API',
         version: '3.0.0',
@@ -136,7 +137,7 @@ app.get('/api', (req, res) => {
         }
     });
 });
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
     res.json({
         message: 'WIRA Platform API - TypeScript Edition',
         version: '3.0.0',
@@ -201,11 +202,9 @@ const startServer = () => {
             case 'EACCES':
                 security_1.logger.error(`${bind} requires elevated privileges`);
                 process.exit(1);
-                break;
             case 'EADDRINUSE':
                 security_1.logger.error(`${bind} is already in use`);
                 process.exit(1);
-                break;
             default:
                 throw error;
         }

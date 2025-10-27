@@ -27,7 +27,7 @@ class EncryptionService {
         const key = process.env.ENCRYPTION_KEY;
         if (!key) {
             logger.error('ENCRYPTION_KEY not set in environment variables');
-            return null;
+            throw new Error('ENCRYPTION_KEY environment variable is required');
         }
         return crypto_1.default.scryptSync(key, 'salt', 32);
     }
@@ -118,7 +118,7 @@ class EncryptionService {
             if (encryptedUser.real_name) {
                 try {
                     const encrypted = JSON.parse(encryptedUser.real_name);
-                    user.real_name = this.decrypt(encrypted);
+                    user.real_name = this.decrypt(encrypted) || '[DECRYPT_ERROR]';
                 }
                 catch {
                     user.real_name = '[DECRYPT_ERROR]';
@@ -127,7 +127,7 @@ class EncryptionService {
             if (encryptedUser.phone) {
                 try {
                     const encrypted = JSON.parse(encryptedUser.phone);
-                    user.phone = this.decrypt(encrypted);
+                    user.phone = this.decrypt(encrypted) || '[DECRYPT_ERROR]';
                 }
                 catch {
                     user.phone = '[DECRYPT_ERROR]';
@@ -136,7 +136,7 @@ class EncryptionService {
             if (encryptedUser.email) {
                 try {
                     const encrypted = JSON.parse(encryptedUser.email);
-                    user.email = this.decrypt(encrypted);
+                    user.email = this.decrypt(encrypted) || '[DECRYPT_ERROR]';
                 }
                 catch {
                     user.email = '[DECRYPT_ERROR]';

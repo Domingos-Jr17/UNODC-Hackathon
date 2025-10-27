@@ -6,17 +6,16 @@ import helmet from 'helmet'
 import { Server } from 'http'
 
 // Import routes and middleware
-import authRoutes from '@/routes/auth'
-import coursesRoutes from '@/routes/courses'
-// import progressRoutes from '@/routes/progress'
-// import certificatesRoutes from '@/routes/certificates'
-// import ussdRoutes from '@/routes/ussd'
+import authRoutes from './routes/auth'
+import coursesRoutes from './routes/courses'
+// import progressRoutes from './routes/progress'
+// import certificatesRoutes from './routes/certificates'
+// import ussdRoutes from './routes/ussd'
 
 // Import middleware
 import {
   logger,
   generalLimiter,
-  ussdLimiter,
   requestLogger,
   corsOptions,
   securityHeaders,
@@ -25,13 +24,13 @@ import {
   developmentErrorHandler,
   productionErrorHandler,
   notFoundHandler
-} from '@/middleware/security'
+} from './middleware/security'
 
 // Import services
-import cacheService from '@/services/cache'
+import cacheService from './services/cache'
 
 // Import types
-import { HealthCheckResponse } from '@/types'
+import { HealthCheckResponse } from './types'
 
 const app = express()
 let server: Server
@@ -46,7 +45,7 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       scriptSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https:"],
+      imgSrc: ['\'self\'', 'data:', 'https:'],
       connectSrc: ["'self'"],
       fontSrc: ["'self'"],
       objectSrc: ["'none'"],
@@ -79,17 +78,18 @@ app.use('/api/courses', coursesRoutes)
 // app.use('/api/ussd', ussdLimiter, ussdRoutes)
 
 // Enhanced health check endpoint
-app.get('/health', async (req: express.Request, res: express.Response): Promise<void> => {
+app.get('/health', async (_req: express.Request, res: express.Response): Promise<void> => {
   const healthCheck: HealthCheckResponse = {
     status: 'OK',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    environment: process.env.NODE_ENV || 'development',
+    environment: process.env.NODE_ENV ?? 'development',
     version: '3.0.0',
     services: {
       api: 'online',
       ussd: 'online',
       database: 'connected',
+      cache: 'online',
       security: {
         rateLimiting: 'active',
         encryption: 'enabled',
@@ -114,7 +114,8 @@ app.get('/health', async (req: express.Request, res: express.Response): Promise<
   try {
     // In a real implementation, you would check the database connection
     healthCheck.services.database = 'connected'
-  } catch {
+  } catch (error) {
+    logger.error('Database health check error', { error: (error as Error).message })
     healthCheck.services.database = 'disconnected'
     healthCheck.status = 'DEGRADED'
   }
@@ -124,12 +125,12 @@ app.get('/health', async (req: express.Request, res: express.Response): Promise<
 })
 
 // Security information endpoint (for monitoring)
-app.get('/api/security/info', (req: express.Request, res: express.Response): void => {
+app.get('/api/security/info', (_req: express.Request, res: express.Response): void => {
   res.json({
     security: {
       rateLimiting: {
-        windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000'),
-        maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100')
+        windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS ?? '900000'),
+        maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS ?? '100')
       },
       encryption: {
         algorithm: 'aes-256-gcm',
@@ -141,7 +142,7 @@ app.get('/api/security/info', (req: express.Request, res: express.Response): voi
       },
       cors: {
         enabled: true,
-        origins: (process.env.CORS_ORIGIN || '').split(',')
+        origins: (process.env.CORS_ORIGIN ?? '').split(',')
       }
     },
     lastUpdated: new Date().toISOString()
@@ -149,7 +150,7 @@ app.get('/api/security/info', (req: express.Request, res: express.Response): voi
 })
 
 // API documentation endpoint
-app.get('/api', (req: express.Request, res: express.Response): void => {
+app.get('/api', (_req: express.Request, res: express.Response): void => {
   res.json({
     name: 'WIRA Platform API',
     version: '3.0.0',
@@ -185,7 +186,7 @@ app.get('/api', (req: express.Request, res: express.Response): void => {
 })
 
 // Root endpoint
-app.get('/', (req: express.Request, res: express.Response): void => {
+app.get('/', (_req: express.Request, res: express.Response): void => {
   res.json({
     message: 'WIRA Platform API - TypeScript Edition',
     version: '3.0.0',
@@ -216,7 +217,7 @@ const gracefulShutdown = (signal: string): void => {
       cacheService.disconnect().then(() => {
         logger.info('Cache connection closed')
         process.exit(0)
-      }).catch((error) => {
+      }).catch((error: Error) => {
         logger.error('Error closing cache connection', { error: error.message })
         process.exit(1)
       })
@@ -233,13 +234,13 @@ const gracefulShutdown = (signal: string): void => {
 }
 
 // Start server
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT ?? 3000
 
 const startServer = (): void => {
   server = app.listen(PORT, () => {
     logger.info('🚀 WIRA Platform TypeScript Server started', {
       port: PORT,
-      environment: process.env.NODE_ENV || 'development',
+      environment: process.env.NODE_ENV ?? 'development',
       nodeVersion: process.version,
       platform: process.platform,
       memory: process.memoryUsage(),
@@ -281,7 +282,7 @@ const startServer = (): void => {
     const addr = server?.address()
     const bind = typeof addr === 'string'
       ? 'pipe ' + addr
-      : 'port ' + (addr as any).port
+      : 'port ' + (addr as { port: number }).port
 
     logger.info(`Listening on ${bind}`)
   })
@@ -301,10 +302,10 @@ process.on('uncaughtException', (error: Error): void => {
 })
 
 // Handle unhandled promise rejections
-process.on('unhandledRejection', (reason: any, promise: Promise<any>): void => {
+process.on('unhandledRejection', (reason: unknown): void => {
   logger.error('Unhandled Rejection', {
-    reason: reason.toString(),
-    promise: promise.toString()
+    reason: String(reason),
+    promise: 'Promise<unknown>'
   })
   process.exit(1)
 })

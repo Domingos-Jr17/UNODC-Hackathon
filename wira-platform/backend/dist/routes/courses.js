@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const database_1 = require("@/database");
-const cache_1 = __importDefault(require("@/services/cache"));
-const security_1 = require("@/middleware/security");
+const database_1 = require("../database");
+const cache_1 = __importDefault(require("../services/cache"));
+const security_1 = require("../middleware/security");
 const router = express_1.default.Router();
 const cacheMiddleware = (ttl = 1800) => {
     return async (req, res, next) => {
@@ -33,7 +33,7 @@ const cacheMiddleware = (ttl = 1800) => {
         }
     };
 };
-router.get('/', cacheMiddleware(1800), async (req, res) => {
+router.get('/', cacheMiddleware(1800), async (_req, res) => {
     try {
         const rows = await (0, database_1.get)('SELECT * FROM courses WHERE is_active = 1');
         const response = {

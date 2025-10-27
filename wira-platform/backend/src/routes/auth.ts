@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
-import { authLimiter, validateLogin, handleValidationErrors, logger } from '@/middleware/security'
-import { get } from '@/database'
-import { LoginRequest, LoginResponse, JWTayload, User } from '@/types'
+import { authLimiter, validateLogin, handleValidationErrors, logger } from '../middleware/security'
+import { get } from '../database'
+import { LoginRequest, LoginResponse, JWTayload, User } from '../types'
 
 const router = express.Router()
 
@@ -39,13 +39,22 @@ router.post('/login', authLimiter, validateLogin, handleValidationErrors, async 
     }
 
     // Generate JWT token with secure secret
+    const jwtSecret = process.env.JWT_SECRET
+    if (!jwtSecret) {
+      logger.error('JWT_SECRET environment variable is not set')
+      res.status(500).json({
+        error: 'Erro interno do servidor'
+      })
+      return
+    }
+
     const token = jwt.sign(
       {
         anonymousCode: row.anonymous_code,
         ngoId: row.ngo_id,
         sessionId: Math.random().toString(36).substring(2, 15)
       } as JWTayload,
-      process.env.JWT_SECRET!,
+      jwtSecret,
       {
         expiresIn: '24h',
         issuer: 'wira-platform',
@@ -100,7 +109,16 @@ router.post('/validate', async (req: Request, res: Response): Promise<void> => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JWTayload
+    const jwtSecret = process.env.JWT_SECRET
+    if (!jwtSecret) {
+      logger.error('JWT_SECRET environment variable is not set')
+      res.status(500).json({
+        error: 'Erro interno do servidor'
+      })
+      return
+    }
+
+    const decoded = jwt.verify(token, jwtSecret) as JWTayload
 
     logger.info('Token validation successful', {
       anonymousCode: decoded.anonymousCode,
@@ -142,8 +160,17 @@ router.post('/refresh', async (req: Request, res: Response): Promise<void> => {
   }
 
   try {
+    const jwtSecret = process.env.JWT_SECRET
+    if (!jwtSecret) {
+      logger.error('JWT_SECRET environment variable is not set')
+      res.status(401).json({
+        error: 'Token inválido'
+      })
+      return
+    }
+
     // Verify current token (even if expired)
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!, {
+    const decoded = jwt.verify(token, jwtSecret, {
       ignoreExpiration: true
     }) as JWTayload
 
@@ -154,7 +181,7 @@ router.post('/refresh', async (req: Request, res: Response): Promise<void> => {
         ngoId: decoded.ngoId,
         sessionId: Math.random().toString(36).substring(2, 15)
       } as JWTayload,
-      process.env.JWT_SECRET!,
+      jwtSecret,
       {
         expiresIn: '24h',
         issuer: 'wira-platform',
@@ -193,7 +220,13 @@ router.delete('/logout', async (req: Request, res: Response): Promise<void> => {
 
   if (token) {
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JWTayload
+      const jwtSecret = process.env.JWT_SECRET
+      if (!jwtSecret) {
+        logger.error('JWT_SECRET environment variable is not set')
+        return
+      }
+
+      const decoded = jwt.verify(token, jwtSecret) as JWTayload
 
       logger.info('User logout', {
         anonymousCode: decoded.anonymousCode,
@@ -240,7 +273,7 @@ router.get('/check/:code', async (req: Request, res: Response): Promise<void> =>
       available: !row,
       code: normalizedCode,
       exists: !!row,
-      createdAt: row?.created_at || null
+      createdAt: row?.created_at ?? null
     })
   } catch (error) {
     logger.error('Database error checking code', {

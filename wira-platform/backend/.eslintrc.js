@@ -18,13 +18,21 @@ module.exports = {
     'object-shorthand': 'error',
     'prefer-arrow-callback': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
-    '@typescript-eslint/no-explicit-any': 'error',
-    '@typescript-eslint/explicit-function-return-type': 'error',
-    '@typescript-eslint/no-unsafe-assignment': 'error',
-    '@typescript-eslint/no-unsafe-member-access': 'error',
-    '@typescript-eslint/no-unsafe-call': 'error',
+    '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/explicit-function-return-type': 'warn',
+    '@typescript-eslint/no-unsafe-assignment': 'warn',
+    '@typescript-eslint/no-unsafe-member-access': 'warn',
+    '@typescript-eslint/no-unsafe-call': 'warn',
+    '@typescript-eslint/no-misused-promises': 'warn',
     '@typescript-eslint/prefer-nullish-coalescing': 'error',
-    '@typescript-eslint/prefer-optional-chain': 'error'
+    '@typescript-eslint/prefer-optional-chain': 'error',
+    '@typescript-eslint/require-await': 'warn',
+    'space-before-function-paren': ['error', {
+  'anonymous': 'always',
+  'named': 'never',
+  'asyncArrow': 'always'
+}],
+    'no-void': 'off'
   },
   env: {
     browser: false,

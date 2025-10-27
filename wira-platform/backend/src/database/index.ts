@@ -2,8 +2,8 @@ import sqlite3 from 'sqlite3'
 import path from 'path'
 import fs from 'fs'
 import winston from 'winston'
-import encryptionService from '@/services/encryption'
-import { User, Course, Progress, Certificate, NGO, AuditLog } from '@/types'
+import encryptionService from '../services/encryption'
+import { User, Course, NGO } from '../types'
 
 // Ensure logs directory exists
 if (!fs.existsSync('logs')) {
@@ -11,7 +11,7 @@ if (!fs.existsSync('logs')) {
 }
 
 // Database file path
-const DB_PATH = process.env.DATABASE_PATH || path.join(__dirname, '../../data/wira.db')
+const DB_PATH = process.env.DATABASE_PATH ?? path.join(__dirname, '../../data/wira.db')
 
 // Ensure data directory exists
 const dataDir = path.dirname(DB_PATH)
@@ -21,7 +21,7 @@ if (!fs.existsSync(dataDir)) {
 
 // Logger setup
 const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || 'info',
+  level: process.env.LOG_LEVEL ?? 'info',
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.errors({ stack: true }),
@@ -66,7 +66,7 @@ db.run('PRAGMA foreign_keys = ON')
 db.run('PRAGMA journal_mode = WAL')
 
 // Initialize database tables with security considerations
-function initializeDatabase (): void {
+function initializeDatabase(): void {
   logger.info('Initializing database schema')
 
   // Create users table with encrypted fields
@@ -229,7 +229,7 @@ function initializeDatabase (): void {
 }
 
 // Create database indexes for better performance
-function createIndexes (): void {
+function createIndexes(): void {
   const indexes: string[] = [
     'CREATE INDEX IF NOT EXISTS idx_users_anonymous_code ON users(anonymous_code)',
     'CREATE INDEX IF NOT EXISTS idx_users_ngo_id ON users(ngo_id)',
@@ -254,7 +254,7 @@ function createIndexes (): void {
 }
 
 // Secure user insertion with encryption
-function insertSecureUser (userData: Partial<User>): Promise<number> {
+function insertSecureUser(userData: Partial<User>): Promise<number> {
   return new Promise((resolve, reject) => {
     try {
       const encryptedData = encryptionService.encryptUserData(userData)
@@ -268,7 +268,7 @@ function insertSecureUser (userData: Partial<User>): Promise<number> {
         encryptedData.phone,
         encryptedData.email,
         encryptedData.ngo_id
-      ], function(err) {
+      ], function (err) {
         if (err) {
           logger.error('Error inserting user', {
             error: err.message,
@@ -294,14 +294,17 @@ function insertSecureUser (userData: Partial<User>): Promise<number> {
 }
 
 // Audit logging function
-function logAudit (
+function logAudit(
   userCode: string | undefined,
   action: string,
   tableName: string | undefined,
   recordId: string | undefined,
-  oldValues: any,
-  newValues: any,
-  req: any
+  oldValues: unknown,
+  newValues: unknown,
+  req: {
+    ip?: string;
+    get?: (header: string) => string | undefined;
+  } | undefined
 ): void {
   const auditData = {
     user_code: userCode,
@@ -325,7 +328,7 @@ function logAudit (
 }
 
 // Database query helpers with proper typing
-function get <T = any> (sql: string, params: any[] = []): Promise<T | null> {
+function get <T = unknown>(sql: string, params: unknown[] = []): Promise<T | null> {
   return new Promise((resolve, reject) => {
     db.get(sql, params, (err, row) => {
       if (err) {
@@ -337,7 +340,7 @@ function get <T = any> (sql: string, params: any[] = []): Promise<T | null> {
   })
 }
 
-function all <T = any> (sql: string, params: any[] = []): Promise<T[]> {
+function all <T = unknown>(sql: string, params: unknown[] = []): Promise<T[]> {
   return new Promise((resolve, reject) => {
     db.all(sql, params, (err, rows) => {
       if (err) {
@@ -349,9 +352,9 @@ function all <T = any> (sql: string, params: any[] = []): Promise<T[]> {
   })
 }
 
-function run (sql: string, params: any[] = []): Promise<sqlite3.RunResult> {
+function run(sql: string, params: unknown[] = []): Promise<sqlite3.RunResult> {
   return new Promise((resolve, reject) => {
-    db.run(sql, params, function(err) {
+    db.run(sql, params, function (err) {
       if (err) {
         reject(err)
       } else {
@@ -362,7 +365,7 @@ function run (sql: string, params: any[] = []): Promise<sqlite3.RunResult> {
 }
 
 // Insert sample data for demonstration (development only)
-function insertSampleData (): void {
+function insertSampleData(): void {
   logger.info('Inserting sample data for development')
 
   // Insert sample NGOs

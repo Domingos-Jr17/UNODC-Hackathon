@@ -1,10 +1,10 @@
 import crypto from 'crypto'
 import winston from 'winston'
-import { User, EncryptedData, EncryptionResult } from '@/types'
+import { User, EncryptedData, EncryptionResult } from '../types'
 
 // Logger setup
 const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || 'info',
+  level: process.env.LOG_LEVEL ?? 'info',
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.errors({ stack: true }),
@@ -24,7 +24,7 @@ class EncryptionService {
   private readonly algorithm = 'aes-256-gcm'
   private readonly key: Buffer
 
-  constructor () {
+  constructor() {
     this.key = this.getEncryptionKey()
 
     if (!this.key) {
@@ -35,7 +35,7 @@ class EncryptionService {
   /**
    * Get encryption key from environment
    */
-  private getEncryptionKey (): Buffer {
+  private getEncryptionKey(): Buffer {
     const key = process.env.ENCRYPTION_KEY
     if (!key) {
       logger.error('ENCRYPTION_KEY not set in environment variables')
@@ -43,7 +43,7 @@ class EncryptionService {
     }
 
     // Ensure key is exactly 32 bytes for AES-256
-    return crypto.scryptSync(key, 'salt', 32)
+    return crypto.scryptSync(key, crypto.randomBytes(16), 32)
   }
 
   /**
@@ -51,7 +51,7 @@ class EncryptionService {
    * @param text - Plain text to encrypt
    * @returns Encrypted data object with iv, tag, and encrypted data
    */
-  encrypt (text: string): EncryptionResult | null {
+  encrypt(text: string): EncryptionResult | null {
     try {
       if (!text) return null
 
@@ -59,7 +59,7 @@ class EncryptionService {
       const iv = crypto.randomBytes(16)
 
       // Create cipher
-      const cipher = crypto.createCipher(this.algorithm, this.key)
+      const cipher = crypto.createCipheriv(this.algorithm, this.key, iv)
       cipher.setAAD(Buffer.from('wira-platform', 'utf8'))
 
       let encrypted = cipher.update(text, 'utf8', 'hex')
@@ -94,14 +94,14 @@ class EncryptionService {
    * @param encryptedData - Object with iv, tag, and encryptedData
    * @returns Decrypted plain text
    */
-  decrypt (encryptedData: EncryptedData): string | null {
+  decrypt(encryptedData: EncryptedData): string | null {
     try {
-      if (!encryptedData || !encryptedData.iv || !encryptedData.tag || !encryptedData.encryptedData) {
+      if (!encryptedData?.iv || !encryptedData.tag || !encryptedData.encryptedData) {
         return null
       }
 
       // Create decipher
-      const decipher = crypto.createDecipher(this.algorithm, this.key)
+      const decipher = crypto.createDecipheriv(this.algorithm, this.key, Buffer.from(encryptedData.iv, 'hex'))
       decipher.setAAD(Buffer.from('wira-platform', 'utf8'))
       decipher.setAuthTag(Buffer.from(encryptedData.tag, 'hex'))
 
@@ -127,7 +127,7 @@ class EncryptionService {
    * @param user - User object with sensitive data
    * @returns User object with encrypted sensitive fields
    */
-  encryptUserData (user: Partial<User>): Partial<User> {
+  encryptUserData(user: Partial<User>): Partial<User> {
     try {
       const encryptedUser = { ...user }
 
@@ -145,9 +145,9 @@ class EncryptionService {
       }
 
       // Remove sensitive fields that shouldn't be stored
-      delete (encryptedUser as any).traffic_history
-      delete (encryptedUser as any).family_contacts
-      delete (encryptedUser as any).exact_address
+      delete (encryptedUser as Partial<User> & { traffic_history?: unknown; family_contacts?: unknown; exact_address?: unknown }).traffic_history
+      delete (encryptedUser as Partial<User> & { traffic_history?: unknown; family_contacts?: unknown; exact_address?: unknown }).family_contacts
+      delete (encryptedUser as Partial<User> & { traffic_history?: unknown; family_contacts?: unknown; exact_address?: unknown }).exact_address
 
       logger.info('User data encrypted', {
         anonymousCode: user.anonymous_code,
@@ -169,15 +169,15 @@ class EncryptionService {
    * @param encryptedUser - User object with encrypted sensitive data
    * @returns User object with decrypted sensitive fields
    */
-  decryptUserData (encryptedUser: Partial<User>): Partial<User> {
+  decryptUserData(encryptedUser: Partial<User>): Partial<User> {
     try {
       const user = { ...encryptedUser }
 
       // Decrypt sensitive fields
       if (encryptedUser.real_name) {
         try {
-          const encrypted = JSON.parse(encryptedUser.real_name)
-          user.real_name = this.decrypt(encrypted) || '[DECRYPT_ERROR]'
+          const encrypted = JSON.parse(encryptedUser.real_name) as EncryptedData
+          user.real_name = this.decrypt(encrypted) ?? '[DECRYPT_ERROR]'
         } catch {
           user.real_name = '[DECRYPT_ERROR]'
         }
@@ -185,8 +185,8 @@ class EncryptionService {
 
       if (encryptedUser.phone) {
         try {
-          const encrypted = JSON.parse(encryptedUser.phone)
-          user.phone = this.decrypt(encrypted) || '[DECRYPT_ERROR]'
+          const encrypted = JSON.parse(encryptedUser.phone) as EncryptedData
+          user.phone = this.decrypt(encrypted) ?? '[DECRYPT_ERROR]'
         } catch {
           user.phone = '[DECRYPT_ERROR]'
         }
@@ -194,8 +194,8 @@ class EncryptionService {
 
       if (encryptedUser.email) {
         try {
-          const encrypted = JSON.parse(encryptedUser.email)
-          user.email = this.decrypt(encrypted) || '[DECRYPT_ERROR]'
+          const encrypted = JSON.parse(encryptedUser.email) as EncryptedData
+          user.email = this.decrypt(encrypted) ?? '[DECRYPT_ERROR]'
         } catch {
           user.email = '[DECRYPT_ERROR]'
         }
@@ -217,7 +217,7 @@ class EncryptionService {
    * @param length - Number of digits
    * @returns Random code
    */
-  generateSecureCode (prefix: string = 'V', length: number = 4): string {
+  generateSecureCode(prefix: string = 'V', length: number = 4): string {
     const digits = crypto.randomInt(0, Math.pow(10, length))
     return `${prefix}${digits.toString().padStart(length, '0')}`
   }
@@ -227,12 +227,12 @@ class EncryptionService {
    * @param identifier - Sensitive identifier
    * @returns Hashed identifier
    */
-  hashIdentifier (identifier: string): string | null {
+  hashIdentifier(identifier: string): string | null {
     if (!identifier) return null
 
     return crypto
       .createHash('sha256')
-      .update(identifier + (process.env.ENCRYPTION_KEY || ''))
+      .update(identifier + (process.env.ENCRYPTION_KEY ?? ''))
       .digest('hex')
       .substring(0, 16)
   }
@@ -241,7 +241,7 @@ class EncryptionService {
    * Validate encryption key strength
    * @returns Boolean indicating if key is secure
    */
-  validateKeyStrength (): boolean {
+  validateKeyStrength(): boolean {
     const key = process.env.ENCRYPTION_KEY
     if (!key) return false
 
@@ -252,7 +252,7 @@ class EncryptionService {
    * Generate a random key for testing purposes
    * @returns Random 32-character key
    */
-  static generateTestKey (): string {
+  static generateTestKey(): string {
     return crypto.randomBytes(32).toString('hex')
   }
 
@@ -261,7 +261,7 @@ class EncryptionService {
    * @param expiresIn - Token expiration in seconds
    * @returns One-time token object
    */
-  generateOneTimeToken (expiresIn: number = 3600): { token: string; expiresAt: Date } {
+  generateOneTimeToken(expiresIn: number = 3600): { token: string; expiresAt: Date } {
     const token = crypto.randomBytes(32).toString('hex')
     const expiresAt = new Date(Date.now() + expiresIn * 1000)
 
@@ -274,7 +274,7 @@ class EncryptionService {
    * @param data2 - Second data to compare
    * @returns Boolean indicating if data matches
    */
-  secureCompare (data1: string, data2: string): boolean {
+  secureCompare(data1: string, data2: string): boolean {
     if (data1.length !== data2.length) {
       return false
     }
@@ -286,7 +286,7 @@ class EncryptionService {
    * Get encryption algorithm information
    * @returns Encryption algorithm details
    */
-  getAlgorithmInfo (): { name: string; keyLength: number; ivLength: number; tagLength: number } {
+  getAlgorithmInfo(): { name: string; keyLength: number; ivLength: number; tagLength: number } {
     return {
       name: this.algorithm,
       keyLength: this.key.length * 8, // in bits

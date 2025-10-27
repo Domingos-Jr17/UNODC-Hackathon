@@ -1,4 +1,4 @@
-import { Course, UserProgress, USSDSession, CacheStats, RateLimitResult } from '@/types';
+import { Course, Progress, USSDSession, CacheStats, RateLimitResult } from '../types';
 declare class CacheService {
     private client;
     private isConnected;
@@ -14,7 +14,7 @@ declare class CacheService {
     hGet<T = any>(key: string, field: string): Promise<T | null>;
     hGetAll(key: string): Promise<Record<string, any>>;
     warmCoursesCache(courses: Course[]): Promise<void>;
-    warmUserProgressCache(userCode: string, progressData: UserProgress[]): Promise<void>;
+    warmUserProgressCache(userCode: string, progressData: Progress[]): Promise<void>;
     invalidateUserCache(userCode: string): Promise<void>;
     invalidateCourseCache(courseId: string): Promise<void>;
     setUSSDSession(sessionId: string, sessionData: USSDSession, ttl?: number): Promise<boolean>;

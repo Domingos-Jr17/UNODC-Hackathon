@@ -185,7 +185,7 @@ export interface USSDSession {
   data: {
     accessCode?: string
     user?: User
-    selectedCourse?: any
+    selectedCourse?: Course
   }
   createdAt: Date
   lastActivity?: Date
@@ -204,8 +204,8 @@ export interface AuthenticatedRequest extends Request {
 export interface CacheStats {
   connected: boolean
   memory?: {
-    used: string
-    peak: string
+    used?: string
+    peak?: string
   }
   keyspace?: {
     [key: string]: {
@@ -233,6 +233,7 @@ export interface HealthCheckResponse {
     api: 'online' | 'offline' | 'error'
     ussd: 'online' | 'offline' | 'error'
     database: 'connected' | 'disconnected' | 'error'
+    cache: 'online' | 'offline' | 'error'
     security: {
       rateLimiting: 'active' | 'inactive'
       encryption: 'enabled' | 'disabled'
@@ -270,13 +271,13 @@ export interface SecurityInfoResponse {
 // Error Types
 export interface APIError extends Error {
   status?: number
-  details?: any
+  details?: unknown
 }
 
 export interface ValidationError {
   field: string
   message: string
-  value: any
+  value: unknown
 }
 
 export interface ErrorResponse {
@@ -293,8 +294,8 @@ export type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 export type RequiredFields<T, K extends keyof T> = T & Required<Pick<T, K>>
 
 // Database Query Types
-export type QueryCallback<T = any> = (err: Error | null, row: T) => void
-export type QueryAllCallback<T = any> = (err: Error | null, rows: T[]) => void
+export type QueryCallback<T = unknown> = (err: Error | null, row: T) => void
+export type QueryAllCallback<T = unknown> = (err: Error | null, rows: T[]) => void
 
 // Environment Variables Types
 export interface EnvConfig {
@@ -323,7 +324,7 @@ export interface EnvConfig {
 
 // Logger Types
 export interface LogContext {
-  [key: string]: any
+  [key: string]: unknown
 }
 
 export interface LogEntry {
@@ -335,5 +336,5 @@ export interface LogEntry {
 
 // Module Types
 export interface ModuleExports {
-  [key: string]: any
+  [key: string]: unknown
 }

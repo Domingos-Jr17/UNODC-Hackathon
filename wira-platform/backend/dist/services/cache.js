@@ -24,25 +24,13 @@ class CacheService {
     async connect() {
         try {
             const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
-            this.client = (0, redis_1.createClient)({
-                url: redisUrl,
-                password: process.env.REDIS_PASSWORD || undefined,
-                retry_strategy: (options) => {
-                    if (options.error && options.error.code === 'ECONNREFUSED') {
-                        logger.error('Redis server connection refused');
-                        return new Error('Redis connection refused');
-                    }
-                    if (options.total_retry_time > 1000 * 60 * 60) {
-                        logger.error('Redis retry time exhausted');
-                        return new Error('Retry time exhausted');
-                    }
-                    if (options.attempt > 10) {
-                        logger.error('Redis max retry attempts reached');
-                        return undefined;
-                    }
-                    return Math.min(options.attempt * 100, 3000);
-                }
-            });
+            const clientOptions = {
+                url: redisUrl
+            };
+            if (process.env.REDIS_PASSWORD) {
+                clientOptions.password = process.env.REDIS_PASSWORD;
+            }
+            this.client = (0, redis_1.createClient)(clientOptions);
             this.client.on('connect', () => {
                 logger.info('Redis client connected');
                 this.isConnected = true;
@@ -72,7 +60,7 @@ class CacheService {
         }
     }
     isReady() {
-        return this.isConnected && this.client && this.client.isOpen;
+        return !!(this.isConnected && this.client && this.client.isOpen);
     }
     async set(key, value, ttl = 3600) {
         try {
@@ -273,11 +261,18 @@ class CacheService {
             }
             const info = await this.client.info('memory');
             const keyspace = await this.client.info('keyspace');
-            return {
-                connected: true,
-                memory: this.parseMemoryInfo(info),
-                keyspace: this.parseKeyspaceInfo(keyspace)
+            const stats = {
+                connected: true
             };
+            const memoryInfo = this.parseMemoryInfo(info);
+            if (memoryInfo) {
+                stats.memory = memoryInfo;
+            }
+            const keyspaceInfo = this.parseKeyspaceInfo(keyspace);
+            if (keyspaceInfo) {
+                stats.keyspace = keyspaceInfo;
+            }
+            return stats;
         }
         catch (error) {
             logger.error('Error getting Redis stats', { error: error.message });
@@ -295,7 +290,7 @@ class CacheService {
                 memory.peak = line.split(':')[1];
             }
         }
-        return memory.used && memory.peak ? memory : undefined;
+        return memory.used && memory.peak ? { used: memory.used, peak: memory.peak } : undefined;
     }
     parseKeyspaceInfo(info) {
         const keyspace = {};

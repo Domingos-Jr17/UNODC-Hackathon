@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const security_1 = require("@/middleware/security");
-const database_1 = require("@/database");
+const security_1 = require("../middleware/security");
+const database_1 = require("../database");
 const router = express_1.default.Router();
 router.post('/login', security_1.authLimiter, security_1.validateLogin, security_1.handleValidationErrors, async (req, res) => {
     const { code } = req.body;

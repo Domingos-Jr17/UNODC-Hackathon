@@ -1,5 +1,5 @@
 import sqlite3 from 'sqlite3';
-import { User } from '@/types';
+import { User } from '../types';
 declare const DB_PATH: string;
 declare const db: sqlite3.Database;
 declare function insertSecureUser(userData: Partial<User>): Promise<number>;

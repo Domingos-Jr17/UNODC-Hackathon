@@ -13,7 +13,7 @@ const sqlite3_1 = __importDefault(require("sqlite3"));
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const winston_1 = __importDefault(require("winston"));
-const encryption_1 = __importDefault(require("@/services/encryption"));
+const encryption_1 = __importDefault(require("../services/encryption"));
 if (!fs_1.default.existsSync('logs')) {
     fs_1.default.mkdirSync('logs');
 }

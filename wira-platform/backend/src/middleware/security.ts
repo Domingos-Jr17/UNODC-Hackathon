@@ -1,13 +1,14 @@
 import rateLimit from 'express-rate-limit'
 import { body, validationResult } from 'express-validator'
+import type { ValidationChain } from 'express-validator'
 import jwt from 'jsonwebtoken'
 import winston from 'winston'
-import { Request, Response, NextFunction } from 'express'
-import { AuthenticatedRequest } from '@/types'
+import express, { Request, Response, NextFunction } from 'express'
+import { AuthenticatedRequest } from '../types'
 
 // Logger configuration
 const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || 'info',
+  level: process.env.LOG_LEVEL ?? 'info',
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.errors({ stack: true }),
@@ -31,7 +32,7 @@ const logger = winston.createLogger({
 })
 
 // Rate limiting middleware factory
-const createRateLimit = (windowMs: number, max: number, message: string) => {
+const createRateLimit = (windowMs: number, max: number, message: string): express.RequestHandler => {
   return rateLimit({
     windowMs,
     max,
@@ -53,7 +54,7 @@ const createRateLimit = (windowMs: number, max: number, message: string) => {
         retryAfter: Math.ceil(windowMs / 1000)
       })
     }
-  })
+  }) as express.RequestHandler
 }
 
 // Different rate limits for different endpoints
@@ -64,8 +65,8 @@ export const authLimiter = createRateLimit(
 )
 
 export const generalLimiter = createRateLimit(
-  parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000'), // 15 minutes
-  parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100'), // 100 requests per 15 minutes
+  parseInt(process.env.RATE_LIMIT_WINDOW_MS ?? '900000'), // 15 minutes
+  parseInt(process.env.RATE_LIMIT_MAX_REQUESTS ?? '100'), // 100 requests per 15 minutes
   'Muitas requisições. Tente novamente mais tarde.'
 )
 
@@ -124,10 +125,10 @@ export const handleValidationErrors = (req: Request, res: Response, next: NextFu
 
     res.status(400).json({
       error: 'Dados inválidos',
-      details: errors.array().map((err: any) => ({
-        field: err.param || err.path,
+      details: errors.array().map((err) => ({
+        field: (err as { param?: string; path?: string }).param ?? (err as { param?: string; path?: string }).path,
         message: err.msg,
-        value: err.value
+        value: (err as { value?: unknown }).value
       }))
     })
     return
@@ -159,7 +160,7 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction): 
 // CORS configuration
 export const corsOptions = {
   origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void): void {
-    const allowedOrigins = (process.env.CORS_ORIGIN || '').split(',')
+    const allowedOrigins = (process.env.CORS_ORIGIN ?? '').split(',')
 
     // Allow requests with no origin (like mobile apps or curl)
     if (!origin) return callback(null, true)
@@ -168,8 +169,7 @@ export const corsOptions = {
       callback(null, true)
     } else {
       logger.warn('CORS violation', {
-        origin,
-        ip: (req as any).ip
+        origin
       })
       callback(new Error('Não permitido por CORS'))
     }
@@ -181,7 +181,7 @@ export const corsOptions = {
 // JWT Authentication middleware
 export const authenticateToken = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
   const authHeader = req.headers.authorization
-  const token = authHeader && authHeader.split(' ')[1]
+  const token = authHeader?.split(' ')[1]
 
   if (!token) {
     res.status(401).json({
@@ -190,7 +190,16 @@ export const authenticateToken = (req: AuthenticatedRequest, res: Response, next
     return
   }
 
-  jwt.verify(token, process.env.JWT_SECRET || '', (err: any, user: any) => {
+  const jwtSecret = process.env.JWT_SECRET
+  if (!jwtSecret) {
+    logger.error('JWT_SECRET environment variable is not set')
+    res.status(500).json({
+      error: 'Erro interno do servidor'
+    })
+    return
+  }
+
+  jwt.verify(token, jwtSecret, (err, user) => {
     if (err) {
       logger.warn('Invalid token attempt', {
         error: err.message,
@@ -204,27 +213,29 @@ export const authenticateToken = (req: AuthenticatedRequest, res: Response, next
       return
     }
 
-    req.user = user
+    req.user = user as { anonymousCode: string; ngoId: string; sessionId: string; iat: number; exp: number }
     next()
   })
 }
 
 // Input sanitization middleware
-export const sanitizeInput = (req: Request, res: Response, next: NextFunction): void => {
+export const sanitizeInput = (req: Request, _res: Response, next: NextFunction): void => {
   // Sanitize query parameters
   if (req.query) {
     Object.keys(req.query).forEach(key => {
-      if (typeof req.query[key] === 'string') {
-        req.query[key] = (req.query[key] as string).trim()
+      const value = req.query[key]
+      if (typeof value === 'string') {
+        req.query[key] = value.trim()
       }
     })
   }
 
   // Sanitize body parameters
-  if (req.body) {
+  if (req.body && typeof req.body === 'object') {
     Object.keys(req.body).forEach(key => {
-      if (typeof req.body[key] === 'string') {
-        req.body[key] = (req.body[key] as string).trim()
+      const value = req.body[key]
+      if (typeof value === 'string') {
+        ; (req.body as Record<string, unknown>)[key] = value.trim()
       }
     })
   }
@@ -233,7 +244,7 @@ export const sanitizeInput = (req: Request, res: Response, next: NextFunction): 
 }
 
 // Security headers middleware
-export const securityHeaders = (req: Request, res: Response, next: NextFunction): void => {
+export const securityHeaders = (_req: Request, res: Response, next: NextFunction): void => {
   // Remove Express-powered-by header
   res.removeHeader('X-Powered-By')
 
@@ -247,14 +258,14 @@ export const securityHeaders = (req: Request, res: Response, next: NextFunction)
 }
 
 // Request ID middleware for tracking
-export const requestId = (req: Request, res: Response, next: NextFunction): void => {
+export const requestId = (req: Request & { id?: string }, res: Response, next: NextFunction): void => {
   req.id = Math.random().toString(36).substring(2, 15)
   res.setHeader('X-Request-ID', req.id)
   next()
 }
 
 // Error logging middleware
-export const errorLogger = (err: Error, req: Request, res: Response, next: NextFunction): void => {
+export const errorLogger = (err: Error, req: Request, _res: Response, next: NextFunction): void => {
   logger.error('Unhandled error', {
     error: err.message,
     stack: err.stack,
@@ -262,7 +273,7 @@ export const errorLogger = (err: Error, req: Request, res: Response, next: NextF
     url: req.originalUrl,
     ip: req.ip,
     userAgent: req.get('User-Agent'),
-    requestId: (req as any).id
+    requestId: (req as Request & { id?: string }).id
   })
 
   next(err)
@@ -270,12 +281,12 @@ export const errorLogger = (err: Error, req: Request, res: Response, next: NextF
 
 // Development error handler
 export const developmentErrorHandler = (err: Error, req: Request, res: Response, next: NextFunction): void => {
-  if (process.env.NODE_ENV === 'development') {
-    res.status(err.status || 500).json({
+  if ((process.env.NODE_ENV ?? 'development') === 'development') {
+    res.status((err as Error & { status?: number }).status ?? 500).json({
       error: 'Erro interno do servidor',
       message: err.message,
       stack: err.stack,
-      requestId: (req as any).id
+      requestId: (req as Request & { id?: string }).id
     })
   } else {
     next(err)
@@ -284,10 +295,10 @@ export const developmentErrorHandler = (err: Error, req: Request, res: Response,
 
 // Production error handler
 export const productionErrorHandler = (err: Error, req: Request, res: Response, next: NextFunction): void => {
-  if (process.env.NODE_ENV === 'production') {
-    res.status(err.status || 500).json({
+  if ((process.env.NODE_ENV ?? 'development') === 'production') {
+    res.status((err as Error & { status?: number }).status ?? 500).json({
       error: 'Erro interno do servidor',
-      requestId: (req as any).id
+      requestId: (req as Request & { id?: string }).id
     })
   } else {
     next(err)
@@ -311,15 +322,16 @@ export const notFoundHandler = (req: Request, res: Response): void => {
 }
 
 // Rate limiting by user (for authenticated routes)
-export const userRateLimit = (max: number, windowMs: number) => {
-  return async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+export const userRateLimit = (): express.RequestHandler => {
+  return (req: AuthenticatedRequest, _res: Response, next: NextFunction): void => {
     if (!req.user) {
-      return next()
+      next()
+      return
     }
 
     // In a real implementation, you would use Redis or a database to track user requests
     // For now, we'll use a simple in-memory approach for demonstration
-    const userKey = `user_rate_limit_${req.user.anonymousCode}_${Math.floor(Date.now() / windowMs)}`
+    // const userKey = `user_rate_limit_${req.user.anonymousCode}_${Math.floor(Date.now() / windowMs)}`
 
     // This would typically be stored in Redis
     // For demo purposes, we'll skip the actual implementation
@@ -329,7 +341,7 @@ export const userRateLimit = (max: number, windowMs: number) => {
 }
 
 // IP-based rate limiting for sensitive operations
-export const ipRateLimit = (max: number, windowMs: number) => {
+export const ipRateLimit = (max: number, windowMs: number): express.RequestHandler => {
   return createRateLimit(windowMs, max, 'Muitas tentativas deste IP. Tente novamente mais tarde.')
 }
 
@@ -339,7 +351,7 @@ export const validateAnonymousCode = (code: string): boolean => {
 }
 
 // Mask sensitive data for logging
-export const maskSensitiveData = (data: any): any => {
+export const maskSensitiveData = (data: Record<string, unknown>): Record<string, unknown> => {
   if (typeof data !== 'object' || data === null) {
     return data
   }
@@ -364,3 +376,4 @@ export const maskSensitiveData = (data: any): any => {
 }
 
 // Export logger for use in other modules
+export { logger }
