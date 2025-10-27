@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 
-type LoginScreenNavigationProp = StackNavigationProp<any, any>;
+type LoginScreenNavigationProp = NavigationProp<any>;
 
 interface LoginScreenProps {
     navigation: LoginScreenNavigationProp;

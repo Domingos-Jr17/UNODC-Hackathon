@@ -1,0 +1,7 @@
+{
+  "checksum": "d41d8cd98f00b204e9800998ecf8427e",
+  "finished_at": "2025-10-27T10:00:00.000Z",
+  "migration_id": "20251027100000_init",
+  "rolled_back": false,
+  "started_at": "2025-10-27T10:00:00.000Z"
+}

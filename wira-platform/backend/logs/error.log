@@ -1,2 +1,4 @@
 {"anonymousCode":"V0042","error":"Falha ao criptografar dados","level":"error","message":"Error inserting sample user","timestamp":"2025-10-26T18:47:46.184Z"}
 {"error":"SQLITE_ERROR: table ngos has no column named license_number","level":"error","message":"Uncaught Exception","stack":"Error: SQLITE_ERROR: table ngos has no column named license_number","timestamp":"2025-10-26T18:47:46.197Z"}
+{"anonymousCode":"V0042","error":"Falha ao criptografar dados","level":"error","message":"Error inserting sample user","timestamp":"2025-10-27T10:49:44.803Z"}
+{"error":"SQLITE_ERROR: table ngos has no column named license_number","level":"error","message":"Uncaught Exception","stack":"Error: SQLITE_ERROR: table ngos has no column named license_number","timestamp":"2025-10-27T10:49:44.814Z"}

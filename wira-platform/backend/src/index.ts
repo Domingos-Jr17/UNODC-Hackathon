@@ -8,8 +8,10 @@ import { Server } from 'http'
 // Import routes and middleware
 import authRoutes from './routes/auth'
 import coursesRoutes from './routes/courses'
-// import progressRoutes from './routes/progress'
-// import certificatesRoutes from './routes/certificates'
+import progressRoutes from './routes/progress'
+import certificatesRoutes from './routes/certificates'
+import ngosRoutes from './routes/ngos'
+import auditLogsRoutes from './routes/audit-logs'
 // import ussdRoutes from './routes/ussd'
 
 // Import middleware
@@ -23,7 +25,8 @@ import {
   errorLogger,
   developmentErrorHandler,
   productionErrorHandler,
-  notFoundHandler
+  notFoundHandler,
+  authenticateToken
 } from './middleware/security'
 
 // Import services
@@ -45,7 +48,7 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       scriptSrc: ["'self'"],
-      imgSrc: ['\'self\'', 'data:', 'https:'],
+      imgSrc: ['\\'self\\'', 'data:', 'https:'],
       connectSrc: ["'self'"],
       fontSrc: ["'self'"],
       objectSrc: ["'none'"],
@@ -62,7 +65,7 @@ app.use(cors(corsOptions))
 
 // Body parsing middleware with size limits
 app.use(express.json({ limit: '10mb' }))
-app.use(express.urlencoded({ extended: true, limit: '10mb' }))
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Request logging
 app.use(requestLogger)
@@ -73,8 +76,10 @@ app.use('/api/', generalLimiter)
 // Routes
 app.use('/api/auth', authRoutes)
 app.use('/api/courses', coursesRoutes)
-// app.use('/api/progress', progressRoutes)
-// app.use('/api/certificates', certificatesRoutes)
+app.use('/api/progress', authenticateToken, progressRoutes)
+app.use('/api/certificates', certificatesRoutes)
+app.use('/api/ngos', authenticateToken, ngosRoutes)
+app.use('/api/audit-logs', authenticateToken, auditLogsRoutes)
 // app.use('/api/ussd', ussdLimiter, ussdRoutes)
 
 // Enhanced health check endpoint
@@ -169,6 +174,32 @@ app.get('/api', (_req: express.Request, res: express.Response): void => {
         'GET /api/courses/:id/modules': 'Listar módulos do curso',
         'GET /api/courses/:id/quiz': 'Obter quiz do curso',
         'POST /api/courses/:id/invalidate-cache': 'Invalidar cache do curso'
+      },
+      progress: {
+        'GET /api/progress/user/:userCode/course/:courseId': 'Obter progresso do usuário em curso',
+        'PUT /api/progress/user/:userCode/course/:courseId': 'Atualizar progresso do usuário em curso'
+      },
+      certificates: {
+        'POST /api/certificates/generate': 'Gerar certificado',
+        'GET /api/certificates/verify/:code': 'Verificar certificado',
+        'POST /api/certificates/revoke/:code': 'Revogar certificado',
+        'GET /api/certificates/user/:anonymousCode/course/:courseId': 'Obter certificado por usuário e curso'
+      },
+      ngos: {
+        'GET /api/ngos': 'Listar ONGs',
+        'GET /api/ngos/:id': 'Obter ONG por ID',
+        'POST /api/ngos': 'Criar ONG',
+        'PUT /api/ngos/:id': 'Atualizar ONG',
+        'PATCH /api/ngos/:id/deactivate': 'Desativar ONG',
+        'DELETE /api/ngos/:id': 'Remover ONG'
+      },
+      'audit-logs': {
+        'GET /api/audit-logs': 'Listar registros de auditoria',
+        'GET /api/audit-logs/user/:userCode': 'Obter registros por usuário',
+        'GET /api/audit-logs/action/:action': 'Obter registros por ação',
+        'GET /api/audit-logs/table/:tableName': 'Obter registros por tabela',
+        'POST /api/audit-logs': 'Criar registro de auditoria',
+        'GET /api/audit-logs/stats': 'Obter estatísticas de auditoria'
       },
       utility: {
         'GET /health': 'Health check detalhado',

@@ -6,13 +6,13 @@ declare class CacheService {
     connect(): Promise<void>;
     disconnect(): Promise<void>;
     isReady(): boolean;
-    set<T = any>(key: string, value: T, ttl?: number): Promise<boolean>;
-    get<T = any>(key: string): Promise<T | null>;
+    set<T = unknown>(key: string, value: T, ttl?: number): Promise<boolean>;
+    get<T = unknown>(key: string): Promise<T | null>;
     del(key: string): Promise<boolean>;
     exists(key: string): Promise<boolean>;
-    hSet(key: string, field: string, value: any, ttl?: number): Promise<boolean>;
-    hGet<T = any>(key: string, field: string): Promise<T | null>;
-    hGetAll(key: string): Promise<Record<string, any>>;
+    hSet(key: string, field: string, value: unknown, ttl?: number): Promise<boolean>;
+    hGet<T = unknown>(key: string, field: string): Promise<T | null>;
+    hGetAll(key: string): Promise<Record<string, unknown>>;
     warmCoursesCache(courses: Course[]): Promise<void>;
     warmUserProgressCache(userCode: string, progressData: Progress[]): Promise<void>;
     invalidateUserCache(userCode: string): Promise<void>;
@@ -33,10 +33,10 @@ declare class CacheService {
     getKeysByPattern(pattern: string): Promise<string[]>;
     mSet(entries: Array<{
         key: string;
-        value: any;
+        value: unknown;
         ttl?: number;
     }>): Promise<boolean>;
-    mGet(keys: string[]): Promise<Array<any | null>>;
+    mGet<T = unknown>(keys: string[]): Promise<Array<T | null>>;
 }
 declare const cacheService: CacheService;
 export default cacheService;
