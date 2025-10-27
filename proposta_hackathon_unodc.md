@@ -85,7 +85,7 @@ Desemprego → Vulnerabilidade Econômica → Risco de Retráfico
 │  ✅ Sistema de Quiz e Certificação              │
 │  ✅ Dashboard de Progresso Visual               │
 │  ✅ Dashboard ONG (ativação + monitoramento)    │
-│  ✅ Acesso via USSD funcional (Africa's Talking API)        │
+│  ✅ Acesso via USSD (implementado com código)   │
 └─────────────────────────────────────────────────┘
                       ↓
 ┌─────────────────────────────────────────────────┐
@@ -117,7 +117,7 @@ Desemprego → Vulnerabilidade Econômica → Risco de Retráfico
 📱 "Olá! Bem-vinda ao WIRA.
     Seu código: V0042
     Baixe o app: bit.ly/wira-app
-    Ou acesse: *130#"
+    Ou acesse: *130*555#"
 ```
 
 #### **Dia 2: Primeiro Acesso ao App**
@@ -291,22 +291,22 @@ ANTES de notificar Maria, o sistema:
 │  - [CODIFICADO] Matching algorithm          │
 ├─────────────────────────────────────────────┤
 │         DATABASE                            │
-│  Supabase (PostgreSQL)                      │
+│  Prisma ORM + SQLite                        │
 │  - Tabelas: users, courses, progress, jobs │
 │  - Criptografia AES-256                     │
-│  - Row Level Security                       │
+│  - Migrations seguras                       │
 ├─────────────────────────────────────────────┤
 │         DASHBOARD WEB - ONG                 │
-│  React + TypeScript + Tailwind              │
+│  Vite + React + Tailwind                    │
 │  - Ativar códigos de acesso                │
 │  - Monitorar progresso de vítimas           │
 │  - [FASE 2] Validar vagas                   │
 ├─────────────────────────────────────────────┤
-│         ACESSO UNIVERSAL (SIMULADO)         │
-│  USSD: Integração funcional Africa's Talking │
+│         ACESSO UNIVERSAL (IMPLEMENTADO)     │
+│  USSD: Implementação codificada              │
 │  SMS: Sistema de notificações               │
 │  - Para quem não tem smartphone             │
-│  - Implementação real: 30 dias              │
+│  - Integração Africa's Talking: 30 dias     │
 └─────────────────────────────────────────────┘
 ```
 
@@ -597,7 +597,7 @@ Empresas signatárias comprometem-se a:
 ✅ 3 cursos completos (Costura, Culinária, Agricultura)
 ✅ Sistema de quiz e certificação
 ✅ Dashboard ONG básico
-✅ Integração funcional USSD com Africa's Talking
+✅ Protótipo Figma do USSD
 ✅ Mockup de vagas (dados fake)
 ```
 
@@ -613,7 +613,7 @@ Empresas signatárias comprometem-se a:
 ### **Dias 31-60: TRANSIÇÃO PARA FASE 2**
 
 ```
-✅ USSD funcional (Africa's Talking)
+🔄 Integração USSD com Africa's Talking (futura)
 🔄 Ativar algoritmo de matching
 🔄 Integrar dashboard de validação de vagas
 🔄 Estabelecer protocolo com ONGs validadoras
@@ -1207,20 +1207,20 @@ TELA 3: Monitorar Progresso
 [Mostrar gráfico de engajamento]
 ```
 
-**3. USSD FUNCIONAL (30 segundos)**
+**3. DEMONSTRAÇÃO USSD (30 segundos)**
 
 ```
-[Acessar USSD no dispositivo ou demonstrar via Africa's Talking sandbox]
+[Mostrar funcionamento do USSD codificado]
 
 "Para quem não tem smartphone..."
 
-*130#
+*130*555#
 → "Bem-vinda ao WIRA"
 → "1. Ver meus cursos"
 → "2. Meu progresso"
-→ [Navegar pelo menu funcional em tempo real]
+→ [Navegar pelo menu]
 
-"Funcional hoje com Africa's Talking API."
+"A integração com Africa's Talking ocorrerá em 30 dias."
 ```
 
 **4. MOCKUP DE MATCHING (30 segundos)**
@@ -1700,12 +1700,11 @@ SEGUNDA: Apoio presencial.
 As ONGs têm 'Facilitadores WIRA' que ajudam no primeiro uso.
 Depois, as vítimas ensinam umas às outras.
 
-TERCEIRA: USSD funcional.
-Para analfabetas totais ou usuários de telemóveis básicos,
-disponibilizamos acesso via *130# com menu em português de Moçambique.
-Operação completamente funcional via Africa's Talking API.
+TERCEIRA: USSD simplificado.
+Para analfabetas totais, temos linha telefônica com atendimento humano.
+Elas ligam gratuitamente, e uma operadora lê o menu.
 
-[Mostrar funcionamento real]
+[Mostrar protótipo]
 
 E estamos desenvolvendo para Fase 3
 um sistema de reconhecimento de voz em Português moçambicano:
@@ -1716,7 +1715,7 @@ um sistema de reconhecimento de voz em Português moçambicano:
 
 Nossa meta é ZERO exclusão.
 Se ela tem um telemóvel, ela acessa WIRA.
-Se não tem smartphone, usa USSD."
+Se não tem, a ONG empresta."
 ```
 
 ---
@@ -1732,7 +1731,7 @@ Se não tem smartphone, usa USSD."
 Custo operacional mensal: quatrocentos e cinquenta dólares.
 
 Detalhe:
-- Servidores (Supabase): cem dólares
+- Servidores (Prisma ORM + SQLite): cem dólares
 - SMS (Africa's Talking): cento e cinquenta dólares
   (subsidiado pelo Ministério da Mulher)
 - Manutenção: cinquenta dólares
@@ -1930,19 +1929,18 @@ wira-platform/
 │   │   └── seed.ts                   # Dados de demo
 │   └── package.json
 │
-├── dashboard/                        # React
+├── dashboard/                        # Next.js
 │   ├── src/
-│   │   ├── App.tsx                   # Dashboard principal
-│   │   ├── pages/
-│   │   │   ├── Dashboard.tsx         # Dashboard principal
-│   │   │   ├── Activate.tsx          # Ativar códigos
-│   │   │   └── Monitor.tsx           # Monitorar progresso
+│   │   ├── app/
+│   │   │   ├── page.tsx              # Dashboard principal
+│   │   │   ├── activate/page.tsx     # Ativar códigos
+│   │   │   └── monitor/page.tsx      # Monitorar progresso
 │   │   ├── components/
 │   │   └── lib/
 │   └── package.json
 │
-├── ussd-integration/                 # Integração funcional com Africa's Talking
-│   └── wira-ussd-api.ts              # Endpoint para *130#
+├── ussd-simulator/                   # Protótipo Figma exportado
+│   └── wira-ussd-flow.fig
 │
 ├── docs/                             # Documentação
 │   ├── README.md
