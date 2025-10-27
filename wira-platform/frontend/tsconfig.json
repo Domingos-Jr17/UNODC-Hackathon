@@ -1,0 +1,33 @@
+// tsconfig.json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Integração com React/JSX */
+    "jsx": "react-jsx", 
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    
+    /* Configurações de Tipagem e Rigor */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    
+    /* Opcional: Permitir arquivos JS e Path Aliases */
+    "allowJs": true, // Permite que você mantenha arquivos .js e .jsx por enquanto
+    "baseUrl": ".", 
+    "paths": {
+      "@/*": ["./src/*"] // Se você quiser usar o alias @/
+    }
+  },
+  "include": ["src/**/*"], // Inclui todos os arquivos dentro da pasta src
+  "exclude": ["node_modules"] 
+}
