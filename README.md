@@ -15,7 +15,7 @@ Plataforma híbrida para capacitação e reintegração econômica de vítimas d
 
 | Membro | Responsabilidades |
 |--------|------------------|
-| **Iza** | Frontend Web + Integração |
+| **Isa** | Frontend Web + Integração |
 | **Domingos** | USSD + Backend + Mobile App |
 | **Esperança** | Integração + Backend |
 
@@ -41,7 +41,7 @@ Plataforma híbrida para capacitação e reintegração econômica de vítimas d
 
 ## 📋 Features por Pessoa
 
-### **Iza**
+### **Isa**
 - Web Dashboard: Login e autenticação
 - Web Dashboard: Registro de códigos
 - Web Dashboard: Monitoramento de progresso
