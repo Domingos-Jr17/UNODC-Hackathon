@@ -81,7 +81,7 @@ npx expo start
 
 ### Web Dashboard
 ```bash
-cd dashboard
+cd frontend
 npm install
 npm run dev
 ```
