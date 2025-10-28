@@ -27,7 +27,7 @@ export default function JobsMockupScreen({ navigation }: JobsMockupScreenProps) 
       ],
       validated: true,
       description: 'Produção de uniformes escolares para rede pública.',
-      logo: require('../../assets/images/factory-icon.png')
+      logo: require('../../assets/icon.png')
     },
     {
       id: 2,
@@ -45,7 +45,7 @@ export default function JobsMockupScreen({ navigation }: JobsMockupScreenProps) 
       ],
       validated: true,
       description: 'Cooperativa focada em empoderamento feminino através da costura.',
-      logo: require('../../assets/images/logo.png')
+      logo: require('../../assets/icon.png')
     },
     {
       id: 3,
@@ -63,7 +63,7 @@ export default function JobsMockupScreen({ navigation }: JobsMockupScreenProps) 
       ],
       validated: true,
       description: 'Auxiliar na linha de produção de uniformes.',
-      logo: require('../../assets/images/factory-icon.png')
+      logo: require('../../assets/icon.png')
     }
   ];
 
