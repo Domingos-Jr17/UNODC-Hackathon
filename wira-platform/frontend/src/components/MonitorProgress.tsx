@@ -1,5 +1,9 @@
 import { useState } from 'react';
-import { Card, CardContent, Typography, Button, Grid, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { TypographyH2, TypographyH4, TypographyP, TypographySmall, TypographyMuted } from '@/components/ui/typography';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { cn } from '@/lib/utils';
 
 export default function MonitorProgress() {
 	// Tipagem do usuário
@@ -37,164 +41,154 @@ export default function MonitorProgress() {
 	const filteredUsers = filter === 'all' ? users : users.filter(user => user.status === filter);
 
 	return (
-		<Box sx={{ p: 3, bgcolor: 'background.default', minHeight: '100vh' }}>
-			<Typography variant="h4" component="h1" gutterBottom>
+		<div className="p-6 bg-background min-h-screen">
+			<TypographyH2 className="mb-6">
 				Monitorar Progresso
-			</Typography>
+			</TypographyH2>
 
-			<Grid container spacing={3} sx={{ mb: 3 }}>
-				<Grid item xs={12} md={3}>
+			<div className="flex flex-col lg:flex-row gap-6 mb-6">
+				<div className="lg:w-1/4">
 					<Card>
 						<CardContent>
-							<Typography variant="h6" gutterBottom>
+							<TypographyH4 className="mb-4">
 								Filtros
-							</Typography>
+							</TypographyH4>
 
-							<Box sx={{ display: 'flex', mb: 2 }}>
+							<div className="flex flex-wrap gap-2">
 								<Button
-									variant={filter === 'all' ? 'contained' : 'outlined'}
+									variant={filter === 'all' ? 'default' : 'outline'}
 									onClick={() => handleFilterChange('all')}
-									sx={{ mr: 1 }}
 								>
 									Todos
 								</Button>
 
 								<Button
-									variant={filter === 'Ativo' ? 'contained' : 'outlined'}
+									variant={filter === 'Ativo' ? 'default' : 'outline'}
 									onClick={() => handleFilterChange('Ativo')}
-									sx={{ mr: 1 }}
 								>
 									Ativos
 								</Button>
 
 								<Button
-									variant={filter === 'Inativo' ? 'contained' : 'outlined'}
+									variant={filter === 'Inativo' ? 'default' : 'outline'}
 									onClick={() => handleFilterChange('Inativo')}
 								>
 									Inativos
 								</Button>
-							</Box>
+							</div>
 						</CardContent>
 					</Card>
-				</Grid>
+				</div>
 
-				<Grid item xs={12} md={9}>
+				<div className="lg:w-3/4">
 					<Card>
 						<CardContent>
-							<Typography variant="h6" gutterBottom>
+							<TypographyH4 className="mb-4">
 								Usuários ({filteredUsers.length})
-							</Typography>
+							</TypographyH4>
 
-							<TableContainer>
-								<Table>
-									<TableHead>
-										<TableRow>
-											<TableCell>Código</TableCell>
-											<TableCell>Nome</TableCell>
-											<TableCell>ONG</TableCell>
-											<TableCell>Status</TableCell>
-											<TableCell>Última Atividade</TableCell>
+							<Table>
+								<TableHeader>
+									<TableRow>
+										<TableHead>Código</TableHead>
+										<TableHead>Nome</TableHead>
+										<TableHead>ONG</TableHead>
+										<TableHead>Status</TableHead>
+										<TableHead>Última Atividade</TableHead>
+									</TableRow>
+								</TableHeader>
+								<TableBody>
+									{filteredUsers.map((user) => (
+										<TableRow
+											key={user.id}
+											className={cn("cursor-pointer", selectedUser?.id === user.id && "bg-muted")}
+											onClick={() => handleUserSelect(user)}
+										>
+											<TableCell>{user.code}</TableCell>
+											<TableCell>{user.name}</TableCell>
+											<TableCell>{user.ngo}</TableCell>
+											<TableCell>
+												<div className="flex items-center gap-2">
+													<div
+														className={cn(
+															"w-3 h-3 rounded-full",
+															user.status === 'Ativo' ? 'bg-green-500' : 'bg-red-500'
+														)}
+													/>
+													<TypographySmall>
+														{user.status}
+													</TypographySmall>
+												</div>
+											</TableCell>
+											<TableCell>{user.lastActivity}</TableCell>
 										</TableRow>
-									</TableHead>
-									<TableBody>
-										{filteredUsers.map((user) => (
-											<TableRow
-												key={user.id}
-												selected={selectedUser?.id === user.id}
-												onClick={() => handleUserSelect(user)}
-												sx={{ cursor: 'pointer' }}
-											>
-												<TableCell>{user.code}</TableCell>
-												<TableCell>{user.name}</TableCell>
-												<TableCell>{user.ngo}</TableCell>
-												<TableCell>
-													<Box sx={{ display: 'flex', alignItems: 'center' }}>
-														<Box
-															sx={{
-																width: 12,
-																height: 12,
-																borderRadius: '50%',
-																backgroundColor: user.status === 'Ativo' ? '#4caf50' : '#f44336',
-																mr: 1
-															}}
-														/>
-														<Typography variant="body2">
-															{user.status}
-														</Typography>
-													</Box>
-												</TableCell>
-												<TableCell>{user.lastActivity}</TableCell>
-											</TableRow>
-										))}
-									</TableBody>
-								</Table>
-							</TableContainer>
+									))}
+								</TableBody>
+							</Table>
 						</CardContent>
 					</Card>
-				</Grid>
-			</Grid>
+				</div>
+			</div>
 
 			
 			{selectedUser && (
-				<Grid container spacing={3} sx={{ mb: 3 }}>
-					<Grid item xs={12} md={9}>
-						<Card>
-							<CardContent>
-								<Typography variant="h6" gutterBottom>
-									Detalhes do Usuário: {selectedUser.code}
-								</Typography>
+				<div className="mb-6">
+					<Card>
+						<CardContent>
+							<TypographyH4 className="mb-4">
+								Detalhes do Usuário: {selectedUser.code}
+							</TypographyH4>
 
-								<Grid container spacing={2}>
-									<Grid item xs={12} md={6}>
-										<Typography variant="body2" color="text.secondary">
-											Nome Completo:
-										</Typography>
-										<Typography variant="body1">
-											[Dados criptografados - apenas ONG autorizada]
-										</Typography>
-									</Grid>
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+								<div>
+									<TypographyMuted className="mb-1">
+										Nome Completo:
+									</TypographyMuted>
+									<TypographyP>
+										[Dados criptografados - apenas ONG autorizada]
+									</TypographyP>
+								</div>
 
-									<Grid item xs={12} md={6}>
-										<Typography variant="body2" color="text.secondary">
-											Cursos em Progresso:
-										</Typography>
-										<Typography variant="body1">
-											Costura Avançada: 3 de 8 módulos (37.5%)
-										</Typography>
-									</Grid>
+								<div>
+									<TypographyMuted className="mb-1">
+										Cursos em Progresso:
+									</TypographyMuted>
+									<TypographyP>
+										Costura Avançada: 3 de 8 módulos (37.5%)
+									</TypographyP>
+								</div>
 
-									<Grid item xs={12} md={6}>
-										<Typography variant="body2" color="text.secondary">
-											Certificados Obtidos:
-										</Typography>
-										<Typography variant="body1">
-											1 certificado (Costura Avançada)
-										</Typography>
-									</Grid>
+								<div>
+									<TypographyMuted className="mb-1">
+										Certificados Obtidos:
+									</TypographyMuted>
+									<TypographyP>
+										1 certificado (Costura Avançada)
+									</TypographyP>
+								</div>
 
-									<Grid item xs={12} md={6}>
-										<Typography variant="body2" color="text.secondary">
-											Tempo Médio de Conclusão:
-										</Typography>
-										<Typography variant="body1">
-											45 dias
-										</Typography>
-									</Grid>
+								<div>
+									<TypographyMuted className="mb-1">
+										Tempo Médio de Conclusão:
+									</TypographyMuted>
+									<TypographyP>
+										45 dias
+									</TypographyP>
+								</div>
 
-									<Grid item xs={12} md={6}>
-										<Typography variant="body2" color="text.secondary">
-											Previsão de Conclusão:
-										</Typography>
-										<Typography variant="body1">
-											15 de Dezembro de 2025
-										</Typography>
-									</Grid>
-								</Grid>
-							</CardContent>
-						</Card>
-					</Grid>
-				</Grid>
+								<div>
+									<TypographyMuted className="mb-1">
+										Previsão de Conclusão:
+									</TypographyMuted>
+									<TypographyP>
+										15 de Dezembro de 2025
+									</TypographyP>
+								</div>
+							</div>
+						</CardContent>
+					</Card>
+				</div>
 			)}
-		</Box>
+		</div>
 	);
 }

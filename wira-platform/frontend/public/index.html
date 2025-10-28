@@ -25,9 +25,17 @@
             </div>
         </header>
 
-        <!-- Status Message -->
+        <!-- Status Message with USSD Demo -->
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-            <strong>Status:</strong> Sistema funcional - Backend e USSD online
+            <div class="flex justify-between items-center">
+                <div>
+                    <strong>Status:</strong> Sistema funcional - Backend e USSD online
+                </div>
+                <button onclick="openUSSDDemo()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Testar USSD</span>
+                </button>
+            </div>
         </div>
 
         <!-- Stats Cards -->
@@ -174,15 +182,24 @@
             </div>
         </div>
 
-        <!-- USSD Status -->
+        <!-- USSD Status & Demo Section -->
         <div class="mt-8 bg-white rounded-lg shadow">
             <div class="p-6 border-b border-gray-200">
-                <h2 class="text-xl font-bold text-gray-800">Status do Sistema USSD</h2>
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-800">Sistema USSD</h2>
+                        <p class="text-gray-600 text-sm">Acesso via telefone básico para sobreviventes</p>
+                    </div>
+                    <button onclick="openUSSDDemo()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2">
+                        <i class="fas fa-play"></i>
+                        <span>Iniciar Simulação</span>
+                    </button>
+                </div>
             </div>
             <div class="p-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <div class="text-center">
-                        <div class="text-3xl font-bold text-green-500">Online</div>
+                        <div class="text-3xl font-bold text-green-500" id="ussdStatus">Online</div>
                         <div class="text-gray-600">Status do Serviço</div>
                     </div>
                     <div class="text-center">
@@ -190,8 +207,25 @@
                         <div class="text-gray-600">Código USSD</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-3xl font-bold text-purple-500">5 min</div>
-                        <div class="text-gray-600">Timeout de Sessão</div>
+                        <div class="text-3xl font-bold text-purple-500" id="activeSessions">0</div>
+                        <div class="text-gray-600">Sessões Ativas</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-orange-500">5 min</div>
+                        <div class="text-gray-600">Timeout</div>
+                    </div>
+                </div>
+
+                <!-- Quick Demo Info -->
+                <div class="mt-6 bg-purple-50 border border-purple-200 rounded-lg p-4">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-info-circle text-purple-600"></i>
+                        <div>
+                            <p class="text-sm text-purple-800">
+                                <strong>Teste agora:</strong> Use o botão "Iniciar Simulação" para experimentar a interface USSD como um usuário com telefone básico.
+                                Códigos de teste disponíveis: V0042 (Maria), V0038 (Ana), V0031 (João).
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -241,16 +275,68 @@
             }
         }
 
+        // Fetch USSD status from backend
+        async function fetchUSSDStatus() {
+            try {
+                const response = await fetch('http://localhost:3000/api/ussd/status');
+                const data = await response.json();
+
+                if (data.service === 'WIRA USSD Service') {
+                    document.getElementById('ussdStatus').textContent = data.status;
+                    document.getElementById('activeSessions').textContent = data.activeSessions;
+
+                    // Update status color based on service state
+                    const statusElement = document.getElementById('ussdStatus');
+                    if (data.status === 'Online') {
+                        statusElement.className = 'text-3xl font-bold text-green-500';
+                    } else {
+                        statusElement.className = 'text-3xl font-bold text-red-500';
+                    }
+                }
+
+                console.log('USSD status loaded:', data);
+            } catch (error) {
+                console.error('Error loading USSD status:', error);
+                document.getElementById('ussdStatus').textContent = 'Erro';
+                document.getElementById('ussdStatus').className = 'text-3xl font-bold text-red-500';
+            }
+        }
+
+        // Open USSD Demo in new window
+        function openUSSDDemo() {
+            // Open USSD demo in a new window with specific size for better simulation experience
+            const demoWindow = window.open(
+                './ussd-demo.html',
+                'wira-ussd-demo',
+                'width=400,height=800,resizable=yes,scrollbars=yes,status=yes'
+            );
+
+            // Focus on the new window
+            if (demoWindow) {
+                demoWindow.focus();
+            } else {
+                // Fallback for popup blockers
+                window.location.href = './ussd-demo.html';
+            }
+        }
+
         // Refresh data
         function refreshData() {
             fetchDashboardData();
+            fetchUSSDStatus();
         }
 
         // Load data on page load
-        document.addEventListener('DOMContentLoaded', fetchDashboardData);
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchDashboardData();
+            fetchUSSDStatus();
+        });
 
         // Auto-refresh every 30 seconds
-        setInterval(fetchDashboardData, 30000);
+        setInterval(function() {
+            fetchDashboardData();
+            fetchUSSDStatus();
+        }, 30000);
     </script>
 </body>
 </html>

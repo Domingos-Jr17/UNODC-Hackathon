@@ -59,18 +59,24 @@
     <div class="container mx-auto px-4 py-8">
         <!-- Header -->
         <header class="text-center mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <button onclick="window.close()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Voltar ao Dashboard</span>
+                </button>
+                <div class="flex justify-center space-x-4">
+                    <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+                        <i class="fas fa-circle text-green-500 text-xs animate-pulse"></i> USSD Online
+                    </span>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                        <i class="fas fa-sms text-blue-500"></i> SMS Ativo
+                    </span>
+                </div>
+            </div>
             <h1 class="text-4xl font-bold text-gray-800 mb-2">
                 <i class="fas fa-mobile-alt text-blue-600"></i> WIRA USSD/SMS
             </h1>
-            <p class="text-gray-600">Demonstração do Sistema de Acessibilidade Digital</p>
-            <div class="mt-4 flex justify-center space-x-4">
-                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-                    <i class="fas fa-circle text-green-500 text-xs animate-pulse"></i> USSD Online
-                </span>
-                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                    <i class="fas fa-sms text-blue-500"></i> SMS Ativo
-                </span>
-            </div>
+            <p class="text-gray-600">Demonstração do Sistema de Acessibilidade Digital - Moçambique</p>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
@@ -402,27 +408,39 @@
                 'ajuda': 'Preciso de ajuda com meu acesso ao WIRA',
                 'progresso': 'Gostaria de saber meu progresso nos cursos',
                 'cursos': 'Quais cursos estão disponíveis para mim?',
-                'senha': 'Esqueci meu código de acesso'
+                'senha': 'Esqueci meu código de acesso',
+                'ong': 'Podem me ajudar a entrar em contacto com a minha ONG?',
+                'certificado': 'Como posso receber o meu certificado de conclusão?'
             };
 
             document.getElementById('smsInput').value = templates[type];
         }
 
-        // Demo Sequence
+        // Demo Sequence - Enhanced for Mozambican context
         async function startDemoSequence() {
             resetUSSD();
 
+            // Add demo message
+            addMessage('system', 'Iniciando demonstração do WIRA USSD para contexto moçambicano...');
+
             const sequences = [
-                { input: '', delay: 1000 },
-                { input: '*123#', delay: 2000 },
-                { input: 'V0042', delay: 3000 },
-                { input: '2', delay: 2000 },
-                { input: '0', delay: 2000 },
-                { input: '4', delay: 1000 }
+                { input: '', delay: 1500, description: 'Aceder ao serviço USSD' },
+                { input: '*123#', delay: 2500, description: 'Discar código USSD' },
+                { input: 'V0042', delay: 3500, description: 'Inserir código de usuário (Maria)' },
+                { input: '1', delay: 2000, description: 'Ver cursos disponíveis' },
+                { input: '2', delay: 2000, description: 'Ver progresso nos cursos' },
+                { input: '3', delay: 2000, description: 'Ver certificados' },
+                { input: '0', delay: 2000, description: 'Voltar ao menu principal' },
+                { input: '4', delay: 1500, description: 'Sair do serviço' }
             ];
 
-            for (const sequence of sequences) {
+            for (let i = 0; i < sequences.length; i++) {
+                const sequence = sequences[i];
                 await new Promise(resolve => setTimeout(resolve, sequence.delay));
+
+                if (sequence.description) {
+                    addMessage('system', `${i + 1}. ${sequence.description}`);
+                }
 
                 if (sequence.input) {
                     ussdInput = sequence.input;
@@ -430,6 +448,8 @@
                     await sendUSSD();
                 }
             }
+
+            addMessage('system', '✅ Demonstração concluída! O WIRA está pronto para ajudar sobreviventes em Moçambique.');
         }
 
         // System Status

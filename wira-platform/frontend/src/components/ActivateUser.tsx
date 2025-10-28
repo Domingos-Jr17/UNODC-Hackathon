@@ -1,7 +1,12 @@
 "use client"
 import React, { useState, useCallback } from 'react';
-import { Card, CardContent, TextField, Button, Typography, Box, CircularProgress } from '@mui/material';
-import { PersonAdd, Check } from '@mui/icons-material';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { TypographyH1, TypographyH4, TypographySmall, TypographyMuted } from '@/components/ui/typography';
+import { Spinner } from '@/components/ui/spinner';
+import { UserPlus, Check } from 'lucide-react';
 import { toast, Toaster } from "sonner";
 
 
@@ -69,150 +74,150 @@ export default function ActivateUser() {
     }, [generatedCode]); 
 
     return (
-        <Box sx={{ bgcolor: '#e6f6ff', minHeight: '100vh' }}>
+        <div className="bg-blue-50 min-h-screen">
             {/* renderizar Toaster para os toasts */}
             <Toaster position="top-right" />
             <>
-            <div className="w-full h-auto flex justify-end p-4 border-black">
-  <div className="flex gap-20">
-    <button
+            <div className="w-full h-auto flex justify-end p-4 border-b border-border">
+  <div className="flex gap-4">
+    <Button
+      variant="destructive"
       onClick={() => (window.location.href = "/login")}
-      className="bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded-md"
     >
       Sair
-    </button>
+    </Button>
 
-    <button
+    <Button
       onClick={() => (window.location.href = "/dashboard")}
-      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
     >
       Voltar ao Dashboard
-    </button>
+    </Button>
   </div>
 </div>
 
-                <Box sx={(theme) => ({ p: 3,  ml:25 })}>
-                    <Typography variant="h4" component="h1" gutterBottom>
+                <div className="p-6 ml-24">
+                    <TypographyH1 className="mb-6">
                         Ativar Novo Usuário
-                    </Typography>
+                    </TypographyH1>
 
-                    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 10}}>
-                        <Box>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                        <div>
                             <Card>
                                 <CardContent>
-                                    <Typography variant="h6" gutterBottom>
+                                    <TypographyH4 className="mb-4">
                                         Informações do Usuário
-                                    </Typography>
+                                    </TypographyH4>
 
-                                    <Box sx={{ mb: 2 }}>
-                                        <TextField
-                                            required
-                                            fullWidth
-                                            label="Nome Completo"
-                                            value={formData.realName}
-                                            onChange={handleInputChange('realName')}
-                                            variant="outlined"
-                                        />
-                                    </Box>
-                                    <Box sx={{ mb: 2 }}>
-                                        <TextField
-                                            required
-                                            fullWidth
-                                            label="Data de Nascimento"
-                                            value={formData.dateOfBirth}
-                                            onChange={handleInputChange('dateOfBirth')}
-                                            variant="outlined"
-                                            placeholder='DD/MM/AA'
-                                        />
-                                       
-                                       
-                                    </Box>
-                            
+                                    <div className="space-y-4">
+                                        <div>
+                                            <Label htmlFor="realName">Nome Completo</Label>
+                                            <Input
+                                                id="realName"
+                                                required
+                                                value={formData.realName}
+                                                onChange={handleInputChange('realName')}
+                                            />
+                                        </div>
 
-                                    <Box sx={{ mb: 2 }}>
-                                        <TextField
-                                            required
-                                            fullWidth
-                                            label="ONG de Acolhimento"
-                                            value={formData.ngoId}
-                                            onChange={handleInputChange('ngoId')}
-                                            variant="outlined"
-                                        />
-                                    </Box>
+                                        <div>
+                                            <Label htmlFor="dateOfBirth">Data de Nascimento</Label>
+                                            <Input
+                                                id="dateOfBirth"
+                                                required
+                                                value={formData.dateOfBirth}
+                                                onChange={handleInputChange('dateOfBirth')}
+                                                placeholder='DD/MM/AA'
+                                            />
+                                        </div>
 
-                                    <Box sx={{ mb: 2 }}>
-                                        <TextField
-                                            fullWidth
-                                            label="Habilidades Iniciais"
-                                            value={formData.initialSkills}
-                                            onChange={handleInputChange('initialSkills')}
-                                            variant="outlined"
-                                            multiline
-                                            rows={3}
-                                        />
-                                    </Box>
+                                        <div>
+                                            <Label htmlFor="ngoId">ONG de Acolhimento</Label>
+                                            <Input
+                                                id="ngoId"
+                                                required
+                                                value={formData.ngoId}
+                                                onChange={handleInputChange('ngoId')}
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <Label htmlFor="initialSkills">Habilidades Iniciais</Label>
+                                            <textarea
+                                                id="initialSkills"
+                                                className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                                value={formData.initialSkills}
+                                                onChange={handleInputChange('initialSkills')}
+                                                rows={3}
+                                            />
+                                        </div>
+                                    </div>
                                 </CardContent>
                             </Card>
-                               
-                        </Box>
 
-                        <Box>
+                        </div>
+
+                        <div>
                             <Card>
                                 <CardContent>
-                                    <Typography variant="h6" gutterBottom>
+                                    <TypographyH4 className="mb-4">
                                         Gerar Código de Acesso
-                                    </Typography>
+                                    </TypographyH4>
 
                                     {/* botão mostra spinner enquanto loading */}
-									<Button
-										fullWidth
-										variant="contained"
-										color="primary"
-										startIcon={loading ? <CircularProgress size={18} color="inherit" /> : <PersonAdd />}
-										onClick={handleGenerateCode}
-										disabled={loading}
-										sx={{ mb: 2 }}
-									>
-										Gerar Código
-									</Button>
+                                    <Button
+                                        className="w-full mb-4"
+                                        onClick={handleGenerateCode}
+                                        disabled={loading}
+                                    >
+                                        {loading ? (
+                                            <>
+                                                <Spinner size="sm" className="mr-2" />
+                                                Gerando Código...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <UserPlus className="w-4 h-4 mr-2" />
+                                                Gerar Código
+                                            </>
+                                        )}
+                                    </Button>
 
                                     {generatedCode && (
-                                 <Box sx={(theme) => ({ p: 2, bgcolor: theme.palette.success.light, borderRadius: 1, mt: 2 })}>
-                                            <Typography variant="body2" sx={(theme) => ({ color: theme.palette.success.contrastText })}>
+                                        <div className="p-4 bg-green-100 border border-green-200 rounded-lg mt-4">
+                                            <TypographySmall className="text-green-800">
                                                 Código Gerado:
-                                            </Typography>
-                                            <Typography variant="h5" sx={(theme) => ({ color: theme.palette.success.dark })}>
+                                            </TypographySmall>
+                                            <TypographyH4 className="text-green-900">
                                                 {generatedCode}
-                                            </Typography>
-                                            <Typography variant="body2" sx={(theme) => ({ color: theme.palette.success.contrastText, mt: 1 })}>
+                                            </TypographyH4>
+                                            <TypographySmall className="text-green-800 mt-2">
                                                 Guarde este código para o usuário. Ele será necessário para acessar o aplicativo.
-                                            </Typography>
-                                        </Box>
+                                            </TypographySmall>
+                                        </div>
                                     )}
-     
+
                                     <Button
-                                        fullWidth
-                                        variant="contained"
-                                        color="secondary"
-                                        startIcon={<Check />}
+                                        className="w-full"
+                                        variant="outline"
                                         onClick={handleSendSMS}
                                         disabled={!generatedCode}
                                     >
+                                        <Check className="w-4 h-4 mr-2" />
                                         Enviar Código por SMS
                                     </Button>
                                 </CardContent>
                             </Card>
-                        </Box>
-                    </Box>
+                        </div>
+                    </div>
 
-                    <Box sx={{ mt: 3, textAlign: 'center' }}>
-                        <Typography variant="body2" sx={(theme) => ({ color: theme.palette.text.secondary })}>
+                    <div className="mt-8 text-center">
+                        <TypographyMuted>
                             O usuário receberá um código anônimo para acessar o aplicativo WIRA.
                             Seu nome real nunca será exposto.
-                        </Typography>
-                    </Box>
-                </Box>
+                        </TypographyMuted>
+                    </div>
+                </div>
         </>
-        </Box>
+        </div>
     );
 }

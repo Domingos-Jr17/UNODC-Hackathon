@@ -373,3 +373,49 @@
 {"error":"\nInvalid `prisma.course.findMany()` invocation in\nE:\\IT-developer\\Hackathons\\hackathos_trafico_de_pessoas\\mvp\\test_hack\\wira-platform\\backend\\src\\models\\Course.ts:9:43\n\n  6 class CourseModel {\n  7   static async findAll(): Promise<CourseInterface[]> {\n  8     try {\n→ 9       const courses = await prisma.course.findMany(\nThe table `main.Course` does not exist in the current database.","level":"error","message":"Database error fetching courses","timestamp":"2025-10-28T13:05:42.456Z"}
 {"error":"\nInvalid `prisma.course.findMany()` invocation in\nE:\\IT-developer\\Hackathons\\hackathos_trafico_de_pessoas\\mvp\\test_hack\\wira-platform\\backend\\src\\models\\Course.ts:9:43\n\n  6 class CourseModel {\n  7   static async findAll(): Promise<CourseInterface[]> {\n  8     try {\n→ 9       const courses = await prisma.course.findMany(\nThe table `main.Course` does not exist in the current database.","level":"error","message":"Database error fetching courses","timestamp":"2025-10-28T13:05:42.457Z"}
 {"error":"EPIPE: broken pipe, write","level":"error","message":"Uncaught Exception","stack":"Error: EPIPE: broken pipe, write\n    at Socket._write (node:internal/net:75:18)\n    at writeOrBuffer (node:internal/streams/writable:570:12)\n    at _write (node:internal/streams/writable:499:10)\n    at Socket.Writable.write (node:internal/streams/writable:508:10)\n    at Console.log (E:\\IT-developer\\Hackathons\\hackathos_trafico_de_pessoas\\mvp\\test_hack\\wira-platform\\backend\\node_modules\\winston\\lib\\winston\\transports\\console.js:87:23)\n    at Console._write (E:\\IT-developer\\Hackathons\\hackathos_trafico_de_pessoas\\mvp\\test_hack\\wira-platform\\backend\\node_modules\\winston-transport\\modern.js:103:17)\n    at doWrite (E:\\IT-developer\\Hackathons\\hackathos_trafico_de_pessoas\\mvp\\test_hack\\wira-platform\\backend\\node_modules\\readable-stream\\lib\\_stream_writable.js:390:139)\n    at writeOrBuffer (E:\\IT-developer\\Hackathons\\hackathos_trafico_de_pessoas\\mvp\\test_hack\\wira-platform\\backend\\node_modules\\readable-stream\\lib\\_stream_writable.js:381:5)\n    at Console.Writable.write (E:\\IT-developer\\Hackathons\\hackathos_trafico_de_pessoas\\mvp\\test_hack\\wira-platform\\backend\\node_modules\\readable-stream\\lib\\_stream_writable.js:302:11)\n    at DerivedLogger.ondata (E:\\IT-developer\\Hackathons\\hackathos_trafico_de_pessoas\\mvp\\test_hack\\wira-platform\\backend\\node_modules\\readable-stream\\lib\\_stream_readable.js:629:20)","timestamp":"2025-10-28T13:16:29.300Z"}
+{"environment":"development","level":"info","memory":{"arrayBuffers":18895,"external":2395755,"heapTotal":99270656,"heapUsed":20226160,"rss":115056640},"message":"🚀 WIRA Platform TypeScript Server started","nodeVersion":"v24.9.0","platform":"win32","port":"3000","timestamp":"2025-10-28T13:35:23.883Z","typescript":"enabled"}
+{"environment":"development","level":"info","message":"Database connected successfully","path":"./data/wira.db","timestamp":"2025-10-28T13:35:23.932Z"}
+{"api":"http://localhost:3000/api","documentation":"http://localhost:3000/api","health":"http://localhost:3000/health","level":"info","message":"📊 Service endpoints available","timestamp":"2025-10-28T13:35:23.888Z"}
+{"level":"info","message":"Listening on port 3000","timestamp":"2025-10-28T13:35:23.889Z"}
+{"level":"info","message":"Initializing database schema","timestamp":"2025-10-28T13:35:23.933Z"}
+{"level":"info","message":"Inserting sample data for development","timestamp":"2025-10-28T13:35:23.933Z"}
+{"anonymousCode":"V0042","level":"info","message":"Sample user inserted","timestamp":"2025-10-28T13:35:23.936Z"}
+{"anonymousCode":"V0038","level":"info","message":"Sample user inserted","timestamp":"2025-10-28T13:35:23.936Z"}
+{"anonymousCode":"V0031","level":"info","message":"Sample user inserted","timestamp":"2025-10-28T13:35:23.937Z"}
+{"level":"info","message":"Sample data insertion completed","timestamp":"2025-10-28T13:35:23.937Z"}
+{"level":"info","message":"Users table created successfully","timestamp":"2025-10-28T13:35:23.942Z"}
+{"level":"info","message":"Courses table created successfully","timestamp":"2025-10-28T13:35:23.944Z"}
+{"level":"info","message":"Certificates table created successfully","timestamp":"2025-10-28T13:35:23.944Z"}
+{"level":"info","message":"Audit logs table created successfully","timestamp":"2025-10-28T13:35:23.944Z"}
+{"level":"info","message":"Progress table created successfully","timestamp":"2025-10-28T13:35:23.944Z"}
+{"level":"info","message":"NGOs table created successfully","timestamp":"2025-10-28T13:35:23.944Z"}
+{"duration":"14ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","statusCode":200,"timestamp":"2025-10-28T13:35:32.515Z","url":"/api/ussd/status","userAgent":"curl/8.12.1"}
+{"ip":"::1","level":"warn","message":"404 Not Found","method":"POST","timestamp":"2025-10-28T13:35:39.153Z","url":"/api/ussd/test","userAgent":"curl/8.12.1"}
+{"duration":"3ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","statusCode":404,"timestamp":"2025-10-28T13:35:39.155Z","url":"/api/ussd/test","userAgent":"curl/8.12.1"}
+{"duration":"1ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","statusCode":200,"timestamp":"2025-10-28T13:35:46.884Z","url":"/health","userAgent":"curl/8.12.1"}
+{"ip":"::1","level":"warn","message":"404 Not Found","method":"POST","timestamp":"2025-10-28T13:36:40.627Z","url":"/api/ussd/test","userAgent":"curl/8.12.1"}
+{"duration":"1ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","statusCode":404,"timestamp":"2025-10-28T13:36:40.628Z","url":"/api/ussd/test","userAgent":"curl/8.12.1"}
+{"duration":"1ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","statusCode":200,"timestamp":"2025-10-28T13:36:48.675Z","url":"/api/ussd","userAgent":"curl/8.12.1"}
+{"environment":"development","level":"info","memory":{"arrayBuffers":18895,"external":2395755,"heapTotal":99008512,"heapUsed":20306520,"rss":115290112},"message":"🚀 WIRA Platform TypeScript Server started","nodeVersion":"v24.9.0","platform":"win32","port":"3000","timestamp":"2025-10-28T13:38:08.956Z","typescript":"enabled"}
+{"environment":"development","level":"info","message":"Database connected successfully","path":"./data/wira.db","timestamp":"2025-10-28T13:38:08.991Z"}
+{"api":"http://localhost:3000/api","documentation":"http://localhost:3000/api","health":"http://localhost:3000/health","level":"info","message":"📊 Service endpoints available","timestamp":"2025-10-28T13:38:08.964Z"}
+{"level":"info","message":"Listening on port 3000","timestamp":"2025-10-28T13:38:08.966Z"}
+{"level":"info","message":"Initializing database schema","timestamp":"2025-10-28T13:38:08.992Z"}
+{"level":"info","message":"Users table created successfully","timestamp":"2025-10-28T13:38:08.999Z"}
+{"level":"info","message":"Progress table created successfully","timestamp":"2025-10-28T13:38:09.000Z"}
+{"level":"info","message":"Certificates table created successfully","timestamp":"2025-10-28T13:38:09.000Z"}
+{"level":"info","message":"Courses table created successfully","timestamp":"2025-10-28T13:38:09.001Z"}
+{"level":"info","message":"NGOs table created successfully","timestamp":"2025-10-28T13:38:09.001Z"}
+{"level":"info","message":"Audit logs table created successfully","timestamp":"2025-10-28T13:38:09.002Z"}
+{"level":"info","message":"Inserting sample data for development","timestamp":"2025-10-28T13:38:09.994Z"}
+{"anonymousCode":"V0042","level":"info","message":"Sample user inserted","timestamp":"2025-10-28T13:38:09.996Z"}
+{"anonymousCode":"V0038","level":"info","message":"Sample user inserted","timestamp":"2025-10-28T13:38:09.997Z"}
+{"anonymousCode":"V0031","level":"info","message":"Sample user inserted","timestamp":"2025-10-28T13:38:09.997Z"}
+{"level":"info","message":"Sample data insertion completed","timestamp":"2025-10-28T13:38:09.998Z"}
+{"level":"info","message":"Inserting sample progress data","timestamp":"2025-10-28T13:38:09.998Z"}
+{"level":"info","message":"Sample progress data inserted","timestamp":"2025-10-28T13:38:09.998Z"}
+{"duration":"12ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","statusCode":200,"timestamp":"2025-10-28T13:38:17.845Z","url":"/api/ussd/test","userAgent":"curl/8.12.1"}
+{"duration":"15ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","statusCode":200,"timestamp":"2025-10-28T13:38:26.128Z","url":"/api/ussd/test","userAgent":"curl/8.12.1"}
+{"duration":"1ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","statusCode":200,"timestamp":"2025-10-28T13:38:33.064Z","url":"/api/ussd/test","userAgent":"curl/8.12.1"}
+{"duration":"1ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","statusCode":200,"timestamp":"2025-10-28T13:38:39.741Z","url":"/api/ussd/test","userAgent":"curl/8.12.1"}
+{"duration":"0ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","statusCode":200,"timestamp":"2025-10-28T13:38:41.946Z","url":"/api/ussd/test","userAgent":"curl/8.12.1"}

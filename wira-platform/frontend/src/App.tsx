@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Container } from '@mui/material';
 
 import Dashboard from './components/Dashboard.tsx';
 import ActivateUser from './components/ActivateUser.tsx';

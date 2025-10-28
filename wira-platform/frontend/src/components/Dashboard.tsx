@@ -1,7 +1,10 @@
 import { useState} from 'react';
-import { Card, CardContent, Typography, Button, Grid, Box} from '@mui/material';
-import { People, School, TrendingUp, Assessment, Work } from '@mui/icons-material';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { TypographyH1, TypographyH2, TypographyH4, TypographySmall, TypographyMuted } from '@/components/ui/typography';
+import { Users, GraduationCap, TrendingUp, BarChart3, Briefcase } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { cn } from '@/lib/utils';
 export default function Dashboard() {
     const [stats] = useState({
         totalUsers: 42,
@@ -45,205 +48,191 @@ export default function Dashboard() {
     };
 
     return (
-        <Box sx={{ p: 3, bgcolor: 'background.default', minHeight: '100vh' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3, p: 2 }}>
-                <Typography variant="h4" component="h1">
+        <div className="p-6 bg-background min-h-screen">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 p-2 gap-4">
+                <TypographyH1>
                     Dashboard WIRA
-                </Typography>
+                </TypographyH1>
 
-                <Button variant="contained" color="primary" onClick={handleGenerateReport}>
-                    Gerar Relatório
-                </Button>
+                <div className="flex flex-wrap gap-2">
+                    <Button onClick={handleGenerateReport}>
+                        Gerar Relatório
+                    </Button>
 
-                <Button variant="outlined" color="secondary" onClick={handleActivateUser}>
-                    Ativar Novo Usuário
-                </Button>
-            </Box>
+                    <Button variant="outline" onClick={handleActivateUser}>
+                        Ativar Novo Usuário
+                    </Button>
+                </div>
+            </div>
 
-            <Grid container spacing={3}>
-                <Grid item xs={12} sm={6} md={3}>
-                    <Card>
-                        <CardContent>
-                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                                <People sx={{ fontSize: 40, color: 'primary.main', mr: 1 }} />
-                                <Typography variant="h5">
-                                    {stats.totalUsers}
-                                </Typography>
-                            </Box>
-                            <Typography variant="body2" color="text.secondary">
-                                Usuários Totais
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+                <Card>
+                    <CardContent>
+                        <div className="flex items-center gap-2 mb-2">
+                            <Users className="w-10 h-10 text-primary mr-1" />
+                            <TypographyH2>
+                                {stats.totalUsers}
+                            </TypographyH2>
+                        </div>
+                        <TypographyMuted>
+                            Usuários Totais
+                        </TypographyMuted>
+                    </CardContent>
+                </Card>
 
-                <Grid item xs={12} sm={6} md={3}>
-                    <Card>
-                        <CardContent>
-                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                                <TrendingUp sx={{ fontSize: 40, color: 'success.main', mr: 1 }} />
-                                <Typography variant="h5">
-                                    {stats.activeUsers}
-                                </Typography>
-                            </Box>
-                            <Typography variant="body2" color="text.secondary">
-                                Usuários Ativos
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
+                <Card>
+                    <CardContent>
+                        <div className="flex items-center gap-2 mb-2">
+                            <TrendingUp className="w-10 h-10 text-green-600 mr-1" />
+                            <TypographyH2>
+                                {stats.activeUsers}
+                            </TypographyH2>
+                        </div>
+                        <TypographyMuted>
+                            Usuários Ativos
+                        </TypographyMuted>
+                    </CardContent>
+                </Card>
 
-                <Grid item xs={12} sm={6} md={3}>
-                    <Card>
-                        <CardContent>
-                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                                <School sx={{ fontSize: 40, color: 'info.main', mr: 1 }} />
-                                <Typography variant="h5">
-                                    {stats.coursesCompleted}
-                                </Typography>
-                            </Box>
-                            <Typography variant="body2" color="text.secondary">
-                                Cursos Concluídos
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
+                <Card>
+                    <CardContent>
+                        <div className="flex items-center gap-2 mb-2">
+                            <GraduationCap className="w-10 h-10 text-blue-600 mr-1" />
+                            <TypographyH2>
+                                {stats.coursesCompleted}
+                            </TypographyH2>
+                        </div>
+                        <TypographyMuted>
+                            Cursos Concluídos
+                        </TypographyMuted>
+                    </CardContent>
+                </Card>
 
-                <Grid item xs={12} sm={6} md={3}>
-                    <Card>
-                        <CardContent>
-                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                                <Assessment sx={{ fontSize: 40, color: 'warning.main', mr: 1 }} />
-                                <Typography variant="h5">
-                                    {stats.certificatesIssued}
-                                </Typography>
-                            </Box>
-                            <Typography variant="body2" color="text.secondary">
-                                Certificados Emitidos
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
+                <Card>
+                    <CardContent>
+                        <div className="flex items-center gap-2 mb-2">
+                            <BarChart3 className="w-10 h-10 text-orange-600 mr-1" />
+                            <TypographyH2>
+                                {stats.certificatesIssued}
+                            </TypographyH2>
+                        </div>
+                        <TypographyMuted>
+                            Certificados Emitidos
+                        </TypographyMuted>
+                    </CardContent>
+                </Card>
 
-                <Grid item xs={12} sm={6} md={3}>
-                    <Card>
-                        <CardContent>
-                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                                <Work sx={{ fontSize: 40, color: 'secondary.main', mr: 1 }} />
-                                <Typography variant="h5">
-                                    {stats.averageCompletionTime} dias
-                                </Typography>
-                            </Box>
-                            <Typography variant="body2" color="text.secondary">
-                                Tempo Médio de Conclusão
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-            </Grid>
+                <Card>
+                    <CardContent>
+                        <div className="flex items-center gap-2 mb-2">
+                            <Briefcase className="w-10 h-10 text-purple-600 mr-1" />
+                            <TypographyH2>
+                                {stats.averageCompletionTime} dias
+                            </TypographyH2>
+                        </div>
+                        <TypographyMuted>
+                            Tempo Médio de Conclusão
+                        </TypographyMuted>
+                    </CardContent>
+                </Card>
+            </div>
 
-            <Grid container spacing={3} sx={{ mt: 3 }}>
-                <Grid item xs={12} md={6}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6" gutterBottom>
-                                Atividade Recente
-                            </Typography>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                <Card>
+                    <CardContent>
+                        <TypographyH4 className="mb-4">
+                            Atividade Recente
+                        </TypographyH4>
 
-                            <Box sx={{ maxHeight: 300, overflow: 'auto' }}>
-                                {recentActivity.map((activity) => (
-                                    <Box key={activity.id} sx={{ display: 'flex', alignItems: 'center', py: 1, borderBottom: '1px solid #eee' }}>
-                                        <Typography variant="body2" sx={{ minWidth: 100 }}>
-                                            {activity.user}
-                                        </Typography>
-                                        <Typography variant="body2" sx={{ ml: 2, color: 'text.secondary' }}>
-                                            {activity.action}
-                                        </Typography>
-                                        <Typography variant="caption" sx={{ ml: 'auto' }}>
-                                            {activity.time}
-                                        </Typography>
-                                    </Box>
-                                ))}
-                            </Box>
-                        </CardContent>
-                    </Card>
-                </Grid>
+                        <div className="max-h-72 overflow-auto">
+                            {recentActivity.map((activity) => (
+                                <div key={activity.id} className="flex items-center py-2 border-b border-border">
+                                    <TypographySmall className="min-w-24">
+                                        {activity.user}
+                                    </TypographySmall>
+                                    <TypographyMuted className="ml-2 flex-1">
+                                        {activity.action}
+                                    </TypographyMuted>
+                                    <TypographySmall className="ml-auto">
+                                        {activity.time}
+                                    </TypographySmall>
+                                </div>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
 
-                <Grid item xs={12} md={6}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6" gutterBottom>
-                                Usuários Ativos
-                            </Typography>
+                <Card>
+                    <CardContent>
+                        <TypographyH4 className="mb-4">
+                            Usuários Ativos
+                        </TypographyH4>
 
-                            <Box sx={{ maxHeight: 300, overflow: 'auto' }}>
-                                {users.filter(user => user.status === 'Ativo').map((user) => (
-                                    <Box key={user.id} sx={{ display: 'flex', alignItems: 'center', py: 1, borderBottom: '1px solid #eee' }}>
-                                        <Typography variant="body2" sx={{ minWidth: 100 }}>
-                                            {user.code}
-                                        </Typography>
-                                        <Typography variant="body2" sx={{ ml: 2, color: 'text.secondary' }}>
-                                            {user.name}
-                                        </Typography>
-                                        <Typography variant="caption" sx={{ ml: 'auto' }}>
-                                            {user.ngo}
-                                        </Typography>
-                                        <Typography variant="caption" sx={{ ml: 'auto' }}>
-                                            {user.lastActivity}
-                                        </Typography>
-                                    </Box>
-                                ))}
-                            </Box>
-                        </CardContent>
-                    </Card>
-                </Grid>
+                        <div className="max-h-72 overflow-auto">
+                            {users.filter(user => user.status === 'Ativo').map((user) => (
+                                <div key={user.id} className="flex items-center py-2 border-b border-border">
+                                    <TypographySmall className="min-w-24">
+                                        {user.code}
+                                    </TypographySmall>
+                                    <TypographyMuted className="ml-2 flex-1">
+                                        {user.name}
+                                    </TypographyMuted>
+                                    <TypographySmall className="ml-auto">
+                                        {user.ngo}
+                                    </TypographySmall>
+                                    <TypographySmall className="ml-4">
+                                        {user.lastActivity}
+                                    </TypographySmall>
+                                </div>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
 
-                <Grid item xs={12} md={6}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6" gutterBottom>
-                                Progresso por Curso
-                            </Typography>
+                <Card>
+                    <CardContent>
+                        <TypographyH4 className="mb-4">
+                            Progresso por Curso
+                        </TypographyH4>
 
-                            <Box sx={{ maxHeight: 300, overflow: 'auto' }}>
-                                {courses.map((course) => (
-                                    <Box key={course.id} sx={{ mb: 2 }}>
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Typography variant="body2" sx={{ minWidth: 150 }}>
-                                                {course.title}
-                                            </Typography>
-                                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                                {course.activeUsers} usuários
-                                            </Typography>
-                                        </Box>
+                        <div className="max-h-72 overflow-auto">
+                            {courses.map((course) => (
+                                <div key={course.id} className="mb-4">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <TypographySmall className="min-w-36">
+                                            {course.title}
+                                        </TypographySmall>
+                                        <TypographyMuted>
+                                            {course.activeUsers} usuários
+                                        </TypographyMuted>
+                                    </div>
 
-                                        <Box sx={{ width: '100%', mt: 1 }}>
-                                            <Typography variant="body2" sx={{ mb: 1 }}>
-                                                Taxa de Conclusão
-                                            </Typography>
-                                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                                <Box sx={{ flex: 1, height: 8, backgroundColor: '#e0e0e0', borderRadius: 4, mr: 1 }}>
-                                                    <Box
-                                                        sx={{
-                                                            height: '100%',
-                                                            backgroundColor: course.completionRate > 70 ? '#4caf50' : '#ff9800',
-                                                            borderRadius: 4
-                                                        }}
-                                                    />
-                                                </Box>
-                                                <Typography variant="body2" sx={{ ml: 1 }}>
-                                                    {course.completionRate}%
-                                                </Typography>
-                                            </Box>
-                                        </Box>
-                                    </Box>
-                                ))}
-                            </Box>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                 </Grid>
-        </Box>
+                                    <div className="w-full">
+                                        <TypographySmall className="mb-2">
+                                            Taxa de Conclusão
+                                        </TypographySmall>
+                                        <div className="flex items-center">
+                                            <div className="flex-1 h-2 bg-muted rounded-full mr-2">
+                                                <div
+                                                    className={cn(
+                                                        "h-full rounded-full",
+                                                        course.completionRate > 70 ? 'bg-green-500' : 'bg-orange-500'
+                                                    )}
+                                                    style={{ width: `${course.completionRate}%` }}
+                                                />
+                                            </div>
+                                            <TypographySmall>
+                                                {course.completionRate}%
+                                            </TypographySmall>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
+                 </div>
+        </div>
         
     );
 }
