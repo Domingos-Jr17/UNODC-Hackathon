@@ -217,15 +217,16 @@ function initializeDatabase(): void {
     }
   })
 
-  // Create indexes for performance
-  createIndexes()
-
-  // Insert sample data (only in development)
-  if (process.env.NODE_ENV === 'development') {
-    insertSampleData()
-  } else {
-    logger.info('Skipping sample data insertion in production')
-  }
+  // Wait a bit for tables to be created, then create indexes
+  setTimeout(() => {
+    createIndexes()
+    // Insert sample data (only in development)
+    if (process.env.NODE_ENV === 'development') {
+      insertSampleData()
+    } else {
+      logger.info('Skipping sample data insertion in production')
+    }
+  }, 1000)
 }
 
 // Create database indexes for better performance
@@ -474,6 +475,76 @@ function insertSampleData(): void {
   })
 
   logger.info('Sample data insertion completed')
+
+  // Insert sample progress data for demonstration
+  insertSampleProgress()
+}
+
+// Insert sample progress data for demonstration
+function insertSampleProgress(): void {
+  logger.info('Inserting sample progress data')
+
+  const sampleProgress = [
+    {
+      user_code: 'V0042',
+      course_id: 'costura',
+      completed_modules: JSON.stringify(['mod1', 'mod2', 'mod3']),
+      percentage: 37,
+      current_module: 4,
+      quiz_attempts: 2,
+      last_quiz_score: 85,
+      last_activity: new Date().toISOString()
+    },
+    {
+      user_code: 'V0042',
+      course_id: 'culinaria',
+      completed_modules: JSON.stringify([]),
+      percentage: 0,
+      current_module: 1,
+      quiz_attempts: 0,
+      last_quiz_score: null,
+      last_activity: new Date().toISOString()
+    },
+    {
+      user_code: 'V0038',
+      course_id: 'culinaria',
+      completed_modules: JSON.stringify(['mod1', 'mod2']),
+      percentage: 25,
+      current_module: 3,
+      quiz_attempts: 1,
+      last_quiz_score: 92,
+      last_activity: new Date().toISOString()
+    },
+    {
+      user_code: 'V0031',
+      course_id: 'agricultura',
+      completed_modules: JSON.stringify(['mod1']),
+      percentage: 15,
+      current_module: 2,
+      quiz_attempts: 1,
+      last_quiz_score: 78,
+      last_activity: new Date().toISOString()
+    }
+  ]
+
+  sampleProgress.forEach(progress => {
+    db.run(`
+      INSERT OR REPLACE INTO progress
+      (user_code, course_id, completed_modules, percentage, current_module, quiz_attempts, last_quiz_score, last_activity)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `, [
+      progress.user_code,
+      progress.course_id,
+      progress.completed_modules,
+      progress.percentage,
+      progress.current_module,
+      progress.quiz_attempts,
+      progress.last_quiz_score,
+      progress.last_activity
+    ])
+  })
+
+  logger.info('Sample progress data inserted')
 }
 
 // Graceful shutdown

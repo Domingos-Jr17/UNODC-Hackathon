@@ -14,7 +14,11 @@
       "Bash(timeout:*)",
       "Bash(npx expo install:*)",
       "Bash(rm:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npx ts-node:*)",
+      "Bash(npm run test:integration:*)",
+      "Bash(taskkill:*)"
     ],
     "deny": [],
     "ask": []

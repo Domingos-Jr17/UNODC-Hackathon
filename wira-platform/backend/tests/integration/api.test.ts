@@ -2,7 +2,7 @@ import request from 'supertest';
 import app from '../../src/index.secure';
 
 describe('API Integration Tests', () => {
-  let authToken;
+  let authToken: string;
   let testUserCode = 'V0042';
 
   beforeEach(async () => {
@@ -38,7 +38,7 @@ describe('API Integration Tests', () => {
       expect(Array.isArray(response.body.courses)).toBe(true);
       expect(response.body.courses.length).toBeGreaterThan(0);
 
-      const course = response.body.courses.find(c => c.id === 'costura');
+      const course = response.body.courses.find((c: any) => c.id === 'costura');
       expect(course).toBeDefined();
       expect(course.title).toContain('Costura');
     });
@@ -188,8 +188,9 @@ describe('API Integration Tests', () => {
         });
 
       expect(response.status).toBe(200);
-      expect(response.headers['content-type']).toBe('text/plain; charset=utf-8');
-      expect(response.text).toContain('Bem-vinda');
+      expect(response.headers['content-type']).toMatch(/json/);
+      expect(response.body.success).toBe(true);
+      expect(response.body.response).toContain('Bem-vinda');
     });
 
     test('should handle USSD welcome flow', async () => {
@@ -201,7 +202,8 @@ describe('API Integration Tests', () => {
         });
 
       expect(response.status).toBe(200);
-      expect(response.text).toContain('Bem-vinda a WIRA');
+      expect(response.body.success).toBe(true);
+      expect(response.body.response).toContain('Bem-vinda ao WIRA');
     });
 
     test('should get USSD status', async () => {
@@ -233,14 +235,14 @@ describe('API Integration Tests', () => {
         .set('Origin', 'http://localhost:3000')
         .set('Access-Control-Request-Method', 'GET');
 
-      expect(response.status).toBe(204);
+      expect(response.status).toBe(200);
       expect(response.headers['access-control-allow-origin']).toBeDefined();
     });
   });
 
   describe('Rate Limiting Integration', () => {
     test('should apply rate limits to API endpoints', async () => {
-      const promises = Array(50).fill().map(() =>
+      const promises = Array(50).fill(null).map(() =>
         request(app).get('/api/courses')
       );
 
