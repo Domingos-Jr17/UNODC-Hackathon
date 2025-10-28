@@ -41,7 +41,7 @@ export default function Login() {
 
 
 return (
-    <Card className="w-full max-w-sm">
+  <Card className="w-full max-w-md">
       <CardHeader>
         <CardTitle className='flex justify-center' >WIRA</CardTitle>
         <CardDescription>
