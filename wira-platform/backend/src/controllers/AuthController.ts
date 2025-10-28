@@ -31,7 +31,6 @@ class AuthController {
         });
         return;
       }
-
       // Check if account is locked
       if (user.locked_until && new Date(user.locked_until) > new Date()) {
         logger.warn('Login attempt on locked account', {

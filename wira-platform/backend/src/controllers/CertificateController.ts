@@ -7,23 +7,12 @@ class CertificateController {
   static async generate(req: Request, res: Response): Promise<void> {
     const { anonymousCode, courseId, score } = req.body as CertificateGenerationRequest;
 
+    
     try {
-      // In a real Prisma implementation, this would be:
-      // const certificate = await prisma.certificate.create({ 
-      //   data: {
-      //     anonymous_code: anonymousCode,
-      //     course_id: courseId,
-      //     score,
-      //     // other fields...
-      //   }
-      // });
-
-
-      // For now, we'll simulate with our ORM-like method
       const certificate = await CertificateModel.create({
         anonymous_code: anonymousCode,
         course_id: courseId,
-        course_title: `Curso ${courseId}`, // Would be looked up from course table
+        course_title: `Curso ${courseId}`, 
         score,
         max_score: 100,
         instructor: 'Centro de Acolhimento Maputo',
@@ -51,12 +40,6 @@ class CertificateController {
     const { code } = req.params;
 
     try {
-      // In a real Prisma implementation, this would be:
-      // const certificate = await prisma.certificate.findUnique({
-      //   where: { verification_code: code }
-      // });
-
-      // For now, we'll simulate with our ORM-like method
       const result = await CertificateModel.verify(code);
 
       if (!result.valid) {
@@ -95,13 +78,6 @@ class CertificateController {
     const { reason } = req.body;
 
     try {
-      // In a real Prisma implementation, this would be:
-      // await prisma.certificate.update({
-      //   where: { verification_code: code },
-      //   data: { revoked: true, revocation_reason: reason }
-      // });
-
-      // For now, we'll simulate with our ORM-like method
       await CertificateModel.revoke(code, reason);
 
       res.json({
@@ -123,17 +99,7 @@ class CertificateController {
     const { anonymousCode, courseId } = req.params;
 
     try {
-      // In a real Prisma implementation, this would be:
-      // const certificate = await prisma.certificate.findUnique({
-      //   where: { 
-      //     anonymous_code_course_id: { 
-      //       anonymous_code: anonymousCode, 
-      //       course_id: courseId 
-      //     } 
-      //   }
-      // });
-
-      // For now, we'll simulate with our ORM-like method
+    
       const certificate = await CertificateModel.findByUserAndCourse(anonymousCode, courseId);
 
       if (!certificate) {
@@ -164,10 +130,6 @@ class CertificateController {
     try {
       const certificateData = req.body;
 
-      // In a real Prisma implementation, this would be:
-      // const certificate = await prisma.certificate.create({ data: certificateData });
-
-      // For now, we'll simulate with our ORM-like method
       const certificate = await CertificateModel.create(certificateData);
 
       res.status(201).json({
@@ -188,13 +150,6 @@ class CertificateController {
     const updateData = req.body;
 
     try {
-      // In a real Prisma implementation, this would be:
-      // const certificate = await prisma.certificate.update({ 
-      //   where: { verification_code: code }, 
-      //   data: updateData 
-      // });
-
-      // For now, we'll simulate with our ORM-like method
       const certificate = await CertificateModel.update({ verification_code: code }, updateData);
 
       if (!certificate) {
@@ -222,10 +177,6 @@ class CertificateController {
     const { code } = req.params;
 
     try {
-      // In a real Prisma implementation, this would be:
-      // await prisma.certificate.delete({ where: { verification_code: code } });
-
-      // For now, we'll simulate with our ORM-like method
       await CertificateModel.delete({ verification_code: code });
 
       res.json({

@@ -11,19 +11,6 @@ class AuditLogController {
       const limitNum = parseInt(limit as string);
       const skip = (pageNum - 1) * limitNum;
 
-      // In a real Prisma implementation, this would be:
-      // const auditLogs = await prisma.auditLog.findMany({
-      //   where: {
-      //     user_code: userCode as string | undefined,
-      //     action: action as string | undefined,
-      //     table_name: tableName as string | undefined
-      //   },
-      //   orderBy: { timestamp: 'desc' },
-      //   take: limitNum,
-      //   skip
-      // });
-
-      // For now, we'll simulate with our ORM-like method
       const whereClause: any = {};
       if (userCode) whereClause.user_code = userCode;
       if (action) whereClause.action = action;
@@ -59,14 +46,7 @@ class AuditLogController {
     const limitNum = parseInt(limit as string);
 
     try {
-      // In a real Prisma implementation, this would be:
-      // const auditLogs = await prisma.auditLog.findMany({
-      //   where: { user_code: userCode },
-      //   orderBy: { timestamp: 'desc' },
-      //   take: limitNum
-      // });
 
-      // For now, we'll simulate with our ORM-like method
       const auditLogs = await AuditLogModel.findByUser(userCode, limitNum);
 
       res.json({
@@ -88,14 +68,7 @@ class AuditLogController {
     const limitNum = parseInt(limit as string);
 
     try {
-      // In a real Prisma implementation, this would be:
-      // const auditLogs = await prisma.auditLog.findMany({
-      //   where: { action },
-      //   orderBy: { timestamp: 'desc' },
-      //   take: limitNum
-      // });
-
-      // For now, we'll simulate with our ORM-like method
+      
       const auditLogs = await AuditLogModel.findByAction(action, limitNum);
 
       res.json({
@@ -117,14 +90,7 @@ class AuditLogController {
     const limitNum = parseInt(limit as string);
 
     try {
-      // In a real Prisma implementation, this would be:
-      // const auditLogs = await prisma.auditLog.findMany({
-      //   where: { table_name: tableName },
-      //   orderBy: { timestamp: 'desc' },
-      //   take: limitNum
-      // });
-
-      // For now, we'll simulate with our ORM-like method
+      
       const auditLogs = await AuditLogModel.findByTable(tableName, limitNum);
 
       res.json({
@@ -143,11 +109,6 @@ class AuditLogController {
   static async create(req: Request, res: Response): Promise<void> {
     try {
       const auditLogData = req.body;
-
-      // In a real Prisma implementation, this would be:
-      // const auditLog = await prisma.auditLog.create({ data: auditLogData });
-
-      // For now, we'll simulate with our ORM-like method
       const auditLog = await AuditLogModel.createWithPrisma(auditLogData);
 
       res.status(201).json({
@@ -165,27 +126,13 @@ class AuditLogController {
 
   static async getStats(_req: Request, res: Response): Promise<void> {
     try {
-      // In a real Prisma implementation, this would be:
-      // const totalLogs = await prisma.auditLog.count();
-      // const userCounts = await prisma.auditLog.groupBy({
-      //   by: ['user_code'],
-      //   _count: true
-      // });
-      // const actionCounts = await prisma.auditLog.groupBy({
-      //   by: ['action'],
-      //   _count: true
-      // });
-
-      // For now, we'll simulate with our ORM-like method
+     
       const totalLogs = await AuditLogModel.count();
-      // Note: In a real implementation, we would implement grouping here
 
       res.json({
         success: true,
         stats: {
           totalLogs,
-          // userCounts,
-          // actionCounts
         }
       });
     } catch (error) {
