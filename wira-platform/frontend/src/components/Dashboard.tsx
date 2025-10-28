@@ -1,42 +1,9 @@
-import React, { useState } from 'react';
-import { Card, CardContent, Typography, Button, Grid, Box } from '@mui/material';
+import { useState} from 'react';
+import { Card, CardContent, Typography, Button, Grid, Box} from '@mui/material';
 import { People, School, TrendingUp, Assessment, Work } from '@mui/icons-material';
-
-interface Stats {
-    totalUsers: number;
-    activeUsers: number;
-    coursesCompleted: number;
-    certificatesIssued: number;
-    averageCompletionTime: number;
-}
-
-interface Activity {
-    id: number;
-    user: string;
-    action: string;
-    time: string;
-}
-
-interface User {
-    id: number;
-    code: string;
-    name: string;
-    ngo: string;
-    status: string;
-    lastActivity: string;
-    coursesCompleted: number;
-    certificatesEarned: number;
-}
-
-interface Course {
-    id: string;
-    title: string;
-    activeUsers: number;
-    completionRate: number;
-}
-
-const Dashboard: React.FC = () => {
-    const [stats] = useState<Stats>({
+import { useNavigate } from 'react-router-dom';
+export default function Dashboard() {
+    const [stats] = useState({
         totalUsers: 42,
         activeUsers: 38,
         coursesCompleted: 15,
@@ -44,28 +11,32 @@ const Dashboard: React.FC = () => {
         averageCompletionTime: 45 // days
     });
 
-    const [recentActivity] = useState<Activity[]>([
+    const [recentActivity] = useState([
         { id: 1, user: 'V0042', action: 'Completou módulo Costura', time: '2 horas atrás' },
         { id: 2, user: 'V0038', action: 'Iniciou curso Culinária', time: '5 horas atrás' },
         { id: 3, user: 'V0031', action: 'Gerou certificado', time: '1 dia atrás' },
         { id: 4, user: 'V0042', action: 'Baixou vídeo offline', time: '3 horas atrás' }
     ]);
 
-    const [users] = useState<User[]>([
+    const [users] = useState([
         { id: 1, code: 'V0042', name: 'Maria Silva', ngo: 'ONG-001', status: 'Ativo', lastActivity: '2 horas atrás', coursesCompleted: 1, certificatesEarned: 1 },
         { id: 2, code: 'V0038', name: 'Ana Machel', ngo: 'ONG-001', status: 'Ativo', lastActivity: '5 horas atrás', coursesCompleted: 0, certificatesEarned: 0 },
         { id: 3, code: 'V0031', name: 'João Sitoe', ngo: 'ONG-002', status: 'Ativo', lastActivity: '1 dia atrás', coursesCompleted: 0, certificatesEarned: 0 }
     ]);
 
-    const [courses] = useState<Course[]>([
+    const [courses] = useState([
         { id: 'costura', title: 'Costura Avançada', activeUsers: 25, completionRate: 75 },
         { id: 'culinaria', title: 'Culinária Profissional', activeUsers: 18, completionRate: 60 },
         { id: 'agricultura', title: 'Agricultura Sustentável', activeUsers: 8, completionRate: 40 }
     ]);
+     const navigate = useNavigate(); 
 
     const handleActivateUser = () => {
-        // Simular ativação de novo usuário
-        alert('Função de ativação de novo usuário - em desenvolvimento');
+         
+
+    navigate("/active")
+        
+        
     };
 
     const handleGenerateReport = () => {
@@ -271,9 +242,8 @@ const Dashboard: React.FC = () => {
                         </CardContent>
                     </Card>
                 </Grid>
-            </Grid>
+                 </Grid>
         </Box>
+        
     );
-};
-
-export default Dashboard;
+}

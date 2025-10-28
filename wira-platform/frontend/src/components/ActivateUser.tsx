@@ -156,7 +156,7 @@ export default function ActivateUser() {
 
             <Box sx={{ mt: 3, textAlign: 'center' }}>
                 <Typography variant="body2" sx={(theme) => ({ color: theme.palette.text.secondary })}>
-                    O usuário receberá um código anônimo (ex: V0042) para acessar o aplicativo WIRA.
+                    O usuário receberá um código anônimo para acessar o aplicativo WIRA.
                     Seu nome real nunca será exposto.
                 </Typography>
             </Box>

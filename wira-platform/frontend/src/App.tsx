@@ -37,6 +37,7 @@ const theme = createTheme({
 
 function App() {
   return (
+
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
@@ -44,12 +45,13 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/activate" element={<ActivateUser />} />
+            <Route path="/active" element={<ActivateUser />} />
             <Route path="/monitor" element={<MonitorProgress />} />
           </Routes>
         </Container>
       </Router>
     </ThemeProvider>
+  
   );
 }
 
