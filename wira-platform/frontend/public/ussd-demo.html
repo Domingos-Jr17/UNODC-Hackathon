@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WIRA USSD/SMS Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .animate-pulse-slow {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .phone-screen {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .ussd-text {
+            font-family: 'Courier New', monospace;
+            background: #1a202c;
+            color: #68d391;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            min-height: 200px;
+        }
+        .typing-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 20px;
+            background: #68d391;
+            margin-left: 2px;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        .message-bubble {
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+        .message-sent {
+            background: #3182ce;
+            color: white;
+            border-radius: 1rem 1rem 0.25rem 1rem;
+        }
+        .message-received {
+            background: #e2e8f0;
+            color: #1a202c;
+            border-radius: 1rem 1rem 1rem 0.25rem;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-mobile-alt text-blue-600"></i> WIRA USSD/SMS
+            </h1>
+            <p class="text-gray-600">Demonstração do Sistema de Acessibilidade Digital</p>
+            <div class="mt-4 flex justify-center space-x-4">
+                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+                    <i class="fas fa-circle text-green-500 text-xs animate-pulse"></i> USSD Online
+                </span>
+                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                    <i class="fas fa-sms text-blue-500"></i> SMS Ativo
+                </span>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+            <!-- USSD Phone Simulator -->
+            <div class="bg-white rounded-2xl shadow-xl p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-phone text-blue-600"></i> Simulador USSD
+                </h2>
+
+                <div class="phone-screen p-8 text-white">
+                    <!-- Phone Status Bar -->
+                    <div class="flex justify-between items-center mb-4 text-sm">
+                        <span><i class="fas fa-signal"></i> mCel</span>
+                        <span><i class="fas fa-wifi"></i></span>
+                        <span><i class="fas fa-battery-full"></i></span>
+                        <span id="phoneTime">12:00</span>
+                    </div>
+
+                    <!-- USSD Screen -->
+                    <div class="bg-black rounded-lg p-4 mb-4">
+                        <div class="text-green-400 text-xs mb-2">USSD</div>
+                        <div id="ussdScreen" class="ussd-text text-sm">
+                            <div class="animate-pulse-slow">Aguardando comando USSD...</div>
+                            <div class="typing-indicator"></div>
+                        </div>
+                    </div>
+
+                    <!-- Phone Dialer -->
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <div class="grid grid-cols-3 gap-2 mb-3">
+                            <button onclick="dialUSSD('*')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">*</button>
+                            <button onclick="dialUSSD('#')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">#</button>
+                            <button onclick="sendUSSD()" class="bg-green-600 hover:bg-green-700 text-white p-3 rounded-lg">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="dialUSSD('1')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">1</button>
+                            <button onclick="dialUSSD('2')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">2</button>
+                            <button onclick="dialUSSD('3')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">3</button>
+                            <button onclick="dialUSSD('4')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">4</button>
+                            <button onclick="dialUSSD('5')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">5</button>
+                            <button onclick="dialUSSD('6')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">6</button>
+                            <button onclick="dialUSSD('7')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">7</button>
+                            <button onclick="dialUSSD('8')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">8</button>
+                            <button onclick="dialUSSD('9')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">9</button>
+                            <button onclick="dialUSSD('V')" class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg font-bold">V</button>
+                            <button onclick="dialUSSD('0')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">0</button>
+                            <button onclick="clearUSSD()" class="bg-red-600 hover:bg-red-700 text-white p-3 rounded-lg">
+                                <i class="fas fa-backspace"></i>
+                            </button>
+                        </div>
+                        <div class="mt-3 bg-gray-900 rounded p-2 text-center">
+                            <div id="ussdInput" class="text-green-400 font-mono text-lg min-h-[30px]"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="mt-4 flex justify-between">
+                    <button onclick="startDemoSequence()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                        <i class="fas fa-play"></i> Demo Automática
+                    </button>
+                    <button onclick="resetUSSD()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">
+                        <i class="fas fa-redo"></i> Reiniciar
+                    </button>
+                </div>
+            </div>
+
+            <!-- SMS Chat Simulator -->
+            <div class="bg-white rounded-2xl shadow-xl p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-sms text-green-600"></i> Simulador SMS
+                </h2>
+
+                <!-- SMS Chat -->
+                <div class="border-2 border-gray-200 rounded-lg h-96 overflow-y-auto p-4 mb-4 bg-gray-50" id="smsChat">
+                    <div class="text-center text-gray-500 text-sm">
+                        <i class="fas fa-comments text-4xl mb-2"></i>
+                        <p>SMS aparecem aqui...</p>
+                    </div>
+                </div>
+
+                <!-- SMS Input -->
+                <div class="bg-gray-100 rounded-lg p-4">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-mobile-alt text-gray-600 mr-2"></i>
+                        <span class="text-sm text-gray-600">Para: +258 84 123 4567</span>
+                    </div>
+                    <div class="flex space-x-2">
+                        <input
+                            type="text"
+                            id="smsInput"
+                            placeholder="Digite mensagem SMS..."
+                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            onkeypress="if(event.key === 'Enter') sendSMS()"
+                        >
+                        <button
+                            onclick="sendSMS()"
+                            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
+                        >
+                            <i class="fas fa-paper-plane"></i> Enviar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SMS Templates -->
+                <div class="mt-4">
+                    <p class="text-sm text-gray-600 mb-2">Templates Rápidos:</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="useSMSTemplate('ajuda')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded text-sm">
+                            <i class="fas fa-question-circle"></i> Ajuda
+                        </button>
+                        <button onclick="useSMSTemplate('progresso')" class="bg-green-100 hover:bg-green-200 text-green-800 px-3 py-2 rounded text-sm">
+                            <i class="fas fa-chart-line"></i> Progresso
+                        </button>
+                        <button onclick="useSMSTemplate('cursos')" class="bg-purple-100 hover:bg-purple-200 text-purple-800 px-3 py-2 rounded text-sm">
+                            <i class="fas fa-book"></i> Cursos
+                        </button>
+                        <button onclick="useSMSTemplate('senha')" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-2 rounded text-sm">
+                            <i class="fas fa-key"></i> Senha
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Status -->
+        <div class="mt-8 max-w-7xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-xl p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-server text-purple-600"></i> Status do Sistema
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="systemStatus">
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">USSD</span>
+                            <span id="ussdStatus" class="text-sm">Verificando...</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">SMS</span>
+                            <span id="smsStatus" class="text-sm">Verificando...</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">Sessões</span>
+                            <span id="sessionsStatus" class="text-sm">0</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">SMS Enviados</span>
+                            <span id="smsCount" class="text-sm">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="mt-8 max-w-7xl mx-auto">
+            <div class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6">
+                <h3 class="text-lg font-bold text-blue-800 mb-3">
+                    <i class="fas fa-info-circle"></i> Como Funciona
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-blue-800">
+                    <div>
+                        <h4 class="font-semibold mb-2">📱 USSD (*123#)</h4>
+                        <ul class="space-y-1">
+                            <li>• Disque *123# em qualquer telefone</li>
+                            <li>• Digite seu código V#### (ex: V0042)</li>
+                            <li>• Navegue pelos menus numéricos</li>
+                            <li>• Funciona sem internet</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-2">📧 SMS Automático</h4>
+                        <ul class="space-y-1">
+                            <li>• Confirmação de acesso via SMS</li>
+                            <li>• Lembretes de progresso</li>
+                            <li>• Notificações de certificados</li>
+                            <li>• Suporte via mensagem</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let ussdInput = '';
+        let sessionId = null;
+        let phoneNumber = '+258840000000';
+
+        // Update phone time
+        function updatePhoneTime() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('pt-MZ', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('phoneTime').textContent = time;
+        }
+        setInterval(updatePhoneTime, 1000);
+        updatePhoneTime();
+
+        // USSD Functions
+        function dialUSSD(digit) {
+            ussdInput += digit;
+            document.getElementById('ussdInput').textContent = ussdInput;
+        }
+
+        function clearUSSD() {
+            if (ussdInput.length > 0) {
+                ussdInput = ussdInput.slice(0, -1);
+                document.getElementById('ussdInput').textContent = ussdInput;
+            }
+        }
+
+        function resetUSSD() {
+            ussdInput = '';
+            sessionId = null;
+            document.getElementById('ussdInput').textContent = '';
+            document.getElementById('ussdScreen').innerHTML = '<div class="animate-pulse-slow">Aguardando comando USSD...</div><div class="typing-indicator"></div>';
+        }
+
+        async function sendUSSD() {
+            if (!ussdInput.trim()) return;
+
+            const input = ussdInput;
+            document.getElementById('ussdScreen').innerHTML = `<div class="text-yellow-400">Enviando: ${input}</div><div class="typing-indicator"></div>`;
+
+            try {
+                const response = await fetch('http://localhost:3000/api/ussd/test', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        phoneNumber: phoneNumber,
+                        text: input
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    sessionId = data.sessionId;
+                    document.getElementById('ussdScreen').innerHTML = data.response.replace(/CON /g, '').replace(/END /g, '<div class="text-blue-400 mt-2">[FIM]</div>');
+
+                    // If END response, clear input after delay
+                    if (data.response.startsWith('END')) {
+                        setTimeout(() => {
+                            ussdInput = '';
+                            document.getElementById('ussdInput').textContent = '';
+                        }, 2000);
+                    }
+                } else {
+                    document.getElementById('ussdScreen').innerHTML = '<div class="text-red-400">Erro: ' + (data.error || 'Falha na comunicação') + '</div>';
+                }
+            } catch (error) {
+                document.getElementById('ussdScreen').innerHTML = '<div class="text-red-400">Erro de conexão com o servidor</div>';
+            }
+        }
+
+        // SMS Functions
+        async function sendSMS() {
+            const input = document.getElementById('smsInput');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            addSMSMessage(message, 'sent');
+            input.value = '';
+
+            try {
+                const response = await fetch('http://localhost:3000/api/sms/send', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        phoneNumber: phoneNumber,
+                        message: message
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    addSMSMessage(`✅ SMS enviado (ID: ${data.sms.id})`, 'received');
+                    updateSMSCount();
+                } else {
+                    addSMSMessage('❌ Falha ao enviar SMS', 'received');
+                }
+            } catch (error) {
+                addSMSMessage('❌ Erro de conexão', 'received');
+            }
+        }
+
+        function addSMSMessage(message, type) {
+            const chat = document.getElementById('smsChat');
+
+            // Remove initial message if it exists
+            if (chat.querySelector('.text-center')) {
+                chat.innerHTML = '';
+            }
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `mb-3 ${type === 'sent' ? 'text-right' : 'text-left'}`;
+
+            const bubble = document.createElement('div');
+            bubble.className = `message-bubble ${type === 'sent' ? 'message-sent' : 'message-received'} px-4 py-2 inline-block`;
+            bubble.textContent = message;
+
+            const time = document.createElement('div');
+            time.className = `text-xs text-gray-500 mt-1 ${type === 'sent' ? 'text-right' : 'text-left'}`;
+            time.textContent = new Date().toLocaleTimeString('pt-MZ', { hour: '2-digit', minute: '2-digit' });
+
+            messageDiv.appendChild(bubble);
+            messageDiv.appendChild(time);
+            chat.appendChild(messageDiv);
+
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function useSMSTemplate(type) {
+            const templates = {
+                'ajuda': 'Preciso de ajuda com meu acesso ao WIRA',
+                'progresso': 'Gostaria de saber meu progresso nos cursos',
+                'cursos': 'Quais cursos estão disponíveis para mim?',
+                'senha': 'Esqueci meu código de acesso'
+            };
+
+            document.getElementById('smsInput').value = templates[type];
+        }
+
+        // Demo Sequence
+        async function startDemoSequence() {
+            resetUSSD();
+
+            const sequences = [
+                { input: '', delay: 1000 },
+                { input: '*123#', delay: 2000 },
+                { input: 'V0042', delay: 3000 },
+                { input: '2', delay: 2000 },
+                { input: '0', delay: 2000 },
+                { input: '4', delay: 1000 }
+            ];
+
+            for (const sequence of sequences) {
+                await new Promise(resolve => setTimeout(resolve, sequence.delay));
+
+                if (sequence.input) {
+                    ussdInput = sequence.input;
+                    document.getElementById('ussdInput').textContent = ussdInput;
+                    await sendUSSD();
+                }
+            }
+        }
+
+        // System Status
+        async function updateSystemStatus() {
+            try {
+                // Check USSD Status
+                const ussdResponse = await fetch('http://localhost:3000/api/ussd/status');
+                const ussdData = await ussdResponse.json();
+
+                document.getElementById('ussdStatus').innerHTML = `<span class="text-green-600 font-semibold">Online</span>`;
+                document.getElementById('sessionsStatus').innerHTML = `<span class="text-blue-600 font-semibold">${ussdData.activeSessions || 0}</span>`;
+
+                // Check SMS Status
+                const smsResponse = await fetch('http://localhost:3000/api/sms/status');
+                const smsData = await smsResponse.json();
+
+                document.getElementById('smsStatus').innerHTML = `<span class="text-green-600 font-semibold">Online</span>`;
+                document.getElementById('smsCount').innerHTML = `<span class="text-purple-600 font-semibold">${smsData.totalSent || 0}</span>`;
+
+            } catch (error) {
+                document.getElementById('ussdStatus').innerHTML = `<span class="text-red-600 font-semibold">Offline</span>`;
+                document.getElementById('smsStatus').innerHTML = `<span class="text-red-600 font-semibold">Offline</span>`;
+            }
+        }
+
+        function updateSMSCount() {
+            updateSystemStatus();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateSystemStatus();
+            setInterval(updateSystemStatus, 10000); // Update every 10 seconds
+        });
+    </script>
+</body>
+</html>

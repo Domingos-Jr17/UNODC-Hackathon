@@ -161,7 +161,7 @@ export interface USSDSession {
     data: {
         accessCode?: string;
         user?: User;
-        selectedCourse?: any;
+        selectedCourse?: Course;
     };
     createdAt: Date;
     lastActivity?: Date;
@@ -237,12 +237,12 @@ export interface SecurityInfoResponse {
 }
 export interface APIError extends Error {
     status?: number;
-    details?: any;
+    details?: unknown;
 }
 export interface ValidationError {
     field: string;
     message: string;
-    value: any;
+    value: unknown;
 }
 export interface ErrorResponse {
     error: string;
@@ -254,8 +254,8 @@ export interface ErrorResponse {
 }
 export type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 export type RequiredFields<T, K extends keyof T> = T & Required<Pick<T, K>>;
-export type QueryCallback<T = any> = (err: Error | null, row: T) => void;
-export type QueryAllCallback<T = any> = (err: Error | null, rows: T[]) => void;
+export type QueryCallback<T = unknown> = (err: Error | null, row: T) => void;
+export type QueryAllCallback<T = unknown> = (err: Error | null, rows: T[]) => void;
 export interface EnvConfig {
     NODE_ENV: 'development' | 'production' | 'test';
     PORT: number;
@@ -280,7 +280,7 @@ export interface EnvConfig {
     SMTP_PASS?: string;
 }
 export interface LogContext {
-    [key: string]: any;
+    [key: string]: unknown;
 }
 export interface LogEntry {
     level: string;
@@ -289,6 +289,6 @@ export interface LogEntry {
     context?: LogContext;
 }
 export interface ModuleExports {
-    [key: string]: any;
+    [key: string]: unknown;
 }
 //# sourceMappingURL=index.d.ts.map

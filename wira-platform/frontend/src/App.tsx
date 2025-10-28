@@ -7,6 +7,20 @@ import ActivateUser from './components/ActivateUser.tsx';
 import MonitorProgress from './components/MonitorProgress.tsx';
 import Login from './components/login.tsx';
 
+// Extend the Material-UI theme interface
+declare module '@mui/material/styles' {
+  interface Theme {
+    custom?: {
+      // Add custom theme properties if needed
+    };
+  }
+  interface ThemeOptions {
+    custom?: {
+      // Add custom theme options if needed
+    };
+  }
+}
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -35,7 +49,7 @@ function App() {
             <Route path="/monitor" element={<MonitorProgress />} />
           </Routes>
         </Container>
-      </Router> 
+      </Router>
     </ThemeProvider>
   
   );

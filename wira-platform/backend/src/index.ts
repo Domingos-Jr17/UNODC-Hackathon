@@ -8,14 +8,17 @@ import { Server } from 'http'
 // Import routes and middleware
 import authRoutes from './routes/auth'
 import coursesRoutes from './routes/courses'
-// import progressRoutes from './routes/progress'
-// import certificatesRoutes from './routes/certificates'
-// import ussdRoutes from './routes/ussd'
+import progressRoutes from './routes/progress'
+import certificatesRoutes from './routes/certificates'
+import ngosRoutes from './routes/ngos'
+import auditLogsRoutes from './routes/audit-logs'
+import ussdRoutes from './routes/ussd'
 
 // Import middleware
 import {
   logger,
   generalLimiter,
+  ussdLimiter,
   requestLogger,
   corsOptions,
   securityHeaders,
@@ -23,7 +26,8 @@ import {
   errorLogger,
   developmentErrorHandler,
   productionErrorHandler,
-  notFoundHandler
+  notFoundHandler,
+  authenticateToken
 } from './middleware/security'
 
 // Import services
@@ -45,7 +49,7 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       scriptSrc: ["'self'"],
-      imgSrc: ['\'self\'', 'data:', 'https:'],
+      imgSrc: ["'self'", 'data:', 'https:'],
       connectSrc: ["'self'"],
       fontSrc: ["'self'"],
       objectSrc: ["'none'"],
@@ -62,7 +66,7 @@ app.use(cors(corsOptions))
 
 // Body parsing middleware with size limits
 app.use(express.json({ limit: '10mb' }))
-app.use(express.urlencoded({ extended: true, limit: '10mb' }))
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Request logging
 app.use(requestLogger)
@@ -73,9 +77,11 @@ app.use('/api/', generalLimiter)
 // Routes
 app.use('/api/auth', authRoutes)
 app.use('/api/courses', coursesRoutes)
-// app.use('/api/progress', progressRoutes)
-// app.use('/api/certificates', certificatesRoutes)
-// app.use('/api/ussd', ussdLimiter, ussdRoutes)
+app.use('/api/progress', authenticateToken, progressRoutes)
+app.use('/api/certificates', certificatesRoutes)
+app.use('/api/ngos', authenticateToken, ngosRoutes)
+app.use('/api/audit-logs', authenticateToken, auditLogsRoutes)
+app.use('/api/ussd', ussdLimiter, ussdRoutes)
 
 // Enhanced health check endpoint
 app.get('/health', async (_req: express.Request, res: express.Response): Promise<void> => {
@@ -124,31 +130,6 @@ app.get('/health', async (_req: express.Request, res: express.Response): Promise
   res.status(statusCode).json(healthCheck)
 })
 
-// Security information endpoint (for monitoring)
-app.get('/api/security/info', (_req: express.Request, res: express.Response): void => {
-  res.json({
-    security: {
-      rateLimiting: {
-        windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS ?? '900000'),
-        maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS ?? '100')
-      },
-      encryption: {
-        algorithm: 'aes-256-gcm',
-        enabled: true
-      },
-      validation: {
-        enabled: true,
-        strict: true
-      },
-      cors: {
-        enabled: true,
-        origins: (process.env.CORS_ORIGIN ?? '').split(',')
-      }
-    },
-    lastUpdated: new Date().toISOString()
-  })
-})
-
 // API documentation endpoint
 app.get('/api', (_req: express.Request, res: express.Response): void => {
   res.json({
@@ -170,9 +151,41 @@ app.get('/api', (_req: express.Request, res: express.Response): void => {
         'GET /api/courses/:id/quiz': 'Obter quiz do curso',
         'POST /api/courses/:id/invalidate-cache': 'Invalidar cache do curso'
       },
+      progress: {
+        'GET /api/progress/user/:userCode/course/:courseId': 'Obter progresso do usuário em curso',
+        'PUT /api/progress/user/:userCode/course/:courseId': 'Atualizar progresso do usuário em curso'
+      },
+      certificates: {
+        'POST /api/certificates/generate': 'Gerar certificado',
+        'GET /api/certificates/verify/:code': 'Verificar certificado',
+        'POST /api/certificates/revoke/:code': 'Revogar certificado',
+        'GET /api/certificates/user/:anonymousCode/course/:courseId': 'Obter certificado por usuário e curso'
+      },
+      ngos: {
+        'GET /api/ngos': 'Listar ONGs',
+        'GET /api/ngos/:id': 'Obter ONG por ID',
+        'POST /api/ngos': 'Criar ONG',
+        'PUT /api/ngos/:id': 'Atualizar ONG',
+        'PATCH /api/ngos/:id/deactivate': 'Desativar ONG',
+        'DELETE /api/ngos/:id': 'Remover ONG'
+      },
+      'audit-logs': {
+        'GET /api/audit-logs': 'Listar registros de auditoria',
+        'GET /api/audit-logs/user/:userCode': 'Obter registros por usuário',
+        'GET /api/audit-logs/action/:action': 'Obter registros por ação',
+        'GET /api/audit-logs/table/:tableName': 'Obter registros por tabela',
+        'POST /api/audit-logs': 'Criar registro de auditoria',
+        'GET /api/audit-logs/stats': 'Obter estatísticas de auditoria'
+      },
+      ussd: {
+        'POST /api/ussd': 'Processar requisição USSD',
+        'GET /api/ussd/status': 'Status do serviço USSD',
+        'GET /api/sms/status': 'Status do serviço SMS',
+        'POST /api/sms/send': 'Enviar SMS'
+      },
       utility: {
         'GET /health': 'Health check detalhado',
-        'GET /api/security/info': 'Informações de segurança'
+        'GET /api': 'Documentação da API'
       }
     },
     security: {
@@ -192,8 +205,7 @@ app.get('/', (_req: express.Request, res: express.Response): void => {
     version: '3.0.0',
     status: 'running',
     documentation: '/api',
-    health: '/health',
-    security: '/api/security/info'
+    health: '/health'
   })
 })
 
@@ -250,7 +262,6 @@ const startServer = (): void => {
     logger.info('📊 Service endpoints available', {
       health: `http://localhost:${PORT}/health`,
       api: `http://localhost:${PORT}/api`,
-      securityInfo: `http://localhost:${PORT}/api/security/info`,
       documentation: `http://localhost:${PORT}/api`
     })
   })
@@ -268,11 +279,9 @@ const startServer = (): void => {
       case 'EACCES':
         logger.error(`${bind} requires elevated privileges`)
         process.exit(1)
-        break
       case 'EADDRINUSE':
         logger.error(`${bind} is already in use`)
         process.exit(1)
-        break
       default:
         throw error
     }

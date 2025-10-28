@@ -1,14 +1,39 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../types/navigation';
 
-export default function QuizScreen({ route, navigation }) {
+type QuizScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Quiz'>;
+type QuizScreenRouteProp = RouteProp<RootStackParamList, 'Quiz'>;
+
+interface QuizScreenProps {
+    route: QuizScreenRouteProp;
+    navigation: QuizScreenNavigationProp;
+}
+
+interface Question {
+    id: number;
+    question: string;
+    options: string[];
+    correctAnswer: number;
+    explanation: string;
+}
+
+interface QuizData {
+    costura: {
+        questions: Question[];
+    };
+}
+
+export default function QuizScreen({ route, navigation }: QuizScreenProps) {
     const { courseId, moduleId } = route.params;
-    const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [selectedAnswers, setSelectedAnswers] = useState([]);
-    const [showResults, setShowResults] = useState(false);
-    const [score, setScore] = useState(0);
+    const [currentQuestion, setCurrentQuestion] = useState<number>(0);
+    const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
+    const [showResults, setShowResults] = useState<boolean>(false);
+    const [score, setScore] = useState<number>(0);
 
-    const quizData = {
+    const quizData: QuizData = {
         costura: {
             questions: [
                 {
@@ -75,10 +100,10 @@ export default function QuizScreen({ route, navigation }) {
         }
     };
 
-    const courseQuiz = quizData[courseId] || quizData.costura;
+    const courseQuiz = quizData[courseId as 'costura'] || quizData.costura;
     const questions = courseQuiz.questions;
 
-    const handleAnswerSelect = (questionId, answerIndex) => {
+    const handleAnswerSelect = (questionId: number, answerIndex: number) => {
         const newAnswers = [...selectedAnswers];
         newAnswers[questionId] = answerIndex;
         setSelectedAnswers(newAnswers);
@@ -87,7 +112,7 @@ export default function QuizScreen({ route, navigation }) {
     const handleSubmit = () => {
         let correctAnswers = 0;
 
-        questions.forEach((question, index) => {
+        questions.forEach((question: Question, index: number) => {
             if (selectedAnswers[index] === question.correctAnswer) {
                 correctAnswers++;
             }
@@ -137,79 +162,81 @@ export default function QuizScreen({ route, navigation }) {
             </View>
 
             {!showResults ? (
-        <View style={styles.questionContainer}>
-          <View style={styles.questionHeader}>
-            <Text style={styles.questionNumber}>
-              Pergunta {currentQuestion + 1} de {questions.length}
-            </Text>
-            <View style={styles.progressIndicator}>
-              {questions.map((_, index) => (
-                <View
-                  key={index}
-                  style={[
-                    styles.progressDot,
-                    index <= currentQuestion && styles.progressDotActive
-                  ]}
-                />
-              ))}
-            </View>
-          </View>
-          
-          <View style={styles.questionCard}>
-            <Text style={styles.questionText}>
-              {questions[currentQuestion].question}
-            </Text>
-          </View>
-          
-          <View style={styles.optionsContainer}>
-            {questions[currentQuestion].options.map((option, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[
-                  styles.optionButton,
-                  selectedAnswers[currentQuestion] === index && styles.optionButtonSelected
-                ]}
-                onPress={() => handleAnswerSelect(currentQuestion, index)}
-              >
-                <Text style={styles.optionText}>
-                  {String.fromCharCode(65 + index)}. {option}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-        
-        <View style={styles.navigationContainer}>
-          {currentQuestion > 0 && (
-            <TouchableOpacity
-              style={styles.previousButton}
-              onPress={() => setCurrentQuestion(currentQuestion - 1)}
-            >
-              <Text style={styles.navigationButtonText}>Anterior</Text>
-            </TouchableOpacity>
-          )}
-          
-          {currentQuestion < questions.length - 1 ? (
-            <TouchableOpacity
-              style={styles.nextButton}
-              onPress={() => setCurrentQuestion(currentQuestion + 1)}
-            >
-              <Text style={styles.navigationButtonText}>Próxima</Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              style={styles.submitButton}
-              onPress={handleSubmit}
-            >
-              <Text style={styles.submitButtonText}>Finalizar</Text>
-            </TouchableOpacity>
-          )}
-        </View>
+                <View>
+                    <View style={styles.questionContainer}>
+                        <View style={styles.questionHeader}>
+                            <Text style={styles.questionNumber}>
+                                Pergunta {currentQuestion + 1} de {questions.length}
+                            </Text>
+                            <View style={styles.progressIndicator}>
+                                {questions.map((_, index) => (
+                                    <View
+                                        key={index}
+                                        style={[
+                                            styles.progressDot,
+                                            index <= currentQuestion && styles.progressDotActive
+                                        ]}
+                                    />
+                                ))}
+                            </View>
+                        </View>
+
+                        <View style={styles.questionCard}>
+                            <Text style={styles.questionText}>
+                                {questions[currentQuestion]?.question}
+                            </Text>
+                        </View>
+
+                        <View style={styles.optionsContainer}>
+                            {questions[currentQuestion]?.options.map((option, index) => (
+                                <TouchableOpacity
+                                    key={index}
+                                    style={[
+                                        styles.optionButton,
+                                        selectedAnswers[currentQuestion] === index && styles.optionButtonSelected
+                                    ]}
+                                    onPress={() => handleAnswerSelect(currentQuestion, index)}
+                                >
+                                    <Text style={styles.optionText}>
+                                        {String.fromCharCode(65 + index)}. {option}
+                                    </Text>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+                    </View>
+
+                    <View style={styles.navigationContainer}>
+                        {currentQuestion > 0 && (
+                            <TouchableOpacity
+                                style={styles.previousButton}
+                                onPress={() => setCurrentQuestion(currentQuestion - 1)}
+                            >
+                                <Text style={styles.navigationButtonText}>Anterior</Text>
+                            </TouchableOpacity>
+                        )}
+
+                        {currentQuestion < questions.length - 1 ? (
+                            <TouchableOpacity
+                                style={styles.nextButton}
+                                onPress={() => setCurrentQuestion(currentQuestion + 1)}
+                            >
+                                <Text style={styles.navigationButtonText}>Próxima</Text>
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity
+                                style={styles.submitButton}
+                                onPress={handleSubmit}
+                            >
+                                <Text style={styles.submitButtonText}>Finalizar</Text>
+                            </TouchableOpacity>
+                        )}
+                    </View>
+                </View>
             ) : (
                 <View style={styles.resultsContainer}>
                     <View style={styles.scoreCard}>
                         <Text style={styles.scoreTitle}>Resultado</Text>
-                        <Text style={styles.scoreValue}>{score}%</Text>
+                        <Text style={[styles.scoreValue, { color: score >= 70 ? '#4CAF50' : '#F44336' }]}>{score}%</Text>
                         <Text style={styles.scoreMessage}>
                             {score >= 70 ? 'Aprovado!' : 'Reprovado - Tente Novamente'}
                         </Text>
@@ -227,13 +254,13 @@ export default function QuizScreen({ route, navigation }) {
 
                     <View style={styles.explanationCard}>
                         <Text style={styles.explanationTitle}>Feedback de Aprendizagem</Text>
-                        <Text style={styles.explanationText}>
+                        <View style={styles.explanationContainer}>
                             {questions.map((question, index) => (
                                 <Text key={index} style={styles.explanationItem}>
                                     {index + 1}. {question.explanation}
                                 </Text>
                             ))}
-                        </Text>
+                        </View>
                     </View>
 
                     <View style={styles.actionButtonsContainer}>
@@ -397,7 +424,6 @@ const styles = StyleSheet.create({
     scoreValue: {
         fontSize: 32,
         fontWeight: 'bold',
-        color: score >= 70 ? '#4CAF50' : '#F44336',
         marginBottom: 5,
     },
     scoreMessage: {
@@ -444,13 +470,19 @@ const styles = StyleSheet.create({
         color: '#333333',
         marginBottom: 10,
     },
+    explanationContainer: {
+        flex: 1,
+    },
     explanationText: {
         fontSize: 14,
         color: '#333333',
         lineHeight: 20,
     },
     explanationItem: {
-        marginBottom: 5,
+        fontSize: 14,
+        color: '#333333',
+        marginBottom: 10,
+        lineHeight: 20,
     },
     actionButtonsContainer: {
         flexDirection: 'row',

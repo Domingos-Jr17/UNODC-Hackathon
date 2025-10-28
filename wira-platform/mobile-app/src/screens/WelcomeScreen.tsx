@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types/navigation';
 
-type WelcomeScreenNavigationProp = StackNavigationProp<any, any>;
+type WelcomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Welcome'>;
 
 interface WelcomeScreenProps {
     navigation: WelcomeScreenNavigationProp;
@@ -21,7 +22,7 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
     return (
         <View style={styles.container}>
             <Image
-                source={require('../../assets/images/logo.png')}
+                source={require('../../assets/icon.png')}
                 style={styles.logo}
                 resizeMode="contain"
             />

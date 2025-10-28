@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types/navigation';
 
-type LoginScreenNavigationProp = StackNavigationProp<any, any>;
+type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
 interface LoginScreenProps {
     navigation: LoginScreenNavigationProp;
@@ -26,7 +27,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             // AsyncStorage.setItem('userCode', accessCode);
 
             // Navegar para home
-            navigation.replace('Home');
+            navigation.navigate('Home');
         } else {
             Alert.alert('Código Inválido', 'Códigos demo disponíveis: V0042, V0038, V0031');
         }
@@ -35,7 +36,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
     const handleDemoLogin = (code: string) => {
         setAccessCode(code);
         setTimeout(() => {
-            navigation.replace('Home');
+            navigation.navigate('Home');
         }, 500);
     };
 

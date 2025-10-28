@@ -1,4 +1,4 @@
-import rateLimit from 'express-rate-limit'
+import { default as rateLimit } from 'express-rate-limit'
 import { body, validationResult } from 'express-validator'
 import type { ValidationChain } from 'express-validator'
 import jwt from 'jsonwebtoken'
@@ -33,7 +33,7 @@ const logger = winston.createLogger({
 
 // Rate limiting middleware factory
 const createRateLimit = (windowMs: number, max: number, message: string): express.RequestHandler => {
-  return rateLimit({
+  return (rateLimit as any)({
     windowMs,
     max,
     message: {
@@ -157,10 +157,24 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction): 
   next()
 }
 
-// CORS configuration
+// CORS configuration for development environment
 export const corsOptions = {
   origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void): void {
-    const allowedOrigins = (process.env.CORS_ORIGIN ?? '').split(',')
+    // Development origins for localhost
+    const devOrigins = [
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://localhost:5173',
+      'http://127.0.0.1:3000',
+      'http://127.0.0.1:3001',
+      'http://127.0.0.1:5173'
+    ]
+
+    // Production origins from environment variable
+    const prodOrigins = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : []
+
+    // Combine all allowed origins
+    const allowedOrigins = process.env.NODE_ENV === 'production' ? prodOrigins : devOrigins
 
     // Allow requests with no origin (like mobile apps or curl)
     if (!origin) return callback(null, true)
@@ -169,13 +183,17 @@ export const corsOptions = {
       callback(null, true)
     } else {
       logger.warn('CORS violation', {
-        origin
+        origin,
+        environment: process.env.NODE_ENV ?? 'development',
+        allowedOrigins
       })
       callback(new Error('Não permitido por CORS'))
     }
   },
   credentials: true,
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }
 
 // JWT Authentication middleware
