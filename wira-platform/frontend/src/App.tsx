@@ -1,24 +1,54 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Toaster } from "sonner";
 
 import Dashboard from './components/Dashboard.tsx';
 import ActivateUser from './components/ActivateUser.tsx';
 import MonitorProgress from './components/MonitorProgress.tsx';
 import LoginPage from './components/loginPage.tsx';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { AuthProvider } from './contexts/AuthContext';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { ApiStatusIndicator } from './components/ApiStatusIndicator';
 
 
 function App() {
   return (
-      <Router>
-        
-          <Routes>
+    <ErrorBoundary>
+      <AuthProvider>
+        <Router>
+          <div className="min-h-screen bg-background">
+            <Toaster position="top-right" />
+            <div className="fixed top-4 right-4 z-50">
+              <ApiStatusIndicator />
+            </div>
+            <Routes>
             <Route path="/" element={<LoginPage />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/active" element={<ActivateUser />} />
-            <Route path="/monitor" element={<MonitorProgress />} />
-          </Routes>
-  
-      </Router>
-
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <ErrorBoundary>
+                  <Dashboard />
+                </ErrorBoundary>
+              </ProtectedRoute>
+            } />
+            <Route path="/active" element={
+              <ProtectedRoute>
+                <ErrorBoundary>
+                  <ActivateUser />
+                </ErrorBoundary>
+              </ProtectedRoute>
+            } />
+            <Route path="/monitor" element={
+              <ProtectedRoute>
+                <ErrorBoundary>
+                  <MonitorProgress />
+                </ErrorBoundary>
+              </ProtectedRoute>
+            } />
+                  </Routes>
+          </div>
+        </Router>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 

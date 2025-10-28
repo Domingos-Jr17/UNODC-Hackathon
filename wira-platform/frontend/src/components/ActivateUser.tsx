@@ -1,5 +1,7 @@
 "use client"
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,40 +9,32 @@ import { Label } from '@/components/ui/label';
 import { TypographyH1, TypographyH4, TypographySmall, TypographyMuted } from '@/components/ui/typography';
 import { Spinner } from '@/components/ui/spinner';
 import { UserPlus, Check } from 'lucide-react';
-import { toast, Toaster } from "sonner";
-
-
-
-interface FormData {
-    realName: string;
-    ngoId: string;
-    initialSkills: string;
-    dateOfBirth:string
-}
+import { toast } from "sonner";
+import { useNavigate } from 'react-router-dom';
+import { activateUserSchema, validateDate, ActivateUserFormData } from '../lib/schemas';
 
 export default function ActivateUser() {
-    const [formData, setFormData] = useState<FormData>({
-        realName: '',
-        ngoId: '',
-        initialSkills: '',
-        dateOfBirth: ''
-
-    });
-
+    const navigate = useNavigate();
     const [generatedCode, setGeneratedCode] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
 
-    const handleInputChange = useCallback((field: keyof FormData) => 
-        (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-            setFormData(prev => ({
-                ...prev,
-                [field]: event.target.value
-            }));
-    }, []);
+    const form = useForm({
+        resolver: zodResolver(activateUserSchema),
+        mode: "onChange",
+        defaultValues: {
+            realName: '',
+            ngoId: '',
+            initialSkills: '',
+            dateOfBirth: ''
+        }
+    });
 
-    const handleGenerateCode = useCallback(() => {
-        if (!formData.realName || !formData.ngoId) {
-            toast.error('Por favor, preencha todos os campos obrigatórios');
+    const { register, handleSubmit, formState: { errors, isValid } } = form;
+
+    const handleGenerateCode = useCallback(async (data: ActivateUserFormData) => {
+        // Validar data de nascimento
+        if (data.dateOfBirth && !validateDate(data.dateOfBirth)) {
+            toast.error('Data de nascimento inválida');
             return;
         }
 
@@ -54,10 +48,9 @@ export default function ActivateUser() {
             setLoading(false);
 
             toast.dismiss(id);
-           
             toast.success(`Código gerado com sucesso: ${newCode}`);
         }, 1000);
-    }, [formData]);
+    }, []);
 
     const handleSendSMS = useCallback(() => {
         if (!generatedCode) {
@@ -75,21 +68,19 @@ export default function ActivateUser() {
 
     return (
         <div className="bg-blue-50 min-h-screen">
-            {/* renderizar Toaster para os toasts */}
-            <Toaster position="top-right" />
             <>
-            <div className="w-full h-auto flex justify-end p-4">
+            <div className="w-full h-auto flex justify-end p-4 border-b border-border">
   <div className="flex gap-4">
     <Button
-    
-      onClick={() => (window.location.href = "/login")}
+      variant="destructive"
+      onClick={() => navigate("/login")}
     >
       Sair
     </Button>
 
     <Button
-      onClick={() => (window.location.href = "/dashboard")}
-      className='bg-white text-black'
+      variant="outline"
+      onClick={() => navigate("/dashboard")}
     >
       Voltar ao Dashboard
     </Button>
@@ -109,15 +100,19 @@ export default function ActivateUser() {
                                         Informações do Usuário
                                     </TypographyH4>
 
-                                    <div className="space-y-4">
+                                    <form id="userForm" onSubmit={handleSubmit(handleGenerateCode)} className="space-y-4">
                                         <div>
                                             <Label htmlFor="realName">Nome Completo</Label>
                                             <Input
                                                 id="realName"
                                                 required
-                                                value={formData.realName}
-                                                onChange={handleInputChange('realName')}
+                                                placeholder="Maria Silva"
+                                                {...register('realName')}
+                                                aria-invalid={errors.realName ? "true" : "false"}
                                             />
+                                            {errors.realName && (
+                                                <p className="text-sm text-red-600 mt-1">{errors.realName.message}</p>
+                                            )}
                                         </div>
 
                                         <div>
@@ -125,10 +120,13 @@ export default function ActivateUser() {
                                             <Input
                                                 id="dateOfBirth"
                                                 required
-                                                value={formData.dateOfBirth}
-                                                onChange={handleInputChange('dateOfBirth')}
-                                                placeholder='DD/MM/AA'
+                                                placeholder="DD/MM/AA"
+                                                {...register('dateOfBirth')}
+                                                aria-invalid={errors.dateOfBirth ? "true" : "false"}
                                             />
+                                            {errors.dateOfBirth && (
+                                                <p className="text-sm text-red-600 mt-1">{errors.dateOfBirth.message}</p>
+                                            )}
                                         </div>
 
                                         <div>
@@ -136,9 +134,13 @@ export default function ActivateUser() {
                                             <Input
                                                 id="ngoId"
                                                 required
-                                                value={formData.ngoId}
-                                                onChange={handleInputChange('ngoId')}
+                                                placeholder="ONG-001"
+                                                {...register('ngoId')}
+                                                aria-invalid={errors.ngoId ? "true" : "false"}
                                             />
+                                            {errors.ngoId && (
+                                                <p className="text-sm text-red-600 mt-1">{errors.ngoId.message}</p>
+                                            )}
                                         </div>
 
                                         <div>
@@ -146,12 +148,15 @@ export default function ActivateUser() {
                                             <textarea
                                                 id="initialSkills"
                                                 className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                                value={formData.initialSkills}
-                                                onChange={handleInputChange('initialSkills')}
+                                                placeholder="Costura básica, culinária..."
                                                 rows={3}
+                                                {...register('initialSkills')}
                                             />
+                                            {errors.initialSkills && (
+                                                <p className="text-sm text-red-600 mt-1">{errors.initialSkills.message}</p>
+                                            )}
                                         </div>
-                                    </div>
+                                    </form>
                                 </CardContent>
                             </Card>
 
@@ -166,9 +171,10 @@ export default function ActivateUser() {
 
                                     {/* botão mostra spinner enquanto loading */}
                                     <Button
+                                        type="submit"
+                                        form="userForm"
                                         className="w-full mb-4"
-                                        onClick={handleGenerateCode}
-                                        disabled={loading}
+                                        disabled={loading || !isValid}
                                     >
                                         {loading ? (
                                             <>

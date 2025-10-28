@@ -1,43 +1,107 @@
-import { useState} from 'react';
+import { useState, useEffect, memo, useCallback } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { TypographyH1, TypographyH2, TypographyH4, TypographySmall, TypographyMuted } from '@/components/ui/typography';
 import { Users, GraduationCap, TrendingUp, BarChart3, Briefcase } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Header } from './header';
+import { LoadingOverlay } from '@/components/ui/loading-overlay';
 
-export default function Dashboard() {
+function DashboardComponent() {
     
-    const [stats] = useState({
-        totalUsers: 42,
-        activeUsers: 38,
-        coursesCompleted: 15,
-        certificatesIssued: 12,
-        averageCompletionTime: 45 // days
+    const [stats, setStats] = useState({
+        totalUsers: 0,
+        activeUsers: 0,
+        coursesCompleted: 0,
+        certificatesIssued: 0,
+        averageCompletionTime: 0
     });
 
-    const [recentActivity] = useState([
-        { id: 1, user: 'V0042', action: 'Completou módulo Costura', time: '2 horas atrás' },
-        { id: 2, user: 'V0038', action: 'Iniciou curso Culinária', time: '5 horas atrás' },
-        { id: 3, user: 'V0031', action: 'Gerou certificado', time: '1 dia atrás' },
-        { id: 4, user: 'V0042', action: 'Baixou vídeo offline', time: '3 horas atrás' }
-    ]);
+    interface Activity {
+        id: number;
+        user: string;
+        action: string;
+        time: string;
+    }
 
-    const [users] = useState([
-        { id: 1, code: 'V0042', name: 'Maria Silva', ngo: 'ONG-001', status: 'Ativo', lastActivity: '2 horas atrás', coursesCompleted: 1, certificatesEarned: 1 },
-        { id: 2, code: 'V0038', name: 'Ana Machel', ngo: 'ONG-001', status: 'Ativo', lastActivity: '5 horas atrás', coursesCompleted: 0, certificatesEarned: 0 },
-        { id: 3, code: 'V0031', name: 'João Sitoe', ngo: 'ONG-002', status: 'Ativo', lastActivity: '1 dia atrás', coursesCompleted: 0, certificatesEarned: 0 }
-    ]);
+    interface User {
+        id: number;
+        code: string;
+        name: string;
+        ngo: string;
+        status: string;
+        lastActivity: string;
+        coursesCompleted: number;
+        certificatesEarned: number;
+    }
 
-    const [courses] = useState([
-        { id: 'costura', title: 'Costura Avançada', activeUsers: 25, completionRate: 75 },
-        { id: 'culinaria', title: 'Culinária Profissional', activeUsers: 18, completionRate: 60 },
-        { id: 'agricultura', title: 'Agricultura Sustentável', activeUsers: 8, completionRate: 40 }
-    ]);
+    interface Course {
+        id: string;
+        title: string;
+        activeUsers: number;
+        completionRate: number;
+    }
+
+    const [recentActivity, setRecentActivity] = useState<Activity[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
+    const [courses, setCourses] = useState<Course[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const loadDashboardData = async () => {
+            setLoading(true);
+            // Simular carregamento de dados
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            setStats({
+                totalUsers: 42,
+                activeUsers: 38,
+                coursesCompleted: 15,
+                certificatesIssued: 12,
+                averageCompletionTime: 45
+            });
+
+            setRecentActivity([
+                { id: 1, user: 'V0042', action: 'Completou módulo Costura', time: '2 horas atrás' },
+                { id: 2, user: 'V0038', action: 'Iniciou curso Culinária', time: '5 horas atrás' },
+                { id: 3, user: 'V0031', action: 'Gerou certificado', time: '1 dia atrás' },
+                { id: 4, user: 'V0042', action: 'Baixou vídeo offline', time: '3 horas atrás' }
+            ]);
+
+            setUsers([
+                { id: 1, code: 'V0042', name: 'Maria Silva', ngo: 'ONG-001', status: 'Ativo', lastActivity: '2 horas atrás', coursesCompleted: 1, certificatesEarned: 1 },
+                { id: 2, code: 'V0038', name: 'Ana Machel', ngo: 'ONG-001', status: 'Ativo', lastActivity: '5 horas atrás', coursesCompleted: 0, certificatesEarned: 0 },
+                { id: 3, code: 'V0031', name: 'João Sitoe', ngo: 'ONG-002', status: 'Ativo', lastActivity: '1 dia atrás', coursesCompleted: 0, certificatesEarned: 0 }
+            ]);
+
+            setCourses([
+                { id: 'costura', title: 'Costura Avançada', activeUsers: 25, completionRate: 75 },
+                { id: 'culinaria', title: 'Culinária Profissional', activeUsers: 18, completionRate: 60 },
+                { id: 'agricultura', title: 'Agricultura Sustentável', activeUsers: 8, completionRate: 40 }
+            ]);
+
+            setLoading(false);
+        };
+
+        loadDashboardData();
+    }, []);
+
+    // Funções memoizadas para otimização
+    const handleGenerateReport = useCallback(() => {
+        // Em produção, implementar geração real de relatório
+        console.log('Gerando relatório...');
+    }, []);
+
+    const handleActivateUser = useCallback(() => {
+        // Em produção, implementar ativação real de usuário
+        console.log('Ativando usuário...');
+    }, []);
     
     return (
-        <div className=" bg-background min-h-screen">
-            <Header/>
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 p-2 gap-4">
+        <>
+            <LoadingOverlay show={loading} message="Carregando dashboard..." />
+            <div className=" bg-background min-h-screen">
+                <Header/>
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 p-2 gap-4">
                 <TypographyH1>
                     Dashboard WIRA
                 </TypographyH1>
@@ -210,7 +274,12 @@ export default function Dashboard() {
                     </CardContent>
                 </Card>
                  </div>
-        </div>
-        
+            </div>
+        </>
     );
 }
+
+const Dashboard = memo(DashboardComponent);
+Dashboard.displayName = 'Dashboard';
+
+export default Dashboard;

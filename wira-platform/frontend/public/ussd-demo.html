@@ -25,7 +25,7 @@
             color: #68d391;
             padding: 1rem;
             border-radius: 0.5rem;
-            min-height: 200px;
+            min-height: 120px;
         }
         .typing-indicator {
             display: inline-block;
@@ -43,6 +43,44 @@
             max-width: 70%;
             word-wrap: break-word;
         }
+
+        /* Mobile-first optimizations */
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+            }
+
+            .phone-screen {
+                padding: 1rem;
+            }
+
+            .ussd-text {
+                min-height: 100px;
+                font-size: 0.75rem;
+            }
+
+            h2 {
+                font-size: 1.25rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .phone-screen {
+                border-radius: 1rem;
+            }
+        }
         .message-sent {
             background: #3182ce;
             color: white;
@@ -56,37 +94,37 @@
     </style>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-2 py-4">
         <!-- Header -->
-        <header class="text-center mb-8">
-            <div class="flex justify-between items-center mb-4">
-                <button onclick="window.close()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2">
-                    <i class="fas fa-arrow-left"></i>
-                    <span>Voltar ao Dashboard</span>
+        <header class="text-center mb-3">
+            <div class="flex justify-between items-center mb-2">
+                <button onclick="window.close()" class="bg-gray-600 hover:bg-gray-700 text-white px-2 py-1 rounded flex items-center space-x-1 text-sm">
+                    <i class="fas fa-arrow-left text-xs"></i>
+                    <span>Voltar</span>
                 </button>
-                <div class="flex justify-center space-x-4">
-                    <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-                        <i class="fas fa-circle text-green-500 text-xs animate-pulse"></i> USSD Online
+                <div class="flex justify-center space-x-2">
+                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
+                        <i class="fas fa-circle text-green-500 text-xs animate-pulse"></i> USSD
                     </span>
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                        <i class="fas fa-sms text-blue-500"></i> SMS Ativo
+                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
+                        <i class="fas fa-sms text-blue-500 text-xs"></i> SMS
                     </span>
                 </div>
             </div>
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">
+            <h1 class="text-2xl font-bold text-gray-800 mb-1">
                 <i class="fas fa-mobile-alt text-blue-600"></i> WIRA USSD/SMS
             </h1>
-            <p class="text-gray-600">Demonstração do Sistema de Acessibilidade Digital - Moçambique</p>
+            <p class="text-gray-600 text-sm">Sistema de Acessibilidade Digital - Moçambique</p>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 max-w-4xl mx-auto">
             <!-- USSD Phone Simulator -->
             <div class="bg-white rounded-2xl shadow-xl p-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">
                     <i class="fas fa-phone text-blue-600"></i> Simulador USSD
                 </h2>
 
-                <div class="phone-screen p-8 text-white">
+                <div class="phone-screen p-4 text-white">
                     <!-- Phone Status Bar -->
                     <div class="flex justify-between items-center mb-4 text-sm">
                         <span><i class="fas fa-signal"></i> mCel</span>
@@ -106,54 +144,54 @@
 
                     <!-- Phone Dialer -->
                     <div class="bg-gray-800 rounded-lg p-4">
-                        <div class="grid grid-cols-3 gap-2 mb-3">
-                            <button onclick="dialUSSD('*')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">*</button>
-                            <button onclick="dialUSSD('#')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">#</button>
-                            <button onclick="sendUSSD()" class="bg-green-600 hover:bg-green-700 text-white p-3 rounded-lg">
-                                <i class="fas fa-paper-plane"></i>
+                        <div class="grid grid-cols-3 gap-1 mb-2">
+                            <button onclick="dialUSSD('*')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">*</button>
+                            <button onclick="dialUSSD('#')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">#</button>
+                            <button onclick="sendUSSD()" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded">
+                                <i class="fas fa-paper-plane text-sm"></i>
                             </button>
                         </div>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button onclick="dialUSSD('1')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">1</button>
-                            <button onclick="dialUSSD('2')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">2</button>
-                            <button onclick="dialUSSD('3')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">3</button>
-                            <button onclick="dialUSSD('4')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">4</button>
-                            <button onclick="dialUSSD('5')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">5</button>
-                            <button onclick="dialUSSD('6')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">6</button>
-                            <button onclick="dialUSSD('7')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">7</button>
-                            <button onclick="dialUSSD('8')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">8</button>
-                            <button onclick="dialUSSD('9')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">9</button>
-                            <button onclick="dialUSSD('V')" class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg font-bold">V</button>
-                            <button onclick="dialUSSD('0')" class="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg text-lg">0</button>
-                            <button onclick="clearUSSD()" class="bg-red-600 hover:bg-red-700 text-white p-3 rounded-lg">
-                                <i class="fas fa-backspace"></i>
+                        <div class="grid grid-cols-3 gap-1">
+                            <button onclick="dialUSSD('1')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">1</button>
+                            <button onclick="dialUSSD('2')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">2</button>
+                            <button onclick="dialUSSD('3')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">3</button>
+                            <button onclick="dialUSSD('4')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">4</button>
+                            <button onclick="dialUSSD('5')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">5</button>
+                            <button onclick="dialUSSD('6')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">6</button>
+                            <button onclick="dialUSSD('7')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">7</button>
+                            <button onclick="dialUSSD('8')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">8</button>
+                            <button onclick="dialUSSD('9')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">9</button>
+                            <button onclick="dialUSSD('V')" class="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded font-bold text-sm">V</button>
+                            <button onclick="dialUSSD('0')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">0</button>
+                            <button onclick="clearUSSD()" class="bg-red-600 hover:bg-red-700 text-white p-2 rounded">
+                                <i class="fas fa-backspace text-sm"></i>
                             </button>
                         </div>
                         <div class="mt-3 bg-gray-900 rounded p-2 text-center">
-                            <div id="ussdInput" class="text-green-400 font-mono text-lg min-h-[30px]"></div>
+                            <div id="ussdInput" class="text-green-400 font-mono text-sm min-h-[24px]"></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Quick Actions -->
-                <div class="mt-4 flex justify-between">
-                    <button onclick="startDemoSequence()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-                        <i class="fas fa-play"></i> Demo Automática
+                <div class="mt-3 flex justify-between">
+                    <button onclick="startDemoSequence()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">
+                        <i class="fas fa-play text-xs"></i> Demo
                     </button>
-                    <button onclick="resetUSSD()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">
-                        <i class="fas fa-redo"></i> Reiniciar
+                    <button onclick="resetUSSD()" class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-sm">
+                        <i class="fas fa-redo text-xs"></i> Reiniciar
                     </button>
                 </div>
             </div>
 
             <!-- SMS Chat Simulator -->
-            <div class="bg-white rounded-2xl shadow-xl p-6">
+            <div class="bg-white rounded-2xl shadow-xl p-4">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">
                     <i class="fas fa-sms text-green-600"></i> Simulador SMS
                 </h2>
 
                 <!-- SMS Chat -->
-                <div class="border-2 border-gray-200 rounded-lg h-96 overflow-y-auto p-4 mb-4 bg-gray-50" id="smsChat">
+                <div class="border-2 border-gray-200 rounded-lg h-64 overflow-y-auto p-3 mb-3 bg-gray-50" id="smsChat">
                     <div class="text-center text-gray-500 text-sm">
                         <i class="fas fa-comments text-4xl mb-2"></i>
                         <p>SMS aparecem aqui...</p>
@@ -161,43 +199,43 @@
                 </div>
 
                 <!-- SMS Input -->
-                <div class="bg-gray-100 rounded-lg p-4">
+                <div class="bg-gray-100 rounded-lg p-3">
                     <div class="flex items-center mb-2">
-                        <i class="fas fa-mobile-alt text-gray-600 mr-2"></i>
-                        <span class="text-sm text-gray-600">Para: +258 84 123 4567</span>
+                        <i class="fas fa-mobile-alt text-gray-600 mr-1 text-xs"></i>
+                        <span class="text-xs text-gray-600">Para: +258 84 123 4567</span>
                     </div>
-                    <div class="flex space-x-2">
+                    <div class="flex space-x-1">
                         <input
                             type="text"
                             id="smsInput"
                             placeholder="Digite mensagem SMS..."
-                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            class="flex-1 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
                             onkeypress="if(event.key === 'Enter') sendSMS()"
                         >
                         <button
                             onclick="sendSMS()"
-                            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
+                            class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-sm"
                         >
-                            <i class="fas fa-paper-plane"></i> Enviar
+                            <i class="fas fa-paper-plane text-xs"></i>
                         </button>
                     </div>
                 </div>
 
                 <!-- SMS Templates -->
-                <div class="mt-4">
-                    <p class="text-sm text-gray-600 mb-2">Templates Rápidos:</p>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="useSMSTemplate('ajuda')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded text-sm">
-                            <i class="fas fa-question-circle"></i> Ajuda
+                <div class="mt-2">
+                    <p class="text-xs text-gray-600 mb-1">Templates:</p>
+                    <div class="grid grid-cols-2 gap-1">
+                        <button onclick="useSMSTemplate('ajuda')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-1 py-1 rounded text-xs">
+                            <i class="fas fa-question-circle text-xs"></i> Ajuda
                         </button>
-                        <button onclick="useSMSTemplate('progresso')" class="bg-green-100 hover:bg-green-200 text-green-800 px-3 py-2 rounded text-sm">
-                            <i class="fas fa-chart-line"></i> Progresso
+                        <button onclick="useSMSTemplate('progresso')" class="bg-green-100 hover:bg-green-200 text-green-800 px-1 py-1 rounded text-xs">
+                            <i class="fas fa-chart-line text-xs"></i> Progresso
                         </button>
-                        <button onclick="useSMSTemplate('cursos')" class="bg-purple-100 hover:bg-purple-200 text-purple-800 px-3 py-2 rounded text-sm">
-                            <i class="fas fa-book"></i> Cursos
+                        <button onclick="useSMSTemplate('cursos')" class="bg-purple-100 hover:bg-purple-200 text-purple-800 px-1 py-1 rounded text-xs">
+                            <i class="fas fa-book text-xs"></i> Cursos
                         </button>
-                        <button onclick="useSMSTemplate('senha')" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-2 rounded text-sm">
-                            <i class="fas fa-key"></i> Senha
+                        <button onclick="useSMSTemplate('senha')" class="bg-red-100 hover:bg-red-200 text-red-800 px-1 py-1 rounded text-xs">
+                            <i class="fas fa-key text-xs"></i> Senha
                         </button>
                     </div>
                 </div>
@@ -205,34 +243,34 @@
         </div>
 
         <!-- System Status -->
-        <div class="mt-8 max-w-7xl mx-auto">
-            <div class="bg-white rounded-2xl shadow-xl p-6">
-                <h3 class="text-xl font-bold text-gray-800 mb-4">
-                    <i class="fas fa-server text-purple-600"></i> Status do Sistema
+        <div class="mt-4 max-w-4xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-xl p-3">
+                <h3 class="text-sm font-bold text-gray-800 mb-2">
+                    <i class="fas fa-server text-purple-600 text-xs"></i> Status
                 </h3>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="systemStatus">
-                    <div class="bg-gray-50 rounded-lg p-4">
+                <div class="grid grid-cols-2 gap-2" id="systemStatus">
+                    <div class="bg-gray-50 rounded p-2">
                         <div class="flex items-center justify-between">
-                            <span class="text-gray-600">USSD</span>
-                            <span id="ussdStatus" class="text-sm">Verificando...</span>
+                            <span class="text-xs text-gray-600">USSD</span>
+                            <span id="ussdStatus" class="text-xs">Verificando...</span>
                         </div>
                     </div>
-                    <div class="bg-gray-50 rounded-lg p-4">
+                    <div class="bg-gray-50 rounded p-2">
                         <div class="flex items-center justify-between">
-                            <span class="text-gray-600">SMS</span>
-                            <span id="smsStatus" class="text-sm">Verificando...</span>
+                            <span class="text-xs text-gray-600">SMS</span>
+                            <span id="smsStatus" class="text-xs">Verificando...</span>
                         </div>
                     </div>
-                    <div class="bg-gray-50 rounded-lg p-4">
+                    <div class="bg-gray-50 rounded p-2">
                         <div class="flex items-center justify-between">
-                            <span class="text-gray-600">Sessões</span>
-                            <span id="sessionsStatus" class="text-sm">0</span>
+                            <span class="text-xs text-gray-600">Sessões</span>
+                            <span id="sessionsStatus" class="text-xs">0</span>
                         </div>
                     </div>
-                    <div class="bg-gray-50 rounded-lg p-4">
+                    <div class="bg-gray-50 rounded p-2">
                         <div class="flex items-center justify-between">
-                            <span class="text-gray-600">SMS Enviados</span>
-                            <span id="smsCount" class="text-sm">0</span>
+                            <span class="text-xs text-gray-600">SMS</span>
+                            <span id="smsCount" class="text-xs">0</span>
                         </div>
                     </div>
                 </div>
@@ -240,28 +278,18 @@
         </div>
 
         <!-- Instructions -->
-        <div class="mt-8 max-w-7xl mx-auto">
-            <div class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6">
-                <h3 class="text-lg font-bold text-blue-800 mb-3">
-                    <i class="fas fa-info-circle"></i> Como Funciona
+        <div class="mt-3 max-w-4xl mx-auto">
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-2">
+                <h3 class="text-xs font-bold text-blue-800 mb-1">
+                    <i class="fas fa-info-circle text-xs"></i> Como Funciona
                 </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-blue-800">
+                <div class="grid grid-cols-1 gap-1 text-xs text-blue-800">
                     <div>
-                        <h4 class="font-semibold mb-2">📱 USSD (*123#)</h4>
-                        <ul class="space-y-1">
-                            <li>• Disque *123# em qualquer telefone</li>
-                            <li>• Digite seu código V#### (ex: V0042)</li>
-                            <li>• Navegue pelos menus numéricos</li>
-                            <li>• Funciona sem internet</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold mb-2">📧 SMS Automático</h4>
-                        <ul class="space-y-1">
-                            <li>• Confirmação de acesso via SMS</li>
-                            <li>• Lembretes de progresso</li>
-                            <li>• Notificações de certificados</li>
-                            <li>• Suporte via mensagem</li>
+                        <h4 class="font-semibold mb-1">📱 USSD (*123#)</h4>
+                        <ul class="space-y-0">
+                            <li>• Disque *123#</li>
+                            <li>• Código V####</li>
+                            <li>• Menus numéricos</li>
                         </ul>
                     </div>
                 </div>

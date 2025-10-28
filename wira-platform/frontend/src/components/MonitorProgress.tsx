@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect, memo, useCallback } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TypographyH2, TypographyH4, TypographyP, TypographySmall, TypographyMuted } from '@/components/ui/typography';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { LoadingOverlay } from '@/components/ui/loading-overlay';
 import { cn } from '@/lib/utils';
 
-export default function MonitorProgress() {
+function MonitorProgressComponent() {
 	// Tipagem do usuário
 	type User = {
 		id: number;
@@ -16,35 +17,51 @@ export default function MonitorProgress() {
 		lastActivity: string;
 	};
 
-	const [users] = useState<User[]>(
-		[
-			{ id: 1, code: 'V0042', name: 'Maria Silva', ngo: 'ONG-001', status: 'Ativo', lastActivity: '2 horas atrás' },
-			{ id: 2, code: 'V0038', name: 'Ana Machel', ngo: 'ONG-001', status: 'Ativo', lastActivity: '5 horas atrás' },
-			{ id: 3, code: 'V0031', name: 'João Sitoe', ngo: 'ONG-002', status: 'Inativo', lastActivity: '1 dia atrás' }
-		]
-	);
-
+	const [users, setUsers] = useState<User[]>([]);
+	const [loading, setLoading] = useState(true);
 	// selectedUser tipado
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
 	const [filter, setFilter] = useState<'all' | 'Ativo' | 'Inativo'>('all');
 
-	// Ajuste: handleUserSelect tipado
-	const handleUserSelect = (user: User) => {
-		setSelectedUser(user);
-	};
+	// Simular carregamento de dados
+	useEffect(() => {
+		const loadUsers = async () => {
+			setLoading(true);
+			// Simular chamada API
+			await new Promise(resolve => setTimeout(resolve, 1500));
 
-	// Ajuste: agora recebe diretamente o valor do filtro
-	const handleFilterChange = (value: 'all' | 'Ativo' | 'Inativo') => {
+			const mockUsers = [
+				{ id: 1, code: 'V0042', name: 'Maria Silva', ngo: 'ONG-001', status: 'Ativo' as const, lastActivity: '2 horas atrás' },
+				{ id: 2, code: 'V0038', name: 'Ana Machel', ngo: 'ONG-001', status: 'Ativo' as const, lastActivity: '5 horas atrás' },
+				{ id: 3, code: 'V0031', name: 'João Sitoe', ngo: 'ONG-002', status: 'Inativo' as const, lastActivity: '1 dia atrás' }
+			];
+
+			setUsers(mockUsers);
+			setLoading(false);
+		};
+
+		loadUsers();
+	}, []);
+
+	// Ajuste: handleUserSelect tipado - memoizado
+	const handleUserSelect = useCallback((user: User) => {
+		setSelectedUser(user);
+	}, []);
+
+	// Ajuste: agora recebe diretamente o valor do filtro - memoizado
+	const handleFilterChange = useCallback((value: 'all' | 'Ativo' | 'Inativo') => {
 		setFilter(value);
-	};
+	}, []);
 
 	const filteredUsers = filter === 'all' ? users : users.filter(user => user.status === filter);
 
 	return (
-		<div className="p-6 bg-background min-h-screen">
-			<TypographyH2 className="mb-6">
-				Monitorar Progresso
-			</TypographyH2>
+		<>
+			<LoadingOverlay show={loading} message="Carregando dados dos usuários..." />
+			<div className="p-6 bg-background min-h-screen">
+				<TypographyH2 className="mb-6">
+					Monitorar Progresso
+				</TypographyH2>
 
 			<div className="flex flex-col lg:flex-row gap-6 mb-6">
 				<div className="lg:w-1/4">
@@ -189,6 +206,12 @@ export default function MonitorProgress() {
 					</Card>
 				</div>
 			)}
-		</div>
+			</div>
+		</>
 	);
 }
+
+const MonitorProgress = memo(MonitorProgressComponent);
+MonitorProgress.displayName = 'MonitorProgress';
+
+export default MonitorProgress;
