@@ -157,3 +157,6 @@ web-build/
 
 # Prisma
 prisma/migrations/
+
+# Windows reserved device names
+nul

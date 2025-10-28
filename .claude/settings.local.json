@@ -12,7 +12,9 @@
       "Bash(timeout 10s npm start:*)",
       "Bash(timeout 10s npm run dev:*)",
       "Bash(timeout:*)",
-      "Bash(npx expo install:*)"
+      "Bash(npx expo install:*)",
+      "Bash(rm:*)",
+      "Bash(npx tsc:*)"
     ],
     "deny": [],
     "ask": []

@@ -82,7 +82,7 @@ export default function CertificateScreen({ route, navigation }: CertificateScre
           <View style={styles.certificateContainer}>
             <View style={styles.certificateHeader}>
               <Image
-                source={require('../../assets/images/logo.png')}
+                source={require('../../assets/icon.png')}
                 style={styles.logo}
                 resizeMode="contain"
               />
