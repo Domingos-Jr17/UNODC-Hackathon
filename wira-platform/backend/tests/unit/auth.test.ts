@@ -1,6 +1,6 @@
-const request = require('supertest');
-const jwt = require('jsonwebtoken');
-const app = require('../../src/index.secure');
+import request from 'supertest';
+import jwt from 'jsonwebtoken';
+import app from '../../src/index.secure';
 
 describe('Authentication Routes', () => {
   describe('POST /api/auth/login', () => {

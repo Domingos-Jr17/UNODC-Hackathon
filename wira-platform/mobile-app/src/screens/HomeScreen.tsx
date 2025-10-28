@@ -1,7 +1,15 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types/navigation';
 
-export default function HomeScreen({ navigation }) {
+type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
+
+interface HomeScreenProps {
+    navigation: HomeScreenNavigationProp;
+}
+
+export default function HomeScreen({ navigation }: HomeScreenProps) {
     const stats = {
         coursesCompleted: 1,
         coursesInProgress: 2,
@@ -20,11 +28,12 @@ export default function HomeScreen({ navigation }) {
     };
 
     const handleProgress = () => {
-        navigation.navigate('Progress');
+        // Progress screen not implemented yet
+        console.log('Navigate to Progress');
     };
 
     const handleCertificates = () => {
-        navigation.navigate('Certificate');
+        navigation.navigate('Certificate', { courseId: 'costura' });
     };
 
     const handleJobs = () => {

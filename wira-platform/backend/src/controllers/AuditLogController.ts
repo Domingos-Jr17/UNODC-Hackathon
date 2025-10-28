@@ -6,7 +6,7 @@ class AuditLogController {
   static async getAll(req: Request, res: Response): Promise<void> {
     try {
       const { page = '1', limit = '50', userCode, action, tableName } = req.query;
-      
+
       const pageNum = parseInt(page as string);
       const limitNum = parseInt(limit as string);
       const skip = (pageNum - 1) * limitNum;
@@ -22,7 +22,7 @@ class AuditLogController {
       //   take: limitNum,
       //   skip
       // });
-      
+
       // For now, we'll simulate with our ORM-like method
       const whereClause: any = {};
       if (userCode) whereClause.user_code = userCode;
@@ -65,7 +65,7 @@ class AuditLogController {
       //   orderBy: { timestamp: 'desc' },
       //   take: limitNum
       // });
-      
+
       // For now, we'll simulate with our ORM-like method
       const auditLogs = await AuditLogModel.findByUser(userCode, limitNum);
 
@@ -94,7 +94,7 @@ class AuditLogController {
       //   orderBy: { timestamp: 'desc' },
       //   take: limitNum
       // });
-      
+
       // For now, we'll simulate with our ORM-like method
       const auditLogs = await AuditLogModel.findByAction(action, limitNum);
 
@@ -123,7 +123,7 @@ class AuditLogController {
       //   orderBy: { timestamp: 'desc' },
       //   take: limitNum
       // });
-      
+
       // For now, we'll simulate with our ORM-like method
       const auditLogs = await AuditLogModel.findByTable(tableName, limitNum);
 
@@ -143,10 +143,10 @@ class AuditLogController {
   static async create(req: Request, res: Response): Promise<void> {
     try {
       const auditLogData = req.body;
-      
+
       // In a real Prisma implementation, this would be:
       // const auditLog = await prisma.auditLog.create({ data: auditLogData });
-      
+
       // For now, we'll simulate with our ORM-like method
       const auditLog = await AuditLogModel.createWithPrisma(auditLogData);
 
@@ -163,7 +163,7 @@ class AuditLogController {
     }
   }
 
-  static async getStats(req: Request, res: Response): Promise<void> {
+  static async getStats(_req: Request, res: Response): Promise<void> {
     try {
       // In a real Prisma implementation, this would be:
       // const totalLogs = await prisma.auditLog.count();
@@ -175,7 +175,7 @@ class AuditLogController {
       //   by: ['action'],
       //   _count: true
       // });
-      
+
       // For now, we'll simulate with our ORM-like method
       const totalLogs = await AuditLogModel.count();
       // Note: In a real implementation, we would implement grouping here

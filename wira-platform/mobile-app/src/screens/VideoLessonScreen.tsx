@@ -1,18 +1,29 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
-import { Video } from 'expo-av';
+import { Video, ResizeMode } from 'expo-av';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../types/navigation';
 
-export default function VideoLessonScreen({ route, navigation }) {
+type VideoLessonScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'VideoLesson'>;
+type VideoLessonScreenRouteProp = RouteProp<RootStackParamList, 'VideoLesson'>;
+
+interface VideoLessonScreenProps {
+    route: VideoLessonScreenRouteProp;
+    navigation: VideoLessonScreenNavigationProp;
+}
+
+export default function VideoLessonScreen({ route, navigation }: VideoLessonScreenProps) {
     const { courseId, moduleId } = route.params;
-    const videoRef = useRef(null);
+    const videoRef = useRef<Video>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isDownloaded, setIsDownloaded] = useState(false);
 
     const handlePlayPause = () => {
         if (isPlaying) {
-            videoRef.current.pauseAsync();
+            videoRef.current?.pauseAsync();
         } else {
-            videoRef.current.playAsync();
+            videoRef.current?.playAsync();
         }
         setIsPlaying(!isPlaying);
     };
@@ -53,7 +64,7 @@ export default function VideoLessonScreen({ route, navigation }) {
                     source={{ uri: 'https://example.com/video.mp4' }}
                     style={styles.video}
                     useNativeControls
-                    resizeMode="contain"
+                    resizeMode={ResizeMode.CONTAIN}
                     shouldPlay={isPlaying}
                     onPlaybackStatusUpdate={(status) => {
                         if (status.isLoaded) {

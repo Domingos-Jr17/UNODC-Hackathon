@@ -79,6 +79,7 @@
         "typescript": "^5.9.3"
     },
     "jest": {
+        "preset": "ts-jest",
         "testEnvironment": "node",
         "collectCoverageFrom": [
             "src/**/*.ts",
@@ -96,6 +97,17 @@
         ],
         "setupFilesAfterEnv": [
             "<rootDir>/tests/setup.ts"
+        ],
+        "moduleFileExtensions": [
+            "ts",
+            "js"
+        ],
+        "transform": {
+            "^.+\\.ts$": "ts-jest"
+        },
+        "testPathIgnorePatterns": [
+            "/node_modules/",
+            "/dist/"
         ]
     },
     "engines": {

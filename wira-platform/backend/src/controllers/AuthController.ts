@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { authLimiter, validateLogin, handleValidationErrors, logger } from '../middleware/security';
+import { logger } from '../middleware/security';
 import { LoginRequest, LoginResponse, JWTayload } from '../types';
 import UserModel from '../models/User';
 

@@ -49,7 +49,7 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       scriptSrc: ["'self'"],
-      imgSrc: ['\\'self\\'', 'data:', 'https:'],
+      imgSrc: ["'self'", 'data:', 'https:'],
       connectSrc: ["'self'"],
       fontSrc: ["'self'"],
       objectSrc: ["'none'"],
@@ -279,11 +279,9 @@ const startServer = (): void => {
       case 'EACCES':
         logger.error(`${bind} requires elevated privileges`)
         process.exit(1)
-        break
       case 'EADDRINUSE':
         logger.error(`${bind} is already in use`)
         process.exit(1)
-        break
       default:
         throw error
     }

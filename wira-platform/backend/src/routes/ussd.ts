@@ -10,17 +10,17 @@ const router = express.Router();
  */
 router.post('/', async (req: Request, res: Response): Promise<void> => {
   try {
-    const { sessionId, serviceCode, phoneNumber, text } = req.body;
-    
+    const { sessionId, serviceCode: _serviceCode, phoneNumber: _phoneNumber, text: _text } = req.body;
+
     // In a real implementation, this would process the USSD request
     // For now, we'll send a mock response
-    
+
     const response = `CON WIRA - Women's Integrated Reintegration Academy
   
 Bem-vinda ao WIRA!
   
 Seu código de acesso (ex: V0042):`;
-    
+
     res.json({
       success: true,
       response,
@@ -40,7 +40,7 @@ Seu código de acesso (ex: V0042):`;
  * GET /api/ussd/status
  * Get USSD service status
  */
-router.get('/status', (req: Request, res: Response): void => {
+router.get('/status', (_req: Request, res: Response): void => {
   res.json({
     success: true,
     service: 'WIRA USSD Service',
@@ -57,7 +57,7 @@ router.get('/status', (req: Request, res: Response): void => {
  * GET /api/sms/status
  * Get SMS service status
  */
-router.get('/sms/status', (req: Request, res: Response): void => {
+router.get('/sms/status', (_req: Request, res: Response): void => {
   res.json({
     success: true,
     service: 'WIRA SMS Service',
@@ -75,7 +75,7 @@ router.get('/sms/status', (req: Request, res: Response): void => {
  */
 router.post('/sms/send', authenticateToken, (req: Request, res: Response): void => {
   const { phoneNumber, message } = req.body;
-  
+
   if (!phoneNumber || !message) {
     res.status(400).json({
       success: false,
@@ -83,10 +83,10 @@ router.post('/sms/send', authenticateToken, (req: Request, res: Response): void 
     });
     return;
   }
-  
+
   // In a real implementation, this would send an actual SMS
   // For now, we'll simulate the response
-  
+
   res.json({
     success: true,
     message: 'SMS sent successfully (mock)',

@@ -1,5 +1,5 @@
-const request = require('supertest');
-const app = require('../../src/index.secure');
+import request from 'supertest';
+import app from '../../src/index.secure';
 
 describe('API Integration Tests', () => {
   let authToken;

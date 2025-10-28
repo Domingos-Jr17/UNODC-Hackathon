@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import { authenticateToken } from '../middleware/security';
 import ProgressController from '../controllers/ProgressController';
 

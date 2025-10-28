@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../types/navigation';
 
-export default function CourseDetailScreen({ navigation, route }) {
+type CourseDetailScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'CourseDetail'>;
+type CourseDetailScreenRouteProp = RouteProp<RootStackParamList, 'CourseDetail'>;
+
+interface CourseDetailScreenProps {
+    route: CourseDetailScreenRouteProp;
+    navigation: CourseDetailScreenNavigationProp;
+}
+
+export default function CourseDetailScreen({ navigation, route }: CourseDetailScreenProps) {
     const { courseId } = route.params;
     const [activeTab, setActiveTab] = useState('modules');
 
@@ -76,14 +87,18 @@ export default function CourseDetailScreen({ navigation, route }) {
         }
     };
 
-    const course = coursesData[courseId] || coursesData.costura;
+    const course = coursesData[courseId as keyof typeof coursesData] || coursesData.costura;
 
     const handleBack = () => {
         navigation.goBack();
     };
 
-    const handleModulePress = (moduleId) => {
-        const module = course.modules.find(m => m.id === moduleId);
+    const handleModulePress = (moduleId: number) => {
+        const module = course.modules.find((m: any) => m.id === moduleId);
+        if (!module) {
+            Alert.alert('Erro', 'Módulo não encontrado.');
+            return;
+        }
         if (module.completed) {
             Alert.alert('Módulo Concluído', 'Você já completou este módulo.');
         } else {
@@ -94,7 +109,7 @@ export default function CourseDetailScreen({ navigation, route }) {
         }
     };
 
-    const handleMaterialDownload = (material) => {
+    const handleMaterialDownload = (material: { id: number, title: string }) => {
         Alert.alert('Download', `Baixando ${material.title}...`);
     };
 
@@ -155,7 +170,7 @@ export default function CourseDetailScreen({ navigation, route }) {
             {/* Content */}
             {activeTab === 'modules' ? (
                 <View style={styles.modulesContainer}>
-                    {course.modules.map(module => (
+                    {course.modules.map((module: any) => (
                         <TouchableOpacity
                             key={module.id}
                             style={styles.moduleCard}
@@ -180,7 +195,7 @@ export default function CourseDetailScreen({ navigation, route }) {
                 </View>
             ) : (
                 <View style={styles.materialsContainer}>
-                    {course.materials.map(material => (
+                    {course.materials.map((material: any) => (
                         <TouchableOpacity
                             key={material.id}
                             style={styles.materialCard}

@@ -26,13 +26,13 @@ class ProgressController {
         progress
       });
     } catch (error) {
-      logger.error('Database error fetching progress', { 
-        error: (error as Error).message, 
-        userCode, 
-        courseId 
+      logger.error('Database error fetching progress', {
+        error: (error as Error).message,
+        userCode,
+        courseId
       });
-      res.status(500).json({ 
-        error: 'Erro no banco de dados' 
+      res.status(500).json({
+        error: 'Erro no banco de dados'
       });
     }
   }
@@ -50,13 +50,13 @@ class ProgressController {
         message: 'Progresso atualizado com sucesso'
       });
     } catch (error) {
-      logger.error('Database error updating progress', { 
-        error: (error as Error).message, 
-        userCode, 
-        courseId 
+      logger.error('Database error updating progress', {
+        error: (error as Error).message,
+        userCode,
+        courseId
       });
-      res.status(500).json({ 
-        error: 'Erro no banco de dados' 
+      res.status(500).json({
+        error: 'Erro no banco de dados'
       });
     }
   }
@@ -64,10 +64,10 @@ class ProgressController {
   static async createProgress(req: Request, res: Response): Promise<void> {
     try {
       const progressData = req.body;
-      
+
       // In a real Prisma implementation, this would be:
       // const progress = await prisma.progress.create({ data: progressData });
-      
+
       // For now, we'll simulate with our ORM-like method
       const progress = await ProgressModel.create(progressData);
 
@@ -77,11 +77,11 @@ class ProgressController {
         message: 'Progresso criado com sucesso'
       });
     } catch (error) {
-      logger.error('Database error creating progress', { 
+      logger.error('Database error creating progress', {
         error: (error as Error).message
       });
-      res.status(500).json({ 
-        error: 'Erro no banco de dados' 
+      res.status(500).json({
+        error: 'Erro no banco de dados'
       });
     }
   }
@@ -96,10 +96,10 @@ class ProgressController {
       //   where: { user_code_course_id: { user_code: userCode, course_id: courseId } }, 
       //   data: updateData 
       // });
-      
+
       // For now, we'll simulate with our ORM-like method
       const progress = await ProgressModel.update(
-        { user_code: userCode, course_id: courseId }, 
+        { user_code: userCode, course_id: courseId },
         updateData
       );
 
@@ -117,13 +117,13 @@ class ProgressController {
         message: 'Progresso atualizado com sucesso'
       });
     } catch (error) {
-      logger.error('Database error updating progress record', { 
+      logger.error('Database error updating progress record', {
         error: (error as Error).message,
         userCode,
         courseId
       });
-      res.status(500).json({ 
-        error: 'Erro no banco de dados' 
+      res.status(500).json({
+        error: 'Erro no banco de dados'
       });
     }
   }
@@ -136,7 +136,7 @@ class ProgressController {
       // await prisma.progress.delete({ 
       //   where: { user_code_course_id: { user_code: userCode, course_id: courseId } } 
       // });
-      
+
       // For now, we'll simulate with our ORM-like method
       await ProgressModel.delete({ user_code: userCode, course_id: courseId });
 
@@ -145,22 +145,22 @@ class ProgressController {
         message: 'Progresso removido com sucesso'
       });
     } catch (error) {
-      logger.error('Database error deleting progress', { 
+      logger.error('Database error deleting progress', {
         error: (error as Error).message,
         userCode,
         courseId
       });
-      res.status(500).json({ 
-        error: 'Erro no banco de dados' 
+      res.status(500).json({
+        error: 'Erro no banco de dados'
       });
     }
   }
 
-  static async getAllProgress(req: Request, res: Response): Promise<void> {
+  static async getAllProgress(_req: Request, res: Response): Promise<void> {
     try {
       // In a real Prisma implementation, this would be:
       // const progressRecords = await prisma.progress.findMany();
-      
+
       // For now, we'll simulate with our ORM-like method
       const progressRecords = await ProgressModel.findMany();
 
@@ -169,11 +169,11 @@ class ProgressController {
         progress: progressRecords
       });
     } catch (error) {
-      logger.error('Database error fetching all progress', { 
+      logger.error('Database error fetching all progress', {
         error: (error as Error).message
       });
-      res.status(500).json({ 
-        error: 'Erro no banco de dados' 
+      res.status(500).json({
+        error: 'Erro no banco de dados'
       });
     }
   }

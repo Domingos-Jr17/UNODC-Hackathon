@@ -443,7 +443,7 @@ class CacheService {
   async mGet<T = unknown>(keys: string[]): Promise<Array<T | null>> {
     try {
       if (!this.isReady()) {
-        return keys.map(() => null)
+        return keys.map((): null => null)
       }
 
       const values = await this.client!.mGet(keys)
@@ -458,7 +458,7 @@ class CacheService {
       })
     } catch (error) {
       logger.error('Batch cache get error', { error: (error as Error).message })
-      return keys.map(() => null)
+      return keys.map((): null => null)
     }
   }
 }
