@@ -11,8 +11,9 @@ import VideoLessonScreen from './src/screens/VideoLessonScreen';
 import QuizScreen from './src/screens/QuizScreen';
 import CertificateScreen from './src/screens/CertificateScreen';
 import JobsMockupScreen from './src/screens/JobsMockupScreen';
+import { RootStackParamList } from './src/types/navigation';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App() {
   return (
@@ -25,42 +26,42 @@ function App() {
         />
         <Stack.Screen
           name="Login"
-          component={LoginScreen}
+          component={LoginScreen as any}
           options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Home"
-          component={HomeScreen}
+          component={HomeScreen as any}
           options={{ headerShown: false }}
         />
         <Stack.Screen
           name="CourseLibrary"
-          component={CourseLibraryScreen}
+          component={CourseLibraryScreen as any}
           options={{ headerShown: false }}
         />
         <Stack.Screen
           name="CourseDetail"
-          component={CourseDetailScreen}
+          component={CourseDetailScreen as any}
           options={{ headerShown: false }}
         />
         <Stack.Screen
           name="VideoLesson"
-          component={VideoLessonScreen}
+          component={VideoLessonScreen as any}
           options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Quiz"
-          component={QuizScreen}
+          component={QuizScreen as any}
           options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Certificate"
-          component={CertificateScreen}
+          component={CertificateScreen as any}
           options={{ headerShown: false }}
         />
         <Stack.Screen
           name="JobsMockup"
-          component={JobsMockupScreen}
+          component={JobsMockupScreen as any}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

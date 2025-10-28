@@ -1,4 +1,4 @@
-import rateLimit from 'express-rate-limit'
+import { default as rateLimit } from 'express-rate-limit'
 import { body, validationResult } from 'express-validator'
 import type { ValidationChain } from 'express-validator'
 import jwt from 'jsonwebtoken'
@@ -33,7 +33,7 @@ const logger = winston.createLogger({
 
 // Rate limiting middleware factory
 const createRateLimit = (windowMs: number, max: number, message: string): express.RequestHandler => {
-  return rateLimit({
+  return (rateLimit as any)({
     windowMs,
     max,
     message: {

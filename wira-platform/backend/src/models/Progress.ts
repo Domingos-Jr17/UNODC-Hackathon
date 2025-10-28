@@ -9,7 +9,7 @@ class ProgressModel {
 
   static async createOrUpdate(userCode: string, courseId: string, progressData: Partial<Progress>): Promise<void> {
     const existing = await this.findByUserAndCourse(userCode, courseId);
-    
+
     if (existing) {
       // Update existing progress
       const query = `
@@ -68,7 +68,7 @@ class ProgressModel {
   static async create(data: Omit<Progress, 'id' | 'last_activity'>): Promise<Progress> {
     // In a real implementation with Prisma, this would be:
     // return await prisma.progress.create({ data });
-    
+
     // For now, we'll simulate the behavior
     const progress: Progress = {
       id: Date.now(),
@@ -78,37 +78,37 @@ class ProgressModel {
       percentage: data.percentage,
       current_module: data.current_module,
       quiz_attempts: data.quiz_attempts,
-      last_quiz_score: data.last_quiz_score,
+      last_quiz_score: data.last_quiz_score || 0,
       last_activity: new Date().toISOString()
     };
-    
+
     return progress;
   }
 
   static async update(
-    where: { user_code: string; course_id: string }, 
+    where: { user_code: string; course_id: string },
     data: Partial<Omit<Progress, 'id' | 'user_code' | 'course_id' | 'last_activity'>>
   ): Promise<Progress | null> {
     const updates: string[] = [];
     const values: any[] = [];
-    
+
     Object.entries(data).forEach(([key, value]) => {
       updates.push(`${key} = ?`);
       values.push(value);
     });
-    
+
     if (updates.length === 0) {
       return await this.findByUserAndCourse(where.user_code, where.course_id);
     }
-    
+
     values.push(where.user_code, where.course_id);
-    
+
     const query = `
       UPDATE progress 
       SET ${updates.join(', ')}, last_activity = CURRENT_TIMESTAMP
       WHERE user_code = ? AND course_id = ?
     `;
-    
+
     await run(query, values);
     return await this.findByUserAndCourse(where.user_code, where.course_id);
   }

@@ -4,7 +4,7 @@ import cacheService from '../services/cache';
 import { logger } from '../middleware/security';
 
 class CourseController {
-  static async getAll(req: Request, res: Response): Promise<void> {
+  static async getAll(_req: Request, res: Response): Promise<void> {
     try {
       // Use ORM-like method to find all courses
       const courses = await CourseModel.findMany();
@@ -146,10 +146,10 @@ class CourseController {
   static async create(req: Request, res: Response): Promise<void> {
     try {
       const courseData = req.body;
-      
+
       // In a real Prisma implementation, this would be:
       // const course = await prisma.course.create({ data: courseData });
-      
+
       // For now, we'll simulate with our ORM-like method
       const course = await CourseModel.create(courseData);
 
@@ -176,7 +176,7 @@ class CourseController {
       //   where: { id }, 
       //   data: updateData 
       // });
-      
+
       // For now, we'll simulate with our ORM-like method
       const course = await CourseModel.update({ id }, updateData);
 
@@ -207,7 +207,7 @@ class CourseController {
     try {
       // In a real Prisma implementation, this would be:
       // await prisma.course.delete({ where: { id } });
-      
+
       // For now, we'll simulate with our ORM-like method
       await CourseModel.delete({ id });
 

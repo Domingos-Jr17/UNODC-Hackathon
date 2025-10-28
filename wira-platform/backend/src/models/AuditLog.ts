@@ -68,7 +68,7 @@ class AuditLogModel {
         conditions.push(`${key} = ?`);
         values.push(value);
       });
-      
+
       if (conditions.length > 0) {
         query += ` WHERE ${conditions.join(' AND ')}`;
       }
@@ -93,21 +93,21 @@ class AuditLogModel {
   static async createWithPrisma(data: Omit<AuditLog, 'id' | 'timestamp'>): Promise<AuditLog> {
     // In a real implementation with Prisma, this would be:
     // return await prisma.auditLog.create({ data });
-    
+
     // For now, we'll simulate the behavior
     const auditLog: AuditLog = {
       id: Date.now(),
-      user_code: data.user_code,
+      user_code: data.user_code || 'system', // Provide default for undefined
       action: data.action,
-      table_name: data.table_name,
-      record_id: data.record_id,
-      old_values: data.old_values,
-      new_values: data.new_values,
-      ip_address: data.ip_address,
-      user_agent: data.user_agent,
+      table_name: data.table_name || '',
+      record_id: data.record_id || '',
+      old_values: data.old_values || '',
+      new_values: data.new_values || '',
+      ip_address: data.ip_address || '',
+      user_agent: data.user_agent || '',
       timestamp: new Date().toISOString()
     };
-    
+
     return auditLog;
   }
 
@@ -119,7 +119,7 @@ class AuditLogModel {
       ...args,
       take: 1
     });
-    
+
     return results.length > 0 ? results[0] : null;
   }
 
@@ -133,7 +133,7 @@ class AuditLogModel {
         conditions.push(`${key} = ?`);
         values.push(value);
       });
-      
+
       if (conditions.length > 0) {
         query += ` WHERE ${conditions.join(' AND ')}`;
       }

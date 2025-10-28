@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { PrismaClient } from '@prisma/client'
-import bcrypt from 'bcryptjs'
+// import bcrypt from 'bcryptjs' // Removido pois não está sendo usado
 import winston from 'winston'
 
 // Configure logger
@@ -151,6 +151,7 @@ async function seedCertificates(prisma: PrismaClient) {
 
   const certificates = [
     {
+      id: 'cert-wira-v0031-costura-2025-001',
       anonymous_code: 'V0031',
       course_id: 'costura-001',
       course_title: 'Costura Avançada',

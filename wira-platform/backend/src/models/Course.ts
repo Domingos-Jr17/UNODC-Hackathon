@@ -10,8 +10,12 @@ class CourseModel {
         where: { is_active: true },
         orderBy: { created_at: 'asc' }
       });
-      
-      return courses as CourseInterface[];
+
+      return courses.map(course => ({
+        ...course,
+        created_at: course.created_at.toISOString(),
+        updated_at: course.updated_at?.toISOString()
+      })) as CourseInterface[];
     } catch (error) {
       throw error;
     }
@@ -22,8 +26,14 @@ class CourseModel {
       const course = await prisma.course.findUnique({
         where: { id }
       });
-      
-      return course as CourseInterface | null;
+
+      if (!course) return null;
+
+      return {
+        ...course,
+        created_at: course.created_at.toISOString(),
+        updated_at: course.updated_at?.toISOString()
+      } as CourseInterface;
     } catch (error) {
       throw error;
     }
@@ -324,26 +334,30 @@ class CourseModel {
         data: {
           id: `course-${Date.now()}`,
           title: data.title,
-          description: data.description,
-          instructor: data.instructor,
+          description: data.description || null,
+          instructor: data.instructor || null,
           duration_hours: data.duration_hours,
           modules_count: data.modules_count,
           level: data.level,
-          skills: data.skills,
+          skills: data.skills || null,
           is_active: data.is_active ?? true,
           created_at: new Date(),
           updated_at: new Date()
         }
       });
 
-      return course as CourseInterface;
+      return {
+        ...course,
+        created_at: course.created_at.toISOString(),
+        updated_at: course.updated_at?.toISOString()
+      } as CourseInterface;
     } catch (error) {
       throw error;
     }
   }
 
   static async update(
-    where: { id: string }, 
+    where: { id: string },
     data: Partial<Omit<CourseInterface, 'id' | 'created_at'>>
   ): Promise<CourseInterface | null> {
     try {
@@ -355,7 +369,11 @@ class CourseModel {
         data: updates
       });
 
-      return course as CourseInterface;
+      return {
+        ...course,
+        created_at: course.created_at.toISOString(),
+        updated_at: course.updated_at?.toISOString()
+      } as CourseInterface;
     } catch (error) {
       throw error;
     }

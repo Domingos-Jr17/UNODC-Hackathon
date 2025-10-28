@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-     "baseUrl": ".",
+    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./src/*"
@@ -8,7 +8,9 @@
     },
     "target": "ES2020",
     "module": "commonjs",
-    "lib": ["ES2020"],
+    "lib": [
+      "ES2020"
+    ],
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
@@ -37,15 +39,32 @@
     "emitDecoratorMetadata": true,
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["*"],
-      "@/types/*": ["types/*"],
-      "@/middleware/*": ["middleware/*"],
-      "@/routes/*": ["routes/*"],
-      "@/services/*": ["services/*"],
-      "@/database/*": ["database/*"],
-      "@/utils/*": ["utils/*"]
+      "@/*": [
+        "*"
+      ],
+      "@/types/*": [
+        "types/*"
+      ],
+      "@/middleware/*": [
+        "middleware/*"
+      ],
+      "@/routes/*": [
+        "routes/*"
+      ],
+      "@/services/*": [
+        "services/*"
+      ],
+      "@/database/*": [
+        "database/*"
+      ],
+      "@/utils/*": [
+        "utils/*"
+      ]
     },
-    "typeRoots": ["./node_modules/@types", "./src/types"]
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ]
   },
   "include": [
     "src/**/*"

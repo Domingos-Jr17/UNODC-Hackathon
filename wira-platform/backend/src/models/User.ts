@@ -10,8 +10,17 @@ class UserModel {
       const user = await prisma.user.findUnique({
         where: { anonymous_code: anonymousCode }
       });
-      
-      return user as UserInterface | null;
+
+      if (!user) return null;
+
+      // Converter campos de data para string
+      return {
+        ...user,
+        created_at: user.created_at.toISOString(),
+        updated_at: user.updated_at?.toISOString() || undefined,
+        last_login_at: user.last_login_at?.toISOString() || undefined,
+        locked_until: user.locked_until?.toISOString() || undefined
+      } as UserInterface;
     } catch (error) {
       throw error;
     }
@@ -19,15 +28,16 @@ class UserModel {
 
   static async create(userData: Partial<UserInterface>): Promise<number> {
     try {
-      const encryptedData = encryptionService.encryptUserData(userData);
+      // Criptografar apenas os campos sensíveis
+      const encryptedUserData = encryptionService.encryptUserData(userData);
 
       const user = await prisma.user.create({
         data: {
-          anonymous_code: encryptedData.anonymous_code,
-          real_name: encryptedData.real_name,
-          phone: encryptedData.phone,
-          email: encryptedData.email,
-          ngo_id: encryptedData.ngo_id,
+          anonymous_code: encryptedUserData.anonymous_code as string,
+          real_name: encryptedUserData.real_name || null,
+          phone: encryptedUserData.phone || null,
+          email: encryptedUserData.email || null,
+          ngo_id: userData.ngo_id!,
           created_at: new Date(),
           updated_at: new Date()
         }
@@ -80,7 +90,7 @@ class UserModel {
     }
   }
 
-  static async validateCredentials(anonymousCode: string, password?: string): Promise<UserInterface | null> {
+  static async validateCredentials(anonymousCode: string): Promise<UserInterface | null> {
     return await this.findByAnonymousCode(anonymousCode);
   }
 
@@ -90,8 +100,17 @@ class UserModel {
       const user = await prisma.user.findUnique({
         where
       });
-      
-      return user as UserInterface | null;
+
+      if (!user) return null;
+
+      // Converter campos de data para string
+      return {
+        ...user,
+        created_at: user.created_at.toISOString(),
+        updated_at: user.updated_at?.toISOString() || undefined,
+        last_login_at: user.last_login_at?.toISOString() || undefined,
+        locked_until: user.locked_until?.toISOString() || undefined
+      } as UserInterface;
     } catch (error) {
       throw error;
     }
@@ -102,15 +121,21 @@ class UserModel {
       const users = await prisma.user.findMany({
         where: { is_active: true }
       });
-      
-      return users as UserInterface[];
+
+      return users.map(user => ({
+        ...user,
+        created_at: user.created_at.toISOString(),
+        updated_at: user.updated_at?.toISOString() || undefined,
+        last_login_at: user.last_login_at?.toISOString() || undefined,
+        locked_until: user.locked_until?.toISOString() || undefined
+      })) as UserInterface[];
     } catch (error) {
       throw error;
     }
   }
 
   static async update(
-    where: { anonymous_code: string }, 
+    where: { anonymous_code: string },
     data: Partial<UserInterface>
   ): Promise<UserInterface | null> {
     try {
@@ -119,7 +144,7 @@ class UserModel {
       delete updateData.id;
       delete updateData.anonymous_code;
       delete updateData.created_at;
-      
+
       // Add updated timestamp
       updateData.updated_at = new Date();
 
@@ -128,7 +153,14 @@ class UserModel {
         data: updateData
       });
 
-      return user as UserInterface;
+      // Converter campos de data para string
+      return {
+        ...user,
+        created_at: user.created_at.toISOString(),
+        updated_at: user.updated_at?.toISOString(),
+        last_login_at: user.last_login_at?.toISOString(),
+        locked_until: user.locked_until?.toISOString()
+      } as UserInterface;
     } catch (error) {
       throw error;
     }

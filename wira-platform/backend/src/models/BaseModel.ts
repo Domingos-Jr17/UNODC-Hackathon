@@ -1,5 +1,5 @@
 // BaseModel.ts - Base class for all models
-import { get, all, run } from './database';
+import { get, all, run } from '../database';
 
 class BaseModel {
   static async get<T>(sql: string, params: any[] = []): Promise<T | null> {

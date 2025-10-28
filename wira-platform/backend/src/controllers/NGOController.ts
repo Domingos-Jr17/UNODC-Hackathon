@@ -3,13 +3,13 @@ import { logger } from '../middleware/security';
 import NGOModel from '../models/NGO';
 
 class NGOController {
-  static async getAll(req: Request, res: Response): Promise<void> {
+  static async getAll(_req: Request, res: Response): Promise<void> {
     try {
       // In a real Prisma implementation, this would be:
       // const ngos = await prisma.ngo.findMany({
       //   where: { is_active: true }
       // });
-      
+
       // For now, we'll simulate with our ORM-like method
       const ngos = await NGOModel.findMany();
 
@@ -33,7 +33,7 @@ class NGOController {
       // const ngo = await prisma.ngo.findUnique({
       //   where: { id }
       // });
-      
+
       // For now, we'll simulate with our ORM-like method
       const ngo = await NGOModel.findUnique({ id });
 
@@ -60,10 +60,10 @@ class NGOController {
   static async create(req: Request, res: Response): Promise<void> {
     try {
       const ngoData = req.body;
-      
+
       // In a real Prisma implementation, this would be:
       // const ngo = await prisma.ngo.create({ data: ngoData });
-      
+
       // For now, we'll simulate with our ORM-like method
       const ngo = await NGOModel.createWithPrisma(ngoData);
 
@@ -90,7 +90,7 @@ class NGOController {
       //   where: { id }, 
       //   data: updateData 
       // });
-      
+
       // For now, we'll simulate with our ORM-like method
       const ngo = await NGOModel.updateWithPrisma({ id }, updateData);
 
@@ -124,7 +124,7 @@ class NGOController {
       //   where: { id },
       //   data: { is_active: false }
       // });
-      
+
       // For now, we'll simulate with our ORM-like method
       await NGOModel.deactivate(id);
 
@@ -146,7 +146,7 @@ class NGOController {
     try {
       // In a real Prisma implementation, this would be:
       // await prisma.ngo.delete({ where: { id } });
-      
+
       // For now, we'll simulate with our ORM-like method
       await NGOModel.delete({ id });
 

@@ -14,7 +14,7 @@ class NGOModel {
 
   static async create(ngoData: Partial<NGO>): Promise<string> {
     const id = `ngo-${Date.now()}`;
-    
+
     const query = `
       INSERT INTO ngos (id, name, contact_person, phone, email, address, license_number, created_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
@@ -35,25 +35,25 @@ class NGOModel {
 
   static async update(id: string, ngoData: Partial<NGO>): Promise<void> {
     const updates: string[] = [];
-    const values: any[] = [];
-    
+    const values: (string | number | boolean | null)[] = [];
+
     Object.entries(ngoData).forEach(([key, value]) => {
       if (key !== 'id' && key !== 'created_at') {
         updates.push(`${key} = ?`);
-        values.push(value);
+        values.push(value as string | number | boolean | null);
       }
     });
-    
+
     if (updates.length === 0) return;
-    
+
     values.push(id);
-    
+
     const query = `
-      UPDATE ngos 
+      UPDATE ngos
       SET ${updates.join(', ')}, updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `;
-    
+
     await run(query, values);
   }
 
@@ -78,47 +78,49 @@ class NGOModel {
   static async createWithPrisma(data: Omit<NGO, 'id' | 'created_at' | 'updated_at' | 'is_active'>): Promise<NGO> {
     // In a real implementation with Prisma, this would be:
     // return await prisma.ngo.create({ data });
-    
+
     // For now, we'll simulate the behavior
     const ngo: NGO = {
       id: `ngo-${Date.now()}`,
       name: data.name,
-      contact_person: data.contact_person,
-      phone: data.phone,
-      email: data.email,
-      address: data.address,
-      license_number: data.license_number,
       is_active: true,
       created_at: new Date().toISOString()
     };
-    
+
+    // Add optional fields only if they exist
+    if (data.contact_person) ngo.contact_person = data.contact_person;
+    if (data.phone) ngo.phone = data.phone;
+    if (data.email) ngo.email = data.email;
+    if (data.address) ngo.address = data.address;
+    if (data.license_number) ngo.license_number = data.license_number;
+
     return ngo;
   }
 
   static async updateWithPrisma(
-    where: { id: string }, 
+    where: { id: string },
     data: Partial<Omit<NGO, 'id' | 'created_at' | 'updated_at' | 'is_active'>>
   ): Promise<NGO | null> {
     const updates: string[] = [];
-    const values: any[] = [];
-    
+    const values: (string | number | boolean | null)[] = [];
+
     Object.entries(data).forEach(([key, value]) => {
       updates.push(`${key} = ?`);
-      values.push(value);
+      values.push(value as string | number | boolean | null);
     });
-    
+
     if (updates.length === 0) {
       return await this.findById(where.id);
     }
-    
+
     values.push(where.id);
-    
+
     const query = `
-      UPDATE ngos 
+      UPDATE ngos
       SET ${updates.join(', ')}, updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `;
-    
+
     await run(query, values);
     return await this.findById(where.id);
   }

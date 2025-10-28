@@ -1,4 +1,4 @@
-const encryptionService = require('../../src/services/encryption');
+import encryptionService from '../../src/services/encryption';
 
 describe('Encryption Service', () => {
   describe('encrypt/decrypt', () => {

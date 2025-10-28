@@ -1,7 +1,15 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types/navigation';
 
-export default function CourseLibraryScreen({ navigation }) {
+type CourseLibraryScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'CourseLibrary'>;
+
+interface CourseLibraryScreenProps {
+    navigation: CourseLibraryScreenNavigationProp;
+}
+
+export default function CourseLibraryScreen({ navigation }: CourseLibraryScreenProps) {
     const courses = [
         {
             id: 'costura',
@@ -44,7 +52,7 @@ export default function CourseLibraryScreen({ navigation }) {
         }
     ];
 
-    const handleCoursePress = (courseId) => {
+    const handleCoursePress = (courseId: string) => {
         navigation.navigate('CourseDetail', { courseId });
     };
 
