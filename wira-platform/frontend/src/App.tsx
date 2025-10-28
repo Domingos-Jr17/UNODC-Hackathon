@@ -41,14 +41,14 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <Container maxWidth="xl">
+        
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/active" element={<ActivateUser />} />
             <Route path="/monitor" element={<MonitorProgress />} />
           </Routes>
-        </Container>
+  
       </Router>
     </ThemeProvider>
   
