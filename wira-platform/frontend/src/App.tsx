@@ -5,7 +5,7 @@ import { CssBaseline, Container } from '@mui/material';
 import Dashboard from './components/Dashboard.tsx';
 import ActivateUser from './components/ActivateUser.tsx';
 import MonitorProgress from './components/MonitorProgress.tsx';
-import Login from './components/login.tsx';
+import LoginPage from './components/login.tsx';
 
 // Extend the Material-UI theme interface
 declare module '@mui/material/styles' {
@@ -41,9 +41,9 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <Container maxWidth="xl">
+        <Container>
           <Routes>
-            <Route path="/" element={<Login />} />
+            <Route path="/" element={<LoginPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/active" element={<ActivateUser />} />
             <Route path="/monitor" element={<MonitorProgress />} />
