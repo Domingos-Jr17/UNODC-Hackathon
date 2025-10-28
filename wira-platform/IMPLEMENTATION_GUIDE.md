@@ -280,7 +280,7 @@ interface USSDMenu {
 
 // Key Features Implemented:
 // 1. Interactive USSD menu navigation
-// 2. *130*555# dialing simulation
+// 2. *123# dialing simulation (código oficial)
 // 3. Course access via USSD
 // 4. Progress checking via USSD
 // 5. Certificate verification via USSD
@@ -491,11 +491,11 @@ curl -X POST http://localhost:3000/api/ussd/navigate \
 - [ ] Report generation capabilities
 
 ### USSD Simulation
-- [ ] Interactive menu navigation
-- [ ] Course access via USSD
-- [ ] Progress checking via USSD
-- [ ] Certificate verification via USSD
-- [ ] *130*555# dialing simulation
+- [x] Interactive menu navigation
+- [x] Course access via USSD
+- [x] Progress checking via USSD
+- [x] Certificate verification via USSD
+- [x] *123# dialing simulation (código oficial implementado)
 
 ## 🚀 NEXT STEPS
 

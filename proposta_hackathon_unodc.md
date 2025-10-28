@@ -117,7 +117,9 @@ Desemprego → Vulnerabilidade Econômica → Risco de Retráfico
 📱 "Olá! Bem-vinda ao WIRA.
     Seu código: V0042
     Baixe o app: bit.ly/wira-app
-    Ou acesse: *130*555#"
+    Ou acesse: *123#"
+
+NOTA: Versão original propunha *130*555#, mas implementação final usa *123# como código oficial.
 ```
 
 #### **Dia 2: Primeiro Acesso ao App**
@@ -1214,11 +1216,13 @@ TELA 3: Monitorar Progresso
 
 "Para quem não tem smartphone..."
 
-*130*555#
+*123# (código oficial implementado)
 → "Bem-vinda ao WIRA"
 → "1. Ver meus cursos"
 → "2. Meu progresso"
 → [Navegar pelo menu]
+
+NOTA: Design original propunha *130*555#, mas implementação final adotou *123#.
 
 "Em 30 dias, isso estará funcional com Africa's Talking."
 ```
