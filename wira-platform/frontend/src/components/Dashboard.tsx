@@ -1,7 +1,7 @@
 import { useState} from 'react';
 import { Card, CardContent, Typography, Button, Grid, Box} from '@mui/material';
 import { People, School, TrendingUp, Assessment, Work } from '@mui/icons-material';
-
+import { useNavigate } from 'react-router-dom';
 export default function Dashboard() {
     const [stats] = useState({
         totalUsers: 42,
@@ -29,10 +29,14 @@ export default function Dashboard() {
         { id: 'culinaria', title: 'Culinária Profissional', activeUsers: 18, completionRate: 60 },
         { id: 'agricultura', title: 'Agricultura Sustentável', activeUsers: 8, completionRate: 40 }
     ]);
+     const navigate = useNavigate(); 
 
     const handleActivateUser = () => {
-        // Simular ativação de novo usuário
-        alert('Função de ativação de novo usuário - em desenvolvimento');
+         
+
+    navigate("/active")
+        
+        
     };
 
     const handleGenerateReport = () => {
