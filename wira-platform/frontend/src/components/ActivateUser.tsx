@@ -78,10 +78,10 @@ export default function ActivateUser() {
             {/* renderizar Toaster para os toasts */}
             <Toaster position="top-right" />
             <>
-            <div className="w-full h-auto flex justify-end p-4 border-b border-border">
+            <div className="w-full h-auto flex justify-end p-4">
   <div className="flex gap-4">
     <Button
-      variant="destructive"
+    
       onClick={() => (window.location.href = "/login")}
     >
       Sair
@@ -89,6 +89,7 @@ export default function ActivateUser() {
 
     <Button
       onClick={() => (window.location.href = "/dashboard")}
+      className='bg-white text-black'
     >
       Voltar ao Dashboard
     </Button>

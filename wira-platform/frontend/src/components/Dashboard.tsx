@@ -1,11 +1,12 @@
 import { useState} from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { TypographyH1, TypographyH2, TypographyH4, TypographySmall, TypographyMuted } from '@/components/ui/typography';
 import { Users, GraduationCap, TrendingUp, BarChart3, Briefcase } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { Header } from './header';
+
 export default function Dashboard() {
+    
     const [stats] = useState({
         totalUsers: 42,
         activeUsers: 38,
@@ -32,40 +33,17 @@ export default function Dashboard() {
         { id: 'culinaria', title: 'Culinária Profissional', activeUsers: 18, completionRate: 60 },
         { id: 'agricultura', title: 'Agricultura Sustentável', activeUsers: 8, completionRate: 40 }
     ]);
-     const navigate = useNavigate(); 
-
-    const handleActivateUser = () => {
-         
-
-    navigate("/active")
-        
-        
-    };
-
-    const handleGenerateReport = () => {
-        // Simular geração de relatório
-        alert('Função de geração de relatório - em desenvolvimento');
-    };
-
+    
     return (
-        <div className="p-6 bg-background min-h-screen">
+        <div className=" bg-background min-h-screen">
+            <Header/>
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 p-2 gap-4">
                 <TypographyH1>
                     Dashboard WIRA
                 </TypographyH1>
-
-                <div className="flex flex-wrap gap-2">
-                    <Button onClick={handleGenerateReport}>
-                        Gerar Relatório
-                    </Button>
-
-                    <Button variant="outline" onClick={handleActivateUser}>
-                        Ativar Novo Usuário
-                    </Button>
-                </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6 p-6 ">
                 <Card>
                     <CardContent>
                         <div className="flex items-center gap-2 mb-2">
