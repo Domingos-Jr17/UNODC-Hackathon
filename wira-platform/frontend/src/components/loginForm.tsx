@@ -12,13 +12,13 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useAuth } from '../contexts/AuthContext';
+import { useAuthContext } from '../contexts/AuthContext';
 import { userCodeSchema, sanitizeInput } from '../lib/schemas';
 import { announceToScreenReader } from '../lib/accessibility';
 import { UserCodeFormData } from '../lib/schemas';
 
 export default function Login() {
-  const { login } = useAuth();
+  const { login } = useAuthContext();
   const navigate = useNavigate();
   const location = useLocation();
 

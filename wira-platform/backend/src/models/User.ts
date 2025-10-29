@@ -94,6 +94,63 @@ class UserModel {
     return await this.findByAnonymousCode(anonymousCode);
   }
 
+  // New methods for staff email/password authentication
+  static async findByEmail(email: string): Promise<UserInterface | null> {
+    try {
+      const user = await prisma.user.findFirst({
+        where: {
+          email: email,
+          is_active: true,
+          role: { in: ['STAFF', 'ADMIN'] }
+        }
+      });
+
+      if (!user) return null;
+
+      return {
+        ...user,
+        created_at: user.created_at.toISOString(),
+        updated_at: user.updated_at?.toISOString() || undefined,
+        last_login_at: user.last_login_at?.toISOString() || undefined,
+        locked_until: user.locked_until?.toISOString() || undefined
+      } as UserInterface;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async validateStaffCredentials(email: string, password: string): Promise<UserInterface | null> {
+    try {
+      const user = await this.findByEmail(email);
+      if (!user || !user.password) {
+        return null;
+      }
+
+      // Verify password using bcrypt
+      const bcrypt = require('bcryptjs');
+      const isValidPassword = await bcrypt.compare(password, user.password);
+
+      if (!isValidPassword) {
+        return null;
+      }
+
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async updateLastLogin(anonymousCode: string): Promise<void> {
+    try {
+      await prisma.user.update({
+        where: { anonymous_code: anonymousCode },
+        data: { last_login_at: new Date() }
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // New ORM-like methods using Prisma
   static async findUnique(where: { anonymous_code: string }): Promise<UserInterface | null> {
     try {

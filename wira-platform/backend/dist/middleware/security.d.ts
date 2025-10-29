@@ -7,6 +7,7 @@ export declare const authLimiter: express.RequestHandler<import("express-serve-s
 export declare const generalLimiter: express.RequestHandler<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
 export declare const ussdLimiter: express.RequestHandler<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
 export declare const validateLogin: ValidationChain[];
+export declare const validateStaffLogin: ValidationChain[];
 export declare const validateCertificateGeneration: ValidationChain[];
 export declare const validateQuizSubmission: ValidationChain[];
 export declare const handleValidationErrors: (req: Request, res: Response, next: NextFunction) => void;
@@ -19,6 +20,9 @@ export declare const corsOptions: {
     allowedHeaders: string[];
 };
 export declare const authenticateToken: (req: AuthenticatedRequest, res: Response, next: NextFunction) => void;
+export declare const requireRole: (allowedRoles: string[]) => (req: AuthenticatedRequest, res: Response, next: NextFunction) => void;
+export declare const requireStaffRole: (req: AuthenticatedRequest, res: Response, next: NextFunction) => void;
+export declare const requireAdminRole: (req: AuthenticatedRequest, res: Response, next: NextFunction) => void;
 export declare const sanitizeInput: (req: Request, _res: Response, next: NextFunction) => void;
 export declare const securityHeaders: (_req: Request, res: Response, next: NextFunction) => void;
 export declare const requestId: (req: Request & {

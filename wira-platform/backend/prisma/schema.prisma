@@ -13,10 +13,13 @@ datasource db {
 model User {
   id              Int       @id @default(autoincrement())
   anonymous_code  String    @unique
+  email           String?   @unique
+  password        String?   // Bcrypt hashed (only for STAFF/ADMIN)
+  role            UserRole  @default(VICTIM)
   real_name       String?
   phone           String?
-  email           String?
   ngo_id          String?
+  email_verified  Boolean   @default(false)
   created_at      DateTime  @default(now())
   updated_at      DateTime? @updatedAt
   last_login_at   DateTime?
@@ -27,6 +30,12 @@ model User {
   progresses      Progress[]
   certificates    Certificate[]
   audit_logs      AuditLog[]
+}
+
+enum UserRole {
+  VICTIM
+  STAFF
+  ADMIN
 }
 
 model NGO {
@@ -100,6 +109,7 @@ model Certificate {
 model AuditLog {
   id          Int       @id @default(autoincrement())
   user_code   String?
+  user_id     Int?
   action      String
   table_name  String?
   record_id   String?

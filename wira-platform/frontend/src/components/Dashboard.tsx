@@ -1,4 +1,4 @@
-import { useState, useEffect, memo, useCallback } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { TypographyH1, TypographyH2, TypographyH4, TypographySmall, TypographyMuted } from '@/components/ui/typography';
 import { Users, GraduationCap, TrendingUp, BarChart3, Briefcase } from 'lucide-react';
@@ -85,16 +85,7 @@ function DashboardComponent() {
         loadDashboardData();
     }, []);
 
-    // Funções memoizadas para otimização
-    const handleGenerateReport = useCallback(() => {
-        // Em produção, implementar geração real de relatório
-        console.log('Gerando relatório...');
-    }, []);
-
-    const handleActivateUser = useCallback(() => {
-        // Em produção, implementar ativação real de usuário
-        console.log('Ativando usuário...');
-    }, []);
+    // Funções memoizadas para otimização (removidas unused functions)
     
     return (
         <>

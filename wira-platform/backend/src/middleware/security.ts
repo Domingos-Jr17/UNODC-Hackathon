@@ -85,6 +85,21 @@ export const validateLogin: ValidationChain[] = [
     .withMessage('Código deve ter exatamente 5 caracteres')
 ]
 
+// Validation rules for staff email/password login
+export const validateStaffLogin: ValidationChain[] = [
+  body('email')
+    .isEmail()
+    .withMessage('Email inválido')
+    .normalizeEmail()
+    .isLength({ max: 255 })
+    .withMessage('Email muito longo'),
+  body('password')
+    .isLength({ min: 6 })
+    .withMessage('Senha deve ter pelo menos 6 caracteres')
+    .isLength({ max: 128 })
+    .withMessage('Senha muito longa')
+]
+
 export const validateCertificateGeneration: ValidationChain[] = [
   body('anonymousCode')
     .matches(/^V\d{4}$/i)
@@ -157,24 +172,59 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction): 
   next()
 }
 
-// CORS configuration for development environment
+// Function to generate dynamic CORS origins based on current port
+const generateDynamicOrigins = (port: number): string[] => {
+  const env = process.env.NODE_ENV ?? 'development'
+
+  // In production, use fixed origins
+  if (env === 'production') {
+    return process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : []
+  }
+
+  // In development, generate origins for common frontend ports
+  const dynamicOrigins = [
+    // Always allow the current backend port
+    `http://localhost:${port}`,
+    `http://127.0.0.1:${port}`,
+
+    // Common frontend development ports (expanded range)
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:3002',
+    'http://localhost:5173',  // Vite default
+    'http://localhost:5174',  // Vite alternative
+    'http://localhost:5175',  // Additional Vite port
+    'http://localhost:5176',  // Additional Vite port
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:3001',
+    'http://127.0.0.1:3002',
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:5174',
+    'http://127.0.0.1:5175',
+    'http://127.0.0.1:5176'
+  ]
+
+  // Allow additional ports from environment variable
+  const additionalPorts = process.env.DEV_FRONTEND_PORTS?.split(',')?.map(p => parseInt(p.trim())) || []
+
+  additionalPorts.forEach(additionalPort => {
+    if (!isNaN(additionalPort)) {
+      dynamicOrigins.push(`http://localhost:${additionalPort}`)
+      dynamicOrigins.push(`http://127.0.0.1:${additionalPort}`)
+    }
+  })
+
+  return [...new Set(dynamicOrigins)] // Remove duplicates
+}
+
+// CORS configuration with dynamic port support
 export const corsOptions = {
   origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void): void {
-    // Development origins for localhost
-    const devOrigins = [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'http://localhost:5173',
-      'http://127.0.0.1:3000',
-      'http://127.0.0.1:3001',
-      'http://127.0.0.1:5173'
-    ]
+    // Get current port from environment or default
+    const currentPort = parseInt(process.env.PORT || '3000')
 
-    // Production origins from environment variable
-    const prodOrigins = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : []
-
-    // Combine all allowed origins
-    const allowedOrigins = process.env.NODE_ENV === 'production' ? prodOrigins : devOrigins
+    // Generate allowed origins based on current port
+    const allowedOrigins = generateDynamicOrigins(currentPort)
 
     // Allow requests with no origin (like mobile apps or curl)
     if (!origin) return callback(null, true)
@@ -184,8 +234,9 @@ export const corsOptions = {
     } else {
       logger.warn('CORS violation', {
         origin,
-        environment: process.env.NODE_ENV ?? 'development',
-        allowedOrigins
+        allowedOrigins: allowedOrigins.slice(0, 5), // Log first 5 origins to avoid spam
+        currentPort,
+        environment: process.env.NODE_ENV || 'development'
       })
       callback(new Error('Não permitido por CORS'))
     }
@@ -235,6 +286,41 @@ export const authenticateToken = (req: AuthenticatedRequest, res: Response, next
     next()
   })
 }
+
+// Role-based authentication middleware
+export const requireRole = (allowedRoles: string[]) => {
+  return (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
+    if (!req.user) {
+      res.status(401).json({
+        error: 'Token de autenticação não fornecido'
+      })
+      return
+    }
+
+    const userRole = (req.user as any).role
+    if (!userRole || !allowedRoles.includes(userRole)) {
+      logger.warn('Unauthorized access attempt', {
+        userRole,
+        allowedRoles,
+        ip: req.ip,
+        route: req.path
+      })
+
+      res.status(403).json({
+        error: 'Acesso não autorizado para esta função'
+      })
+      return
+    }
+
+    next()
+  }
+}
+
+// Middleware for NGO staff routes (STAFF and ADMIN roles)
+export const requireStaffRole = requireRole(['STAFF', 'ADMIN'])
+
+// Middleware for admin only routes
+export const requireAdminRole = requireRole(['ADMIN'])
 
 // Input sanitization middleware
 export const sanitizeInput = (req: Request, _res: Response, next: NextFunction): void => {

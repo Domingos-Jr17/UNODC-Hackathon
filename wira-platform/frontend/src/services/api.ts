@@ -98,6 +98,11 @@ class ApiService {
     return this.post('/api/auth/login', { code });
   }
 
+  // Staff authentication for NGO dashboard
+  async authenticateStaff(email: string, password: string) {
+    return this.post('/api/auth/staff/login', { email, password });
+  }
+
   async getDashboardStats() {
     return this.get('/api/dashboard/stats');
   }
@@ -196,15 +201,19 @@ export const useApi = () => {
 // Tipos para a aplicação
 export interface User {
   id: string;
-  code: string;
+  anonymousCode: string;
+  code?: string; // For backward compatibility
   realName?: string;
+  email?: string;
   ngoId: string;
+  role?: 'VICTIM' | 'STAFF' | 'ADMIN';
   status: 'Ativo' | 'Inativo';
   lastActivity: string;
   coursesCompleted: number;
   certificatesEarned: number;
   dateOfBirth?: string;
   initialSkills?: string;
+  createdAt?: string;
 }
 
 export interface DashboardStats {

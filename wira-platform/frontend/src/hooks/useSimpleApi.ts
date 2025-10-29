@@ -64,7 +64,7 @@ export function useSimpleAuth() {
 export function useSimpleUserActivation() {
   const [loading, setLoading] = useState(false);
 
-  const activateUser = useCallback(async (userData: any) => {
+  const activateUser = useCallback(async (_userData: any) => {
     setLoading(true);
     try {
       // Simular ativação

@@ -1,18 +1,25 @@
 import express from 'express';
-import { 
-  authLimiter, 
-  validateLogin, 
-  handleValidationErrors 
+import {
+  authLimiter,
+  validateLogin,
+  validateStaffLogin,
+  handleValidationErrors
 } from '../middleware/security';
-import AuthController from '../controllers/AuthController';
+import AuthController from '../controllers/authController';
 
 const router = express.Router();
 
 /**
- * Login with anonymous code
+ * Login with anonymous code (for victims)
  * POST /api/auth/login
  */
 router.post('/login', authLimiter, validateLogin, handleValidationErrors, AuthController.login);
+
+/**
+ * Staff login with email/password (for NGO dashboard)
+ * POST /api/auth/staff/login
+ */
+router.post('/staff/login', authLimiter, validateStaffLogin, handleValidationErrors, AuthController.staffLogin);
 
 /**
  * Validate JWT token

@@ -73,11 +73,72 @@ export function useAuth() {
       const response = await apiService.authenticateUser(code);
 
       if (response.data) {
-        const userData: User = response.data;
+        // Transform backend response to frontend User format
+        const backendUser = response.data as any;
+        const userData: User = {
+          id: backendUser.user?.anonymousCode || code,
+          anonymousCode: backendUser.user?.anonymousCode || code,
+          code: backendUser.user?.anonymousCode || code, // backward compatibility
+          realName: backendUser.user?.realName,
+          email: backendUser.user?.email,
+          ngoId: backendUser.user?.ngoId,
+          role: backendUser.user?.role,
+          status: 'Ativo', // Default status
+          lastActivity: new Date().toISOString(),
+          coursesCompleted: 0,
+          certificatesEarned: 0,
+          createdAt: backendUser.user?.createdAt
+        };
+
         setUser(userData);
         setIsAuthenticated(true);
         localStorage.setItem('wira_user', JSON.stringify(userData));
+        localStorage.setItem('wira_token', backendUser.token);
         toast.success(`Bem-vindo(a)! Código ${code} autenticado com sucesso.`);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      if (error instanceof ApiError) {
+        toast.error(error.message);
+      } else {
+        toast.error('Erro ao autenticar. Tente novamente.');
+      }
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Staff login for NGO dashboard
+  const staffLogin = useCallback(async (email: string, password: string): Promise<boolean> => {
+    try {
+      setLoading(true);
+      const response = await apiService.authenticateStaff(email, password);
+
+      if (response.data) {
+        // Transform backend response to frontend User format
+        const backendUser = response.data as any;
+        const userData: User = {
+          id: backendUser.user?.anonymousCode || email,
+          anonymousCode: backendUser.user?.anonymousCode || '',
+          code: backendUser.user?.anonymousCode || '', // backward compatibility
+          realName: backendUser.user?.realName,
+          email: backendUser.user?.email,
+          ngoId: backendUser.user?.ngoId,
+          role: backendUser.user?.role,
+          status: 'Ativo', // Default status
+          lastActivity: new Date().toISOString(),
+          coursesCompleted: 0,
+          certificatesEarned: 0,
+          createdAt: backendUser.user?.createdAt
+        };
+
+        setUser(userData);
+        setIsAuthenticated(true);
+        localStorage.setItem('wira_user', JSON.stringify(userData));
+        localStorage.setItem('wira_token', backendUser.token);
+        toast.success(`Bem-vindo(a) ${backendUser.user?.realName || email}!`);
         return true;
       }
       return false;
@@ -105,6 +166,7 @@ export function useAuth() {
     isAuthenticated,
     loading,
     login,
+    staffLogin,
     logout
   };
 }
@@ -112,7 +174,7 @@ export function useAuth() {
 // Hook para estatísticas do dashboard
 export function useDashboardStats() {
   return useApi<DashboardStats>(
-    () => apiService.getDashboardStats().then(res => res.data!),
+    () => apiService.getDashboardStats().then(res => res.data as DashboardStats),
     []
   );
 }
@@ -120,7 +182,7 @@ export function useDashboardStats() {
 // Hook para atividade recente
 export function useRecentActivity() {
   return useApi<Activity[]>(
-    () => apiService.getRecentActivity().then(res => res.data!),
+    () => apiService.getRecentActivity().then(res => res.data as Activity[]),
     []
   );
 }
@@ -128,7 +190,7 @@ export function useRecentActivity() {
 // Hook para lista de usuários
 export function useUsers(filters?: { status?: string }) {
   return useApi<User[]>(
-    () => apiService.getUsers(filters).then(res => res.data!),
+    () => apiService.getUsers(filters).then(res => res.data as User[]),
     [filters?.status]
   );
 }
@@ -136,7 +198,7 @@ export function useUsers(filters?: { status?: string }) {
 // Hook para detalhes do usuário
 export function useUserDetails(userId: string) {
   return useApi<User>(
-    () => apiService.getUserDetails(userId).then(res => res.data!),
+    () => apiService.getUserDetails(userId).then(res => res.data as User),
     [userId]
   );
 }
@@ -144,7 +206,7 @@ export function useUserDetails(userId: string) {
 // Hook para cursos
 export function useCourses() {
   return useApi<Course[]>(
-    () => apiService.getCourses().then(res => res.data!),
+    () => apiService.getCourses().then(res => res.data as Course[]),
     []
   );
 }

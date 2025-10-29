@@ -1,11 +1,11 @@
 import {Button} from "@/components/ui/button"
 import { useNavigate } from 'react-router-dom';
 import { toast } from "sonner";
-import { useAuth } from '../contexts/AuthContext';
+import { useAuthContext } from '../contexts/AuthContext';
 import { TypographySmall } from '@/components/ui/typography';
 export const Header = () => {
      const navigate = useNavigate();
-     const { user, logout } = useAuth();
+     const { user, logout } = useAuthContext();
 
     const handleActivateUser = () => {
         navigate("/active")

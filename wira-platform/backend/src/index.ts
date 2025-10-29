@@ -4,6 +4,7 @@ import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import { Server } from 'http'
+import detectPort from 'detect-port'
 
 // Import routes and middleware
 import authRoutes from './routes/auth'
@@ -245,56 +246,108 @@ const gracefulShutdown = (signal: string): void => {
   }
 }
 
-// Start server
-const PORT = process.env.PORT ?? 3000
+// Port detection function
+const getAvailablePort = async (preferredPort: number): Promise<number> => {
+  const env = process.env.NODE_ENV ?? 'development'
 
-const startServer = (): void => {
-  server = app.listen(PORT, () => {
-    logger.info('🚀 WIRA Platform TypeScript Server started', {
-      port: PORT,
-      environment: process.env.NODE_ENV ?? 'development',
-      nodeVersion: process.version,
-      platform: process.platform,
-      memory: process.memoryUsage(),
-      typescript: 'enabled'
-    })
+  // Em produção, usar porta fixa configurada
+  if (env === 'production') {
+    return preferredPort
+  }
 
-    logger.info('📊 Service endpoints available', {
-      health: `http://localhost:${PORT}/health`,
-      api: `http://localhost:${PORT}/api`,
-      documentation: `http://localhost:${PORT}/api`
-    })
-  })
+  // Em desenvolvimento/teste, detectar porta disponível
+  try {
+    const availablePort = await detectPort(preferredPort)
 
-  server.on('error', (error: NodeJS.ErrnoException): void => {
-    if (error.syscall !== 'listen') {
-      throw error
+    if (availablePort !== preferredPort) {
+      logger.warn(`⚠️ Porta ${preferredPort} ocupada, usando porta ${availablePort}`, {
+        preferredPort,
+        actualPort: availablePort,
+        environment: env
+      })
     }
 
-    const bind = typeof PORT === 'string'
-      ? 'Pipe ' + PORT
-      : 'Port ' + PORT
+    return availablePort
+  } catch (error) {
+    logger.error('Erro ao detectar porta disponível', {
+      error: (error as Error).message,
+      preferredPort
+    })
+    throw error
+  }
+}
 
-    switch (error.code) {
-      case 'EACCES':
-        logger.error(`${bind} requires elevated privileges`)
-        process.exit(1)
-      case 'EADDRINUSE':
-        logger.error(`${bind} is already in use`)
-        process.exit(1)
-      default:
+// Start server with dynamic port detection
+const startServer = async (): Promise<void> => {
+  try {
+    const preferredPort = parseInt(process.env.PORT ?? '3000')
+    const actualPort = await getAvailablePort(preferredPort)
+
+    server = app.listen(actualPort, () => {
+      const portInfo = {
+        port: actualPort,
+        preferredPort,
+        isDynamic: actualPort !== preferredPort,
+        environment: process.env.NODE_ENV ?? 'development',
+        nodeVersion: process.version,
+        platform: process.platform,
+        memory: process.memoryUsage(),
+        typescript: 'enabled'
+      }
+
+      logger.info('🚀 WIRA Platform TypeScript Server started', portInfo)
+
+      logger.info('📊 Service endpoints available', {
+        health: `http://localhost:${actualPort}/health`,
+        api: `http://localhost:${actualPort}/api`,
+        documentation: `http://localhost:${actualPort}/api`
+      })
+
+      // Mostrar aviso se usando porta dinâmica
+      if (actualPort !== preferredPort) {
+        logger.info('🔧 Frontend pode precisar atualizar a URL da API', {
+          frontendUrl: `http://localhost:${actualPort}`,
+          note: 'Configure VITE_API_BASE_URL se necessário'
+        })
+      }
+    })
+
+    server.on('error', (error: NodeJS.ErrnoException): void => {
+      if (error.syscall !== 'listen') {
         throw error
-    }
-  })
+      }
 
-  server.on('listening', (): void => {
-    const addr = server?.address()
-    const bind = typeof addr === 'string'
-      ? 'pipe ' + addr
-      : 'port ' + (addr as { port: number }).port
+      const bind = typeof actualPort === 'string'
+        ? 'Pipe ' + actualPort
+        : 'Port ' + actualPort
 
-    logger.info(`Listening on ${bind}`)
-  })
+      switch (error.code) {
+        case 'EACCES':
+          logger.error(`${bind} requires elevated privileges`)
+          process.exit(1)
+        case 'EADDRINUSE':
+          logger.error(`${bind} is already in use`)
+          process.exit(1)
+        default:
+          throw error
+      }
+    })
+
+    server.on('listening', (): void => {
+      const addr = server?.address()
+      const bind = typeof addr === 'string'
+        ? 'pipe ' + addr
+        : 'port ' + (addr as { port: number }).port
+
+      logger.info(`Listening on ${bind}`)
+    })
+
+  } catch (error) {
+    logger.error('Failed to start server', {
+      error: (error as Error).message
+    })
+    process.exit(1)
+  }
 }
 
 // Handle graceful shutdown
@@ -321,7 +374,13 @@ process.on('unhandledRejection', (reason: unknown): void => {
 
 // Start the server
 if (require.main === module) {
-  startServer()
+  startServer().catch((error: Error) => {
+    logger.error('Failed to start server from main', {
+      error: error.message,
+      stack: error.stack
+    })
+    process.exit(1)
+  })
 }
 
 export default app

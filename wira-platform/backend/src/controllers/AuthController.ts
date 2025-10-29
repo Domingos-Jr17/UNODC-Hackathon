@@ -57,6 +57,7 @@ class AuthController {
         {
           anonymousCode: user.anonymous_code,
           ngoId: user.ngo_id,
+          role: user.role,
           sessionId: Math.random().toString(36).substring(2, 15)
         } as JWTayload,
         jwtSecret,
@@ -74,12 +75,14 @@ class AuthController {
       const safeUser = {
         anonymousCode: user.anonymous_code,
         ngoId: user.ngo_id,
+        role: user.role,
         createdAt: user.created_at
       };
 
       logger.info('Successful login', {
         anonymousCode: normalizedCode,
         ngoId: user.ngo_id,
+        role: user.role,
         ip: req.ip
       });
 
@@ -95,6 +98,114 @@ class AuthController {
       logger.error('Database error during login', {
         error: (error as Error).message,
         anonymousCode: normalizedCode
+      });
+      res.status(500).json({
+        error: 'Erro interno do servidor'
+      });
+    }
+  }
+
+  // New staff login method for email/password authentication
+  static async staffLogin(req: Request, res: Response): Promise<void> {
+    const { email, password } = req.body as { email: string; password: string };
+
+    logger.info('Staff login attempt', {
+      email: email,
+      ip: req.ip,
+      userAgent: req.get('User-Agent')
+    });
+
+    try {
+      // Validate staff credentials using new method
+      const user = await UserModel.validateStaffCredentials(email, password);
+
+      if (!user) {
+        logger.warn('Staff login attempt with invalid credentials', {
+          email: email,
+          ip: req.ip
+        });
+        res.status(401).json({
+          error: 'Email ou senha inválidos'
+        });
+        return;
+      }
+
+      // Check if account is locked
+      if (user.locked_until && new Date(user.locked_until) > new Date()) {
+        logger.warn('Staff login attempt on locked account', {
+          email: email,
+          ip: req.ip
+        });
+        res.status(401).json({
+          error: 'Conta bloqueada. Tente novamente mais tarde.'
+        });
+        return;
+      }
+
+      // Generate JWT token with role information
+      const jwtSecret = process.env.JWT_SECRET;
+      if (!jwtSecret) {
+        logger.error('JWT_SECRET environment variable is not set');
+        res.status(500).json({
+          error: 'Erro interno do servidor'
+        });
+        return;
+      }
+
+      const token = jwt.sign(
+        {
+          anonymousCode: user.anonymous_code,
+          email: user.email,
+          ngoId: user.ngo_id,
+          role: user.role,
+          sessionId: Math.random().toString(36).substring(2, 15)
+        } as JWTayload,
+        jwtSecret,
+        {
+          expiresIn: '24h',
+          issuer: 'wira-platform',
+          audience: 'wira-dashboard'
+        }
+      );
+
+      // Update last login
+      await UserModel.updateLastLogin(user.anonymous_code);
+
+      // Remove sensitive data from response
+      const safeUser = {
+        anonymousCode: user.anonymous_code,
+        ngoId: user.ngo_id,
+        role: user.role,
+        createdAt: user.created_at
+      };
+
+      // Only include email and realName if they exist
+      if (user.email) {
+        (safeUser as any).email = user.email;
+      }
+      if (user.real_name) {
+        (safeUser as any).realName = user.real_name;
+      }
+
+      logger.info('Successful staff login', {
+        email: email,
+        role: user.role,
+        ngoId: user.ngo_id,
+        ip: req.ip
+      });
+
+      const response = {
+        success: true,
+        token,
+        user: safeUser,
+        expiresIn: '24h'
+      } as LoginResponse;
+
+      res.json(response);
+    } catch (error) {
+      logger.error('Database error during staff login', {
+        error: (error as Error).message,
+        email: email
       });
       res.status(500).json({
         error: 'Erro interno do servidor'

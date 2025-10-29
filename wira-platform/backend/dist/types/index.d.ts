@@ -5,7 +5,10 @@ export interface User {
     real_name?: string;
     phone?: string;
     email?: string;
+    password?: string;
     ngo_id: string;
+    role: 'VICTIM' | 'STAFF' | 'ADMIN';
+    email_verified: boolean;
     created_at: string;
     updated_at?: string;
     last_login_at?: string;
@@ -101,6 +104,9 @@ export interface LoginResponse {
     user: {
         anonymousCode: string;
         ngoId: string;
+        role?: string | undefined;
+        email?: string | undefined;
+        realName?: string | undefined;
         createdAt: string;
     };
     expiresIn: string;
@@ -108,6 +114,8 @@ export interface LoginResponse {
 export interface JWTayload {
     anonymousCode: string;
     ngoId: string;
+    role?: string;
+    email?: string;
     sessionId: string;
     iat: number;
     exp: number;
@@ -170,6 +178,8 @@ export interface AuthenticatedRequest extends Request {
     user?: {
         anonymousCode: string;
         ngoId: string;
+        role?: string;
+        email?: string;
         sessionId: string;
     };
 }

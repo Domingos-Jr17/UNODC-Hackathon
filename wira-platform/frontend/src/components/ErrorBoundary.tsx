@@ -102,7 +102,7 @@ interface ErrorFallbackProps {
 }
 
 export const DefaultErrorFallback: React.FC<ErrorFallbackProps> = ({
-  error,
+  error: _error,
   resetErrorBoundary
 }) => (
   <Card className="w-full max-w-sm mx-auto">
