@@ -109,13 +109,8 @@ app.get('/health', async (_req: express.Request, res: express.Response): Promise
     }
   }
 
-  // Check Redis if available
-  try {
-    const redisHealth = await cacheService.healthCheck()
-    healthCheck.services.cache = redisHealth.status === 'healthy' ? 'online' : 'offline'
-  } catch {
-    healthCheck.services.cache = 'offline'
-  }
+  // Cache status (Redis disabled)
+  healthCheck.services.cache = 'disabled'
 
   // Check database connection (simplified for TypeScript)
   try {

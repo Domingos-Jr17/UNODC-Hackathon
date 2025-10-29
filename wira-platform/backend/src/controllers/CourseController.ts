@@ -20,7 +20,7 @@ class CourseController {
       // Warm cache with individual courses
       if (courses) {
         courses.forEach(course => {
-          cacheService.set(`course:${course.id}`, course, 1800).catch(err => {
+          cacheService.set(`course:${course.id}`, JSON.stringify(course), 1800).catch(err => {
             logger.error('Failed to warm course cache', { error: (err as Error).message, courseId: course.id });
           });
         });
@@ -78,7 +78,7 @@ class CourseController {
       const modules = await CourseModel.findModulesByCourseId(id);
 
       // Cache the result
-      await cacheService.set(`course:${id}:modules`, modules, 3600);
+      await cacheService.set(`course:${id}:modules`, JSON.stringify(modules), 3600);
 
       res.json({
         success: true,
@@ -110,7 +110,7 @@ class CourseController {
       const quiz = await CourseModel.findQuizByCourseId(id);
 
       // Cache the result
-      await cacheService.set(`course:${id}:quiz`, quiz, 3600);
+      await cacheService.set(`course:${id}:quiz`, JSON.stringify(quiz), 3600);
 
       res.json({
         success: true,

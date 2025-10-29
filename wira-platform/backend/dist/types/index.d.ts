@@ -212,7 +212,7 @@ export interface HealthCheckResponse {
         api: 'online' | 'offline' | 'error';
         ussd: 'online' | 'offline' | 'error';
         database: 'connected' | 'disconnected' | 'error';
-        cache: 'online' | 'offline' | 'error';
+        cache: 'online' | 'offline' | 'error' | 'disabled';
         security: {
             rateLimiting: 'active' | 'inactive';
             encryption: 'enabled' | 'disabled';

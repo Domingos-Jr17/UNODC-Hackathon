@@ -55,7 +55,6 @@
         "express-validator": "^7.0.1",
         "helmet": "^7.0.0",
         "jsonwebtoken": "^9.0.0",
-        "redis": "^4.6.10",
         "rimraf": "^5.0.5",
         "sqlite3": "^5.1.6",
         "winston": "^3.11.0"

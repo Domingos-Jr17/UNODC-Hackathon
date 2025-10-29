@@ -22,8 +22,8 @@ const cacheMiddleware = (ttl: number = 1800) => {
       // Store res.json to intercept response
       const originalJson = res.json;
       res.json = function (data: unknown) {
-        // Cache the response
-        cacheService.set(cacheKey, data, ttl).catch(err => {
+        // Cache the response (convert to JSON string)
+        cacheService.set(cacheKey, JSON.stringify(data), ttl).catch(err => {
           logger.error('Failed to cache response', { error: (err as Error).message, key: cacheKey })
         });
 

@@ -1,4 +1,3 @@
-import { createClient, RedisClientType } from 'redis'
 import winston from 'winston'
 import { Course, Progress, USSDSession, CacheStats, RateLimitResult } from '../types'
 
@@ -20,451 +19,229 @@ const logger = winston.createLogger({
   ]
 })
 
+/**
+ * Simplified CacheService - Redis Disabled
+ *
+ * Service maintains compatibility with existing code while Redis is disabled.
+ * All cache operations return null/false to gracefully fall back to direct database queries.
+ */
 class CacheService {
-  private client: RedisClientType | null = null
-  private isConnected: boolean = false
+  private readonly isRedisEnabled: boolean = false
 
   constructor() {
-    void this.connect()
+    logger.info('CacheService initialized (Redis disabled)')
   }
 
+  // Connection methods (no-op)
   async connect(): Promise<void> {
-    try {
-      const redisUrl = process.env.REDIS_URL ?? 'redis://localhost:6379'
-
-      const clientOptions: { url: string; password?: string } = {
-        url: redisUrl
-      }
-
-      if (process.env.REDIS_PASSWORD) {
-        clientOptions.password = process.env.REDIS_PASSWORD
-      }
-
-      this.client = createClient(clientOptions)
-
-      this.client.on('connect', () => {
-        logger.info('Redis client connected')
-        this.isConnected = true
-      })
-
-      this.client.on('error', (err: Error) => {
-        logger.error('Redis connection error', { error: err.message })
-        this.isConnected = false
-      })
-
-      this.client.on('ready', () => {
-        logger.info('Redis client ready')
-      })
-
-      this.client.on('end', () => {
-        logger.warn('Redis connection ended')
-        this.isConnected = false
-      })
-
-      await this.client.connect()
-    } catch (error) {
-      logger.error('Failed to connect to Redis', { error: (error as Error).message })
-      this.isConnected = false
-    }
+    logger.debug('CacheService.connect() called (Redis disabled)')
+    // No-op - Redis is disabled
   }
 
   async disconnect(): Promise<void> {
-    if (this.client) {
-      await this.client.quit()
-      this.isConnected = false
-    }
+    logger.debug('CacheService.disconnect() called (Redis disabled)')
+    // No-op - Redis is disabled
   }
 
-  isReady(): boolean {
-    return !!(this.isConnected && this.client && this.client.isOpen)
+  // Basic cache operations (no-op)
+  async get(key: string): Promise<string | null> {
+    logger.debug(`CacheService.get() called for key: ${key} (Redis disabled)`)
+    return null
   }
 
-  // Basic cache operations
-  async set<T = unknown>(key: string, value: T, ttl = 3600): Promise<boolean> {
-    try {
-      if (!this.isReady()) {
-        logger.warn('Redis not ready, skipping cache set', { key })
-        return false
-      }
-
-      const serializedValue = JSON.stringify(value)
-      await this.client!.setEx(key, ttl, serializedValue)
-
-      logger.debug('Cache set successfully', { key, ttl })
-      return true
-    } catch (error) {
-      logger.error('Cache set error', { error: (error as Error).message, key })
-      return false
-    }
-  }
-
-  async get<T = unknown>(key: string): Promise<T | null> {
-    try {
-      if (!this.isReady()) {
-        logger.warn('Redis not ready, skipping cache get', { key })
-        return null
-      }
-
-      const value = await this.client!.get(key)
-
-      if (!value) {
-        logger.debug('Cache miss', { key })
-        return null
-      }
-
-      const parsedValue = JSON.parse(value) as T
-      logger.debug('Cache hit', { key })
-      return parsedValue
-    } catch (error) {
-      logger.error('Cache get error', { error: (error as Error).message, key })
-      return null
-    }
+  async set(key: string, _value: string, _expireInSeconds?: number): Promise<boolean> {
+    logger.debug(`CacheService.set() called for key: ${key} (Redis disabled)`)
+    return false
   }
 
   async del(key: string): Promise<boolean> {
-    try {
-      if (!this.isReady()) {
-        logger.warn('Redis not ready, skipping cache delete', { key })
-        return false
-      }
-
-      const result = await this.client!.del(key)
-      logger.debug('Cache deleted', { key, deleted: result > 0 })
-      return result > 0
-    } catch (error) {
-      logger.error('Cache delete error', { error: (error as Error).message, key })
-      return false
-    }
+    logger.debug(`CacheService.del() called for key: ${key} (Redis disabled)`)
+    return false
   }
 
   async exists(key: string): Promise<boolean> {
-    try {
-      if (!this.isReady()) {
-        return false
-      }
+    logger.debug(`CacheService.exists() called for key: ${key} (Redis disabled)`)
+    return false
+  }
 
-      const result = await this.client!.exists(key)
-      return result === 1
-    } catch (error) {
-      logger.error('Cache exists check error', { error: (error as Error).message, key })
-      return false
+  async expire(key: string, seconds: number): Promise<boolean> {
+    logger.debug(`CacheService.expire() called for key: ${key} (Redis disabled)`)
+    return false
+  }
+
+  async ttl(key: string): Promise<number> {
+    logger.debug(`CacheService.ttl() called for key: ${key} (Redis disabled)`)
+    return -1
+  }
+
+  // Hash operations (no-op)
+  async hGet(key: string, field: string): Promise<string | null> {
+    logger.debug(`CacheService.hGet() called for key: ${key}, field: ${field} (Redis disabled)`)
+    return null
+  }
+
+  async hSet(key: string, field: string, value: string): Promise<boolean> {
+    logger.debug(`CacheService.hSet() called for key: ${key}, field: ${field} (Redis disabled)`)
+    return false
+  }
+
+  async hDel(key: string, field: string): Promise<boolean> {
+    logger.debug(`CacheService.hDel() called for key: ${key}, field: ${field} (Redis disabled)`)
+    return false
+  }
+
+  async hGetAll(key: string): Promise<Record<string, string>> {
+    logger.debug(`CacheService.hGetAll() called for key: ${key} (Redis disabled)`)
+    return {}
+  }
+
+  // JSON operations (no-op)
+  async getJSON<T>(key: string): Promise<T | null> {
+    logger.debug(`CacheService.getJSON() called for key: ${key} (Redis disabled)`)
+    return null
+  }
+
+  async setJSON<T>(key: string, value: T, expireInSeconds?: number): Promise<boolean> {
+    logger.debug(`CacheService.setJSON() called for key: ${key} (Redis disabled)`)
+    return false
+  }
+
+  // List operations (no-op)
+  async lPush(key: string, ...values: string[]): Promise<number> {
+    logger.debug(`CacheService.lPush() called for key: ${key} (Redis disabled)`)
+    return 0
+  }
+
+  async rPop(key: string): Promise<string | null> {
+    logger.debug(`CacheService.rPop() called for key: ${key} (Redis disabled)`)
+    return null
+  }
+
+  async lRange(key: string, start: number, stop: number): Promise<string[]> {
+    logger.debug(`CacheService.lRange() called for key: ${key} (Redis disabled)`)
+    return []
+  }
+
+  // Set operations (no-op)
+  async sAdd(key: string, ...members: string[]): Promise<number> {
+    logger.debug(`CacheService.sAdd() called for key: ${key} (Redis disabled)`)
+    return 0
+  }
+
+  async sRem(key: string, ...members: string[]): Promise<number> {
+    logger.debug(`CacheService.sRem() called for key: ${key} (Redis disabled)`)
+    return 0
+  }
+
+  async sMembers(key: string): Promise<string[]> {
+    logger.debug(`CacheService.sMembers() called for key: ${key} (Redis disabled)`)
+    return []
+  }
+
+  // Cache-specific methods for WIRA (no-op)
+  async cacheCourse(courseId: string, course: Course, expireInSeconds?: number): Promise<boolean> {
+    logger.debug(`CacheService.cacheCourse() called for courseId: ${courseId} (Redis disabled)`)
+    return false
+  }
+
+  async getCachedCourse(courseId: string): Promise<Course | null> {
+    logger.debug(`CacheService.getCachedCourse() called for courseId: ${courseId} (Redis disabled)`)
+    return null
+  }
+
+  async cacheProgress(userCode: string, courseId: string, progress: Progress, expireInSeconds?: number): Promise<boolean> {
+    logger.debug(`CacheService.cacheProgress() called for userCode: ${userCode}, courseId: ${courseId} (Redis disabled)`)
+    return false
+  }
+
+  async getCachedProgress(userCode: string, courseId: string): Promise<Progress | null> {
+    logger.debug(`CacheService.getCachedProgress() called for userCode: ${userCode}, courseId: ${courseId} (Redis disabled)`)
+    return null
+  }
+
+  async cacheUSSDSession(sessionId: string, session: USSDSession, expireInSeconds?: number): Promise<boolean> {
+    logger.debug(`CacheService.cacheUSSDSession() called for sessionId: ${sessionId} (Redis disabled)`)
+    return false
+  }
+
+  async getCachedUSSDSession(sessionId: string): Promise<USSDSession | null> {
+    logger.debug(`CacheService.getCachedUSSDSession() called for sessionId: ${sessionId} (Redis disabled)`)
+    return null
+  }
+
+  async invalidateUserCache(userCode: string): Promise<boolean> {
+    logger.debug(`CacheService.invalidateUserCache() called for userCode: ${userCode} (Redis disabled)`)
+    return false
+  }
+
+  async invalidateCourseCache(courseId: string): Promise<boolean> {
+    logger.debug(`CacheService.invalidateCourseCache() called for courseId: ${courseId} (Redis disabled)`)
+    return false
+  }
+
+  async invalidatePattern(pattern: string): Promise<boolean> {
+    logger.debug(`CacheService.invalidatePattern() called for pattern: ${pattern} (Redis disabled)`)
+    return false
+  }
+
+  // Rate limiting (no-op - returns allowed: true)
+  async checkRateLimit(identifier: string, limit: number, windowMs: number): Promise<RateLimitResult> {
+    logger.debug(`CacheService.checkRateLimit() called for identifier: ${identifier} (Redis disabled)`)
+    return {
+      allowed: true,
+      remaining: limit,
+      resetTime: Date.now() + windowMs
     }
   }
 
-  // Hash operations for complex data
-  async hSet(key: string, field: string, value: unknown, ttl = 3600): Promise<boolean> {
-    try {
-      if (!this.isReady()) {
-        return false
-      }
-
-      await this.client!.hSet(key, field, JSON.stringify(value))
-
-      if (ttl > 0) {
-        await this.client!.expire(key, ttl)
-      }
-
-      return true
-    } catch (error) {
-      logger.error('Cache hSet error', { error: (error as Error).message, key, field })
-      return false
+  // Health check
+  async healthCheck(): Promise<{ status: 'healthy' | 'unhealthy'; message: string }> {
+    return {
+      status: 'unhealthy',
+      message: 'Redis cache is disabled'
     }
   }
 
-  async hGet<T = unknown>(key: string, field: string): Promise<T | null> {
-    try {
-      if (!this.isReady()) {
-        return null
-      }
-
-      const value = await this.client!.hGet(key, field)
-      return value ? JSON.parse(value) as T : null
-    } catch (error) {
-      logger.error('Cache hGet error', { error: (error as Error).message, key, field })
-      return null
-    }
-  }
-
-  async hGetAll(key: string): Promise<Record<string, unknown>> {
-    try {
-      if (!this.isReady()) {
-        return {}
-      }
-
-      const hash = await this.client!.hGetAll(key)
-      const parsed: Record<string, unknown> = {}
-
-      for (const [field, value] of Object.entries(hash)) {
-        try {
-          parsed[field] = JSON.parse(value)
-        } catch {
-          parsed[field] = value
-        }
-      }
-
-      return parsed
-    } catch (error) {
-      logger.error('Cache hGetAll error', { error: (error as Error).message, key })
-      return {}
-    }
-  }
-
-  // Cache warming strategies
-  async warmCoursesCache(courses: Course[]): Promise<void> {
-    try {
-      const promises = courses.map(course =>
-        this.set(`course:${course.id}`, course, 1800) // 30 minutes
-      )
-
-      await Promise.all(promises)
-      logger.info('Courses cache warmed', { count: courses.length })
-    } catch (error) {
-      logger.error('Error warming courses cache', { error: (error as Error).message })
-    }
-  }
-
-  async warmUserProgressCache(userCode: string, progressData: Progress[]): Promise<void> {
-    try {
-      await this.set(`progress:${userCode}`, progressData, 600) // 10 minutes
-      logger.debug('User progress cache warmed', { userCode })
-    } catch (error) {
-      logger.error('Error warming user progress cache', { error: (error as Error).message, userCode })
-    }
-  }
-
-  // Cache invalidation
-  async invalidateUserCache(userCode: string): Promise<void> {
-    try {
-      const pattern = `*:${userCode}:*`
-      const keys = await this.client!.keys(pattern)
-
-      if (keys.length > 0) {
-        await this.client!.del(keys)
-        logger.info('User cache invalidated', { userCode, keysDeleted: keys.length })
-      }
-    } catch (error) {
-      logger.error('Error invalidating user cache', { error: (error as Error).message, userCode })
-    }
-  }
-
-  async invalidateCourseCache(courseId: string): Promise<void> {
-    try {
-      const keys = [
-        `course:${courseId}`,
-        `course:${courseId}:modules`,
-        `course:${courseId}:quiz`
-      ]
-
-      await this.client!.del(keys)
-      logger.info('Course cache invalidated', { courseId })
-    } catch (error) {
-      logger.error('Error invalidating course cache', { error: (error as Error).message, courseId })
-    }
-  }
-
-  // USSD session management
-  async setUSSDSession(sessionId: string, sessionData: USSDSession, ttl = 300): Promise<boolean> {
-    return this.hSet(`ussd:${sessionId}`, 'data', sessionData, ttl)
-  }
-
-  async getUSSDSession(sessionId: string): Promise<USSDSession | null> {
-    return this.hGet<USSDSession>(`ussd:${sessionId}`, 'data')
-  }
-
-  async deleteUSSDSession(sessionId: string): Promise<boolean> {
-    return this.del(`ussd:${sessionId}`)
-  }
-
-  // Rate limiting with Redis
-  async checkRateLimit(key: string, limit: number, windowMs: number): Promise<RateLimitResult> {
-    try {
-      if (!this.isReady()) {
-        return { allowed: true, remaining: limit }
-      }
-
-      const current = await this.client!.incr(key)
-
-      if (current === 1) {
-        await this.client!.expire(key, Math.ceil(windowMs / 1000))
-      }
-
-      const ttl = await this.client!.ttl(key)
-      const remaining = Math.max(0, limit - current)
-
-      return {
-        allowed: current <= limit,
-        remaining,
-        resetTime: Date.now() + (ttl * 1000)
-      }
-    } catch (error) {
-      logger.error('Rate limit check error', { error: (error as Error).message, key })
-      return { allowed: true, remaining: limit }
-    }
-  }
-
-  // Statistics and monitoring
+  // Cache statistics
   async getStats(): Promise<CacheStats> {
-    try {
-      if (!this.isReady()) {
-        return { connected: false }
-      }
-
-      const info = await this.client!.info('memory')
-      const keyspace = await this.client!.info('keyspace')
-
-      const stats: CacheStats = {
-        connected: true
-      }
-
-      const memoryInfo = this.parseMemoryInfo(info)
-      if (memoryInfo) {
-        stats.memory = memoryInfo
-      }
-
-      const keyspaceInfo = this.parseKeyspaceInfo(keyspace)
-      if (keyspaceInfo) {
-        stats.keyspace = keyspaceInfo
-      }
-
-      return stats
-    } catch (error) {
-      logger.error('Error getting Redis stats', { error: (error as Error).message })
-      return { connected: false, error: (error as Error).message }
-    }
-  }
-
-  private parseMemoryInfo(info: string): { used: string; peak: string } | undefined {
-    const memory: { used?: string; peak?: string } = {}
-    const lines = info.split('\r\n')
-
-    for (const line of lines) {
-      if (line.startsWith('used_memory_human:')) {
-        memory.used = line.split(':')[1]
-      } else if (line.startsWith('used_memory_peak_human:')) {
-        memory.peak = line.split(':')[1]
-      }
-    }
-
-    return memory.used && memory.peak ? { used: memory.used, peak: memory.peak } : undefined
-  }
-
-  private parseKeyspaceInfo(info: string): Record<string, { keys: number; expires: number }> | undefined {
-    const keyspace: Record<string, { keys: number; expires: number }> = {}
-    const lines = info.split('\r\n')
-
-    for (const line of lines) {
-      if (line.startsWith('db')) {
-        const [db, stats] = line.split(':')
-        const matches = stats.match(/keys=(\d+),expires=(\d+)/)
-        if (matches) {
-          keyspace[db] = {
-            keys: parseInt(matches[1]),
-            expires: parseInt(matches[2])
-          }
-        }
-      }
-    }
-
-    return Object.keys(keyspace).length > 0 ? keyspace : undefined
-  }
-
-  // Health check for Redis
-  async healthCheck(): Promise<{ status: 'healthy' | 'unhealthy'; latency?: number; error?: string }> {
-    try {
-      if (!this.isReady()) {
-        return { status: 'unhealthy', error: 'Redis not connected' }
-      }
-
-      const start = Date.now()
-      await this.client!.ping()
-      const latency = Date.now() - start
-
-      return { status: 'healthy', latency }
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        error: (error as Error).message
+    return {
+      connected: false,
+      memory: {
+        used: '0B',
+        peak: '0B'
       }
     }
   }
 
-  // Cache utilities
-  async clearAll(): Promise<boolean> {
-    try {
-      if (!this.isReady()) {
-        return false
-      }
-
-      await this.client!.flushDb()
-      logger.info('All cache cleared')
-      return true
-    } catch (error) {
-      logger.error('Error clearing cache', { error: (error as Error).message })
-      return false
-    }
+  // Utility methods
+  async flushAll(): Promise<boolean> {
+    logger.debug('CacheService.flushAll() called (Redis disabled)')
+    return false
   }
 
-  async getKeysByPattern(pattern: string): Promise<string[]> {
-    try {
-      if (!this.isReady()) {
-        return []
-      }
-
-      return await this.client!.keys(pattern)
-    } catch (error) {
-      logger.error('Error getting keys by pattern', { error: (error as Error).message, pattern })
-      return []
-    }
+  async ping(): Promise<boolean> {
+    logger.debug('CacheService.ping() called (Redis disabled)')
+    return false
   }
 
-  // Batch operations
-  async mSet(entries: Array<{ key: string; value: unknown; ttl?: number }>): Promise<boolean> {
-    try {
-      if (!this.isReady()) {
-        return false
-      }
-
-      const pipeline = this.client!.multi()
-
-      entries.forEach(({ key, value, ttl }) => {
-        const serializedValue = JSON.stringify(value)
-        pipeline.setEx(key, ttl ?? 3600, serializedValue)
-      })
-
-      await pipeline.exec()
-      logger.debug('Batch cache set successful', { count: entries.length })
-      return true
-    } catch (error) {
-      logger.error('Batch cache set error', { error: (error as Error).message })
-      return false
-    }
+  // Get Redis client info (returns null since Redis is disabled)
+  getClient(): null {
+    return null
   }
 
-  async mGet<T = unknown>(keys: string[]): Promise<Array<T | null>> {
-    try {
-      if (!this.isReady()) {
-        return keys.map((): null => null)
-      }
+  // Check if Redis is connected
+  isRedisConnected(): boolean {
+    return false
+  }
 
-      const values = await this.client!.mGet(keys)
-
-      return values.map(value => {
-        if (!value) return null
-        try {
-          return JSON.parse(value) as T
-        } catch {
-          return value as T
-        }
-      })
-    } catch (error) {
-      logger.error('Batch cache get error', { error: (error as Error).message })
-      return keys.map((): null => null)
-    }
+  // Warm up cache (no-op)
+  async warmupCache(): Promise<void> {
+    logger.debug('CacheService.warmupCache() called (Redis disabled)')
+    // No-op - cache warming is disabled
   }
 }
 
-// Singleton instance
+// Create and export singleton instance
 const cacheService = new CacheService()
 
 export default cacheService
-export { CacheService }
