@@ -82,10 +82,14 @@ export default function StaffLogin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
-      <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md" role="main" aria-labelledby="staff-login-title">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">WIRA Platform</CardTitle>
+          <CardTitle
+            id="staff-login-title"
+            className='flex justify-center text-2xl font-bold'
+          >
+            WIRA Platform
+          </CardTitle>
           <CardDescription>
             Portal da Equipe - ONGs e Staff
           </CardDescription>
@@ -161,6 +165,9 @@ export default function StaffLogin() {
                       {victimForm.formState.errors.code.message}
                     </p>
                   )}
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Códigos válidos para demonstração: V0042, V0038, V0031
+                  </p>
                 </div>
 
                 <Button
@@ -180,6 +187,5 @@ export default function StaffLogin() {
           </p>
         </CardFooter>
       </Card>
-    </div>
   );
 }

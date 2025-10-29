@@ -4,7 +4,7 @@ import { Toaster } from "sonner";
 import Dashboard from './components/Dashboard.tsx';
 import ActivateUser from './components/ActivateUser.tsx';
 import MonitorProgress from './components/MonitorProgress.tsx';
-import LoginPage from './components/loginPage.tsx';
+import StaffLoginPage from './components/StaffLoginPage.tsx';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -22,7 +22,8 @@ function App() {
               <ApiStatusIndicator />
             </div>
             <Routes>
-            <Route path="/" element={<LoginPage />} />
+            <Route path="/" element={<StaffLoginPage />} />
+            <Route path="/staff-login" element={<StaffLoginPage />} />
             <Route path="/dashboard" element={
               <ProtectedRoute>
                 <ErrorBoundary>
