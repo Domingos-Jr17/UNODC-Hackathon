@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Bell,
@@ -21,7 +21,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { useAuthContext } from '@/contexts/AuthContext';
 import { announceToScreenReader } from '@/lib/accessibility';
@@ -52,13 +52,11 @@ export default function Header({ onMenuClick, className }: HeaderProps) {
     announceToScreenReader(`Modo ${!isDarkMode ? 'escuro' : 'claro'} ativado`);
   };
 
-  const userInitials = user?.name
-    ? user.name
-        .split(' ')
-        .map(n => n[0])
-        .join('')
-        .toUpperCase()
+  const userInitials = user?.email
+    ? user.email
+        .split('@')[0]
         .slice(0, 2)
+        .toUpperCase()
     : 'ST';
 
   return (
@@ -68,15 +66,37 @@ export default function Header({ onMenuClick, className }: HeaderProps) {
         <Button
           variant="ghost"
           size="icon"
-          className="lg:hidden"
+          className="lg:hidden flex-shrink-0"
           onClick={onMenuClick}
           aria-label="Toggle menu"
         >
           <Menu className="h-5 w-5" />
         </Button>
 
+        {/* WIRA Branding */}
+        <div className="flex items-center gap-3 flex-shrink-0">
+          <img
+            src="/logo.png"
+            alt="WIRA Platform Logo"
+            className="h-8 w-auto hidden sm:block"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = "/esperan.ico";
+            }}
+          />
+          <img
+            src="/esperan.ico"
+            alt="WIRA Platform Logo"
+            className="h-8 w-8 sm:hidden"
+          />
+          <div className="hidden sm:block">
+            <h1 className="text-lg font-bold text-foreground">WIRA Platform</h1>
+            <p className="text-xs text-muted-foreground">Women's Integrated Reintegration Academy</p>
+          </div>
+        </div>
+
         {/* Search */}
-        <div className="flex-1 max-w-md">
+        <div className="flex-1 max-w-md min-w-0">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -89,11 +109,12 @@ export default function Header({ onMenuClick, className }: HeaderProps) {
         </div>
 
         {/* Right side actions */}
-        <div className="flex items-center gap-2">
-          {/* Dark mode toggle */}
+        <div className="flex items-center gap-1 sm:gap-2">
+          {/* Dark mode toggle - Hidden on smallest screens */}
           <Button
             variant="ghost"
             size="icon"
+            className="hidden sm:flex"
             onClick={toggleDarkMode}
             aria-label="Alternar modo escuro"
           >
@@ -109,7 +130,7 @@ export default function Header({ onMenuClick, className }: HeaderProps) {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="relative">
                 <Bell className="h-4 w-4" />
-                <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs">
+                <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 text-xs">
                   3
                 </Badge>
                 <span className="sr-only">Notificações</span>
@@ -157,10 +178,11 @@ export default function Header({ onMenuClick, className }: HeaderProps) {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* Help */}
+          {/* Help - Hidden on smallest screens */}
           <Button
             variant="ghost"
             size="icon"
+            className="hidden sm:flex"
             aria-label="Ajuda"
           >
             <HelpCircle className="h-4 w-4" />
@@ -171,7 +193,6 @@ export default function Header({ onMenuClick, className }: HeaderProps) {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src={user?.avatar} alt={user?.name} />
                   <AvatarFallback>{userInitials}</AvatarFallback>
                 </Avatar>
               </Button>
@@ -179,7 +200,7 @@ export default function Header({ onMenuClick, className }: HeaderProps) {
             <DropdownMenuContent className="w-56" align="end" forceMount>
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">{user?.name || 'Staff User'}</p>
+                  <p className="text-sm font-medium leading-none">{user?.email?.split('@')[0] || 'Staff User'}</p>
                   <p className="text-xs leading-none text-muted-foreground">
                     {user?.email || 'staff@wira.org'}
                   </p>

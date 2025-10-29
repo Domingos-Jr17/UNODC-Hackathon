@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import MetricCard from '@/components/ui/MetricCard';
-import EmptyState from '@/components/ui/EmptyState';
 import { EmptyReports } from '@/components/ui/EmptyState';
 import { LoadingOverlay } from '@/components/ui/loading-overlay';
 import Layout from './layout/Layout';

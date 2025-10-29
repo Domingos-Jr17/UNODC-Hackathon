@@ -7,6 +7,7 @@ import MonitorProgress from './components/MonitorProgress.tsx';
 import StaffLoginPage from './components/StaffLoginPage.tsx';
 import UsersPage from './components/UsersPage.tsx';
 import ReportsPage from './components/ReportsPage.tsx';
+import CoursesPage from './components/CoursesPage.tsx';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -67,10 +68,7 @@ function App() {
             <Route path="/courses" element={
               <ProtectedRoute>
                 <ErrorBoundary>
-                  <div className="p-6">
-                    <h1 className="text-2xl font-bold">Gestão de Cursos</h1>
-                    <p className="text-muted-foreground">Em desenvolvimento...</p>
-                  </div>
+                  <CoursesPage />
                 </ErrorBoundary>
               </ProtectedRoute>
             } />

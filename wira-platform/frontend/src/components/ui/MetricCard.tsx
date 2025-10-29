@@ -1,4 +1,3 @@
-import React from 'react';
 import { LucideIcon, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -38,17 +37,7 @@ export default function MetricCard({
     }
   };
 
-  const getTrendColor = () => {
-    switch (trend?.type) {
-      case 'increase':
-        return 'text-green-600';
-      case 'decrease':
-        return 'text-red-600';
-      default:
-        return 'text-muted-foreground';
-    }
-  };
-
+  
   const getTrendBgColor = () => {
     switch (trend?.type) {
       case 'increase':

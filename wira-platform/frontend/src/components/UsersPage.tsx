@@ -2,16 +2,14 @@ import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import DataTable from '@/components/ui/DataTable';
 import MetricCard from '@/components/ui/MetricCard';
 import StatusBadge from '@/components/ui/StatusBadge';
-import EmptyState from '@/components/ui/EmptyState';
 import { EmptyUsers } from '@/components/ui/EmptyState';
 import { LoadingOverlay } from '@/components/ui/loading-overlay';
 import Layout from './layout/Layout';
-import { Users, UserPlus, Eye, Download, Filter, Search } from 'lucide-react';
+import { Users, UserPlus, Eye, Download } from 'lucide-react';
 import { getUserProgressStatus } from '@/components/ui/StatusBadge';
 
 interface User {
@@ -114,9 +112,9 @@ export default function UsersPage() {
   const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState<string>('');
-  const [selectedNGO, setSelectedNGO] = useState<string>('');
+  const [searchTerm, _setSearchTerm] = useState('');
+  const [selectedStatus, _setSelectedStatus] = useState<string>('');
+  const [selectedNGO, _setSelectedNGO] = useState<string>('');
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -167,7 +165,7 @@ export default function UsersPage() {
 
   const columns = [
     {
-      key: 'code',
+      key: 'code' as keyof User,
       title: 'Código',
       sortable: true,
       width: '100px',
@@ -178,7 +176,7 @@ export default function UsersPage() {
       )
     },
     {
-      key: 'name',
+      key: 'name' as keyof User,
       title: 'Nome',
       sortable: true,
       filterable: true,
@@ -192,7 +190,7 @@ export default function UsersPage() {
       )
     },
     {
-      key: 'status',
+      key: 'status' as keyof User,
       title: 'Status',
       sortable: true,
       filterable: true,
@@ -202,7 +200,7 @@ export default function UsersPage() {
       )
     },
     {
-      key: 'ngo',
+      key: 'ngo' as keyof User,
       title: 'ONG',
       sortable: true,
       filterable: true,
@@ -212,10 +210,10 @@ export default function UsersPage() {
       )
     },
     {
-      key: 'totalProgress',
+      key: 'totalProgress' as keyof User,
       title: 'Progresso',
       sortable: true,
-      render: (value: number, row: User) => (
+      render: (value: number) => (
         <div className="flex items-center gap-2">
           <div className="flex-1">
             <div className="w-16 h-2 bg-muted rounded-full overflow-hidden">
@@ -234,7 +232,7 @@ export default function UsersPage() {
       )
     },
     {
-      key: 'coursesCompleted',
+      key: 'coursesCompleted' as keyof User,
       title: 'Cursos',
       sortable: true,
       render: (value: number, row: User) => (
@@ -245,7 +243,7 @@ export default function UsersPage() {
       )
     },
     {
-      key: 'lastActivity',
+      key: 'lastActivity' as keyof User,
       title: 'Última Atividade',
       sortable: true,
       render: (value: string) => (

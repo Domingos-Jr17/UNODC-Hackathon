@@ -22,10 +22,7 @@ import {
   ChevronsUpDownIcon,
   Search,
   Filter,
-  MoreHorizontal,
-  ArrowUpDown,
-  ArrowUp,
-  ArrowDown
+  MoreHorizontal
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -402,6 +399,5 @@ function DataTableComponent<T extends Record<string, any>>({
 }
 
 const DataTable = React.memo(DataTableComponent) as typeof DataTableComponent;
-DataTable.displayName = 'DataTable';
 
 export default DataTable;

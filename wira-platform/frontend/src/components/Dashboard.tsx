@@ -1,6 +1,6 @@
 import { useState, useEffect, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { TypographyH4, TypographySmall, TypographyMuted } from '@/components/ui/typography';
+import { TypographySmall, TypographyMuted } from '@/components/ui/typography';
 import { Users, GraduationCap, TrendingUp, BarChart3, Briefcase, Activity } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Layout from './layout/Layout';

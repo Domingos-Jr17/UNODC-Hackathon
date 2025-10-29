@@ -1,11 +1,10 @@
-import React from 'react';
 import { LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
 interface EmptyStateProps {
-  icon: LucideIcon;
+  icon: LucideIcon | React.ComponentType<{ className?: string }>;
   title: string;
   description?: string;
   action?: {
@@ -74,14 +73,17 @@ export default function EmptyState({
   );
 }
 
+// User icon component
+const UsersIcon = ({ className }: { className?: string }) => (
+  <div className={`flex items-center justify-center h-12 w-12 rounded-full bg-muted ${className}`}>
+    <span className="text-2xl">👥</span>
+  </div>
+);
+
 // Predefined empty states for common use cases
 export const EmptyUsers = ({ onAdd }: { onAdd?: () => void }) => (
   <EmptyState
-    icon={() => (
-      <div className="flex items-center justify-center h-12 w-12 rounded-full bg-muted">
-        <span className="text-2xl">👥</span>
-      </div>
-    )}
+    icon={UsersIcon}
     title="Nenhum usuário encontrado"
     description="Comece adicionando um novo usuário à plataforma."
     action={onAdd ? {
@@ -92,13 +94,16 @@ export const EmptyUsers = ({ onAdd }: { onAdd?: () => void }) => (
   />
 );
 
+// Courses icon component
+const CoursesIcon = ({ className }: { className?: string }) => (
+  <div className={`flex items-center justify-center h-12 w-12 rounded-full bg-muted ${className}`}>
+    <span className="text-2xl">📚</span>
+  </div>
+);
+
 export const EmptyCourses = ({ onAdd }: { onAdd?: () => void }) => (
   <EmptyState
-    icon={() => (
-      <div className="flex items-center justify-center h-12 w-12 rounded-full bg-muted">
-        <span className="text-2xl">📚</span>
-      </div>
-    )}
+    icon={CoursesIcon}
     title="Nenhum curso disponível"
     description="Adicione cursos profissionais para ajudar as sobreviventes."
     action={onAdd ? {
@@ -109,13 +114,16 @@ export const EmptyCourses = ({ onAdd }: { onAdd?: () => void }) => (
   />
 );
 
+// Reports icon component
+const ReportsIcon = ({ className }: { className?: string }) => (
+  <div className={`flex items-center justify-center h-12 w-12 rounded-full bg-muted ${className}`}>
+    <span className="text-2xl">📊</span>
+  </div>
+);
+
 export const EmptyReports = ({ onGenerate }: { onGenerate?: () => void }) => (
   <EmptyState
-    icon={() => (
-      <div className="flex items-center justify-center h-12 w-12 rounded-full bg-muted">
-        <span className="text-2xl">📊</span>
-      </div>
-    )}
+    icon={ReportsIcon}
     title="Nenhum relatório gerado"
     description="Gere relatórios para analisar o progresso e impacto da plataforma."
     action={onGenerate ? {
@@ -126,13 +134,16 @@ export const EmptyReports = ({ onGenerate }: { onGenerate?: () => void }) => (
   />
 );
 
+// Search icon component
+const SearchIcon = ({ className }: { className?: string }) => (
+  <div className={`flex items-center justify-center h-12 w-12 rounded-full bg-muted ${className}`}>
+    <span className="text-2xl">🔍</span>
+  </div>
+);
+
 export const EmptySearch = ({ query, onClear }: { query: string; onClear: () => void }) => (
   <EmptyState
-    icon={() => (
-      <div className="flex items-center justify-center h-12 w-12 rounded-full bg-muted">
-        <span className="text-2xl">🔍</span>
-      </div>
-    )}
+    icon={SearchIcon}
     title={`Nenhum resultado para "${query}"`}
     description="Tente ajustar sua busca ou limpar os filtros."
     action={{
@@ -144,13 +155,16 @@ export const EmptySearch = ({ query, onClear }: { query: string; onClear: () => 
   />
 );
 
+// Progress icon component
+const ProgressIcon = ({ className }: { className?: string }) => (
+  <div className={`flex items-center justify-center h-12 w-12 rounded-full bg-muted ${className}`}>
+    <span className="text-2xl">📈</span>
+  </div>
+);
+
 export const EmptyProgress = ({ onStart }: { onStart?: () => void }) => (
   <EmptyState
-    icon={() => (
-      <div className="flex items-center justify-center h-12 w-12 rounded-full bg-muted">
-        <span className="text-2xl">📈</span>
-      </div>
-    )}
+    icon={ProgressIcon}
     title="Acompanhamento de Progresso"
     description="Monitore o progresso dos usuários nos cursos disponíveis."
     action={onStart ? {
