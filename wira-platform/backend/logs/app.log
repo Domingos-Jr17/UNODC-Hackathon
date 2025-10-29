@@ -2738,3 +2738,26 @@
 {"level":"info","message":"Sample data insertion completed","timestamp":"2025-10-29T12:51:43.051Z"}
 {"level":"info","message":"Inserting sample progress data","timestamp":"2025-10-29T12:51:43.051Z"}
 {"level":"info","message":"Sample progress data inserted","timestamp":"2025-10-29T12:51:43.052Z"}
+{"environment":"development","level":"info","message":"Database connected successfully","path":"./data/wira.db","timestamp":"2025-10-29T12:56:52.660Z"}
+{"actualPort":3003,"environment":"development","level":"warn","message":"⚠️ Porta 3000 ocupada, usando porta 3003","preferredPort":3000,"timestamp":"2025-10-29T12:56:52.672Z"}
+{"level":"info","message":"Initializing database schema","timestamp":"2025-10-29T12:56:52.660Z"}
+{"environment":"development","isDynamic":true,"level":"info","memory":{"arrayBuffers":7702738,"external":10865898,"heapTotal":346460160,"heapUsed":214798272,"rss":417513472},"message":"🚀 WIRA Platform TypeScript Server started","nodeVersion":"v24.9.0","platform":"win32","port":3003,"preferredPort":3000,"timestamp":"2025-10-29T12:56:52.675Z","typescript":"enabled"}
+{"api":"http://localhost:3003/api","documentation":"http://localhost:3003/api","health":"http://localhost:3003/health","level":"info","message":"📊 Service endpoints available","timestamp":"2025-10-29T12:56:52.676Z"}
+{"frontendUrl":"http://localhost:3003","level":"info","message":"🔧 Frontend pode precisar atualizar a URL da API","note":"Configure VITE_API_BASE_URL se necessário","timestamp":"2025-10-29T12:56:52.676Z"}
+{"level":"info","message":"Listening on port 3003","timestamp":"2025-10-29T12:56:52.677Z"}
+{"level":"info","message":"Users table created successfully","timestamp":"2025-10-29T12:56:52.679Z"}
+{"level":"info","message":"Progress table created successfully","timestamp":"2025-10-29T12:56:52.679Z"}
+{"level":"info","message":"Certificates table created successfully","timestamp":"2025-10-29T12:56:52.680Z"}
+{"level":"info","message":"Audit logs table created successfully","timestamp":"2025-10-29T12:56:52.680Z"}
+{"level":"info","message":"NGOs table created successfully","timestamp":"2025-10-29T12:56:52.681Z"}
+{"level":"info","message":"Courses table created successfully","timestamp":"2025-10-29T12:56:52.681Z"}
+{"level":"info","message":"Inserting sample data for development","timestamp":"2025-10-29T12:56:53.664Z"}
+{"anonymousCode":"V0042","level":"info","message":"Sample user inserted","timestamp":"2025-10-29T12:56:53.667Z"}
+{"anonymousCode":"V0038","level":"info","message":"Sample user inserted","timestamp":"2025-10-29T12:56:53.668Z"}
+{"anonymousCode":"V0031","level":"info","message":"Sample user inserted","timestamp":"2025-10-29T12:56:53.669Z"}
+{"level":"info","message":"Sample data insertion completed","timestamp":"2025-10-29T12:56:53.669Z"}
+{"level":"info","message":"Inserting sample progress data","timestamp":"2025-10-29T12:56:53.669Z"}
+{"level":"info","message":"Sample progress data inserted","timestamp":"2025-10-29T12:56:53.670Z"}
+{"level":"info","message":"Received SIGINT, closing database connection","timestamp":"2025-10-29T12:56:58.134Z"}
+{"level":"info","message":"Received SIGINT, starting graceful shutdown","timestamp":"2025-10-29T12:56:58.135Z"}
+{"duration":"15ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","statusCode":200,"timestamp":"2025-10-29T13:01:39.447Z","url":"/api/ussd/status","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"}

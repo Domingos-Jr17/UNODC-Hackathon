@@ -9,6 +9,8 @@ const config: Config = {
     "./index.html",
     // This path is crucial for finding classes in your TSX files
     "./src/**/*.{js,ts,jsx,tsx}",
+    // Include public HTML files for USSD demo page
+    "./public/**/*.html",
   ],
   theme: {
   	extend: {
@@ -58,6 +60,20 @@ const config: Config = {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			}
+  		},
+  		keyframes: {
+  			'pulse-slow': {
+  				'0%, 100%': { opacity: '1' },
+  				'50%': { opacity: '0.5' }
+  			},
+  			'typing': {
+  				'0%, 50%': { opacity: '1' },
+  				'51%, 100%': { opacity: '0' }
+  			}
+  		},
+  		animation: {
+  			'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+  			'typing': 'typing 1s infinite'
   		}
   	}
   },

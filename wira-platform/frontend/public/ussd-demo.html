@@ -6,125 +6,62 @@
     <title>WIRA USSD/SMS Demo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        .animate-pulse-slow {
-            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        .phone-screen {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        }
-        .ussd-text {
-            font-family: 'Courier New', monospace;
-            background: #1a202c;
-            color: #68d391;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            min-height: 120px;
-        }
-        .typing-indicator {
-            display: inline-block;
-            width: 8px;
-            height: 20px;
-            background: #68d391;
-            margin-left: 2px;
-            animation: blink 1s infinite;
-        }
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-        .message-bubble {
-            max-width: 70%;
-            word-wrap: break-word;
-        }
-
-        /* Mobile-first optimizations */
-        @media (max-width: 768px) {
-            .container {
-                padding-left: 1rem;
-                padding-right: 1rem;
-                padding-top: 1rem;
-                padding-bottom: 1rem;
-            }
-
-            .phone-screen {
-                padding: 1rem;
-            }
-
-            .ussd-text {
-                min-height: 100px;
-                font-size: 0.75rem;
-            }
-
-            h2 {
-                font-size: 1.25rem;
-            }
-
-            h1 {
-                font-size: 1.5rem;
+    <script>
+        tailwind.config = {
+            darkMode: ["class"],
+            theme: {
+                extend: {
+                    keyframes: {
+                        'pulse-slow': {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.5' }
+                        },
+                        'typing': {
+                            '0%, 50%': { opacity: '1' },
+                            '51%, 100%': { opacity: '0' }
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'typing': 'typing 1s infinite'
+                    }
+                }
             }
         }
-
-        @media (max-width: 640px) {
-            .grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .phone-screen {
-                border-radius: 1rem;
-            }
-        }
-        .message-sent {
-            background: #3182ce;
-            color: white;
-            border-radius: 1rem 1rem 0.25rem 1rem;
-        }
-        .message-received {
-            background: #e2e8f0;
-            color: #1a202c;
-            border-radius: 1rem 1rem 1rem 0.25rem;
-        }
-    </style>
+    </script>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
-    <div class="container mx-auto px-2 py-4">
+    <div class="container mx-auto px-2 py-4 md:px-6 lg:px-8">
         <!-- Header -->
-        <header class="text-center mb-3">
+        <header class="text-center mb-4 md:mb-6">
             <div class="flex justify-between items-center mb-2">
-                <button onclick="window.close()" class="bg-gray-600 hover:bg-gray-700 text-white px-2 py-1 rounded flex items-center space-x-1 text-sm">
-                    <i class="fas fa-arrow-left text-xs"></i>
+                <button onclick="window.close()" class="bg-gray-600 hover:bg-gray-700 text-white px-2 py-1 md:px-3 md:py-2 rounded flex items-center space-x-1 text-sm md:text-base">
+                    <i class="fas fa-arrow-left text-xs md:text-sm"></i>
                     <span>Voltar</span>
                 </button>
                 <div class="flex justify-center space-x-2">
-                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
+                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs md:text-sm">
                         <i class="fas fa-circle text-green-500 text-xs animate-pulse"></i> USSD
                     </span>
-                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
+                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs md:text-sm">
                         <i class="fas fa-sms text-blue-500 text-xs"></i> SMS
                     </span>
                 </div>
             </div>
-            <h1 class="text-2xl font-bold text-gray-800 mb-1">
+            <h1 class="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 mb-1 md:mb-2">
                 <i class="fas fa-mobile-alt text-blue-600"></i> WIRA USSD/SMS
             </h1>
-            <p class="text-gray-600 text-sm">Sistema de Acessibilidade Digital - Moçambique</p>
+            <p class="text-gray-600 text-sm md:text-base">Sistema de Acessibilidade Digital - Moçambique</p>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 max-w-4xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 max-w-4xl xl:max-w-6xl mx-auto">
             <!-- USSD Phone Simulator -->
-            <div class="bg-white rounded-2xl shadow-xl p-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">
+            <div class="bg-white rounded-2xl md:rounded-3xl shadow-xl p-4 md:p-6 lg:p-8">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">
                     <i class="fas fa-phone text-blue-600"></i> Simulador USSD
                 </h2>
 
-                <div class="phone-screen p-4 text-white">
+                <div class="bg-gradient-to-br from-purple-500 to-purple-800 rounded-2xl md:rounded-3xl shadow-2xl p-4 md:p-6 text-white">
                     <!-- Phone Status Bar -->
                     <div class="flex justify-between items-center mb-4 text-sm">
                         <span><i class="fas fa-signal"></i> mCel</span>
@@ -134,66 +71,66 @@
                     </div>
 
                     <!-- USSD Screen -->
-                    <div class="bg-black rounded-lg p-4 mb-4">
+                    <div class="bg-black rounded-lg p-3 md:p-4 mb-4">
                         <div class="text-green-400 text-xs mb-2">USSD</div>
-                        <div id="ussdScreen" class="ussd-text text-sm">
+                        <div id="ussdScreen" class="bg-gray-900 text-green-400 font-mono text-sm p-3 md:p-4 rounded min-h-[100px] md:min-h-[120px]">
                             <div class="animate-pulse-slow">Aguardando comando USSD...</div>
-                            <div class="typing-indicator"></div>
+                            <div class="inline-block w-2 h-5 bg-green-400 ml-1 animate-typing"></div>
                         </div>
                     </div>
 
                     <!-- Phone Dialer -->
-                    <div class="bg-gray-800 rounded-lg p-4">
+                    <div class="bg-gray-800 rounded-lg p-3 md:p-4">
                         <div class="grid grid-cols-3 gap-1 mb-2">
-                            <button onclick="dialUSSD('*')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">*</button>
-                            <button onclick="dialUSSD('#')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">#</button>
-                            <button onclick="sendUSSD()" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded">
-                                <i class="fas fa-paper-plane text-sm"></i>
+                            <button onclick="dialUSSD('*')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-xs md:text-sm transition-colors">*</button>
+                            <button onclick="dialUSSD('#')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-xs md:text-sm transition-colors">#</button>
+                            <button onclick="sendUSSD()" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded transition-colors">
+                                <i class="fas fa-paper-plane text-xs md:text-sm"></i>
                             </button>
                         </div>
                         <div class="grid grid-cols-3 gap-1">
-                            <button onclick="dialUSSD('1')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">1</button>
-                            <button onclick="dialUSSD('2')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">2</button>
-                            <button onclick="dialUSSD('3')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">3</button>
-                            <button onclick="dialUSSD('4')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">4</button>
-                            <button onclick="dialUSSD('5')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">5</button>
-                            <button onclick="dialUSSD('6')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">6</button>
-                            <button onclick="dialUSSD('7')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">7</button>
-                            <button onclick="dialUSSD('8')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">8</button>
-                            <button onclick="dialUSSD('9')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">9</button>
-                            <button onclick="dialUSSD('V')" class="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded font-bold text-sm">V</button>
-                            <button onclick="dialUSSD('0')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-sm">0</button>
-                            <button onclick="clearUSSD()" class="bg-red-600 hover:bg-red-700 text-white p-2 rounded">
-                                <i class="fas fa-backspace text-sm"></i>
+                            <button onclick="dialUSSD('1')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-xs md:text-sm transition-colors">1</button>
+                            <button onclick="dialUSSD('2')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-xs md:text-sm transition-colors">2</button>
+                            <button onclick="dialUSSD('3')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-xs md:text-sm transition-colors">3</button>
+                            <button onclick="dialUSSD('4')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-xs md:text-sm transition-colors">4</button>
+                            <button onclick="dialUSSD('5')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-xs md:text-sm transition-colors">5</button>
+                            <button onclick="dialUSSD('6')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-xs md:text-sm transition-colors">6</button>
+                            <button onclick="dialUSSD('7')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-xs md:text-sm transition-colors">7</button>
+                            <button onclick="dialUSSD('8')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-xs md:text-sm transition-colors">8</button>
+                            <button onclick="dialUSSD('9')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-xs md:text-sm transition-colors">9</button>
+                            <button onclick="dialUSSD('V')" class="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded font-bold text-xs md:text-sm transition-colors">V</button>
+                            <button onclick="dialUSSD('0')" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded text-xs md:text-sm transition-colors">0</button>
+                            <button onclick="clearUSSD()" class="bg-red-600 hover:bg-red-700 text-white p-2 rounded transition-colors">
+                                <i class="fas fa-backspace text-xs md:text-sm"></i>
                             </button>
                         </div>
                         <div class="mt-3 bg-gray-900 rounded p-2 text-center">
-                            <div id="ussdInput" class="text-green-400 font-mono text-sm min-h-[24px]"></div>
+                            <div id="ussdInput" class="text-green-400 font-mono text-xs md:text-sm min-h-[20px] md:min-h-[24px]"></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Quick Actions -->
-                <div class="mt-3 flex justify-between">
-                    <button onclick="startDemoSequence()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">
+                <div class="mt-3 md:mt-4 flex justify-between">
+                    <button onclick="startDemoSequence()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 md:px-4 md:py-2 rounded text-sm md:text-base transition-colors">
                         <i class="fas fa-play text-xs"></i> Demo
                     </button>
-                    <button onclick="resetUSSD()" class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-sm">
+                    <button onclick="resetUSSD()" class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 md:px-4 md:py-2 rounded text-sm md:text-base transition-colors">
                         <i class="fas fa-redo text-xs"></i> Reiniciar
                     </button>
                 </div>
             </div>
 
             <!-- SMS Chat Simulator -->
-            <div class="bg-white rounded-2xl shadow-xl p-4">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">
+            <div class="bg-white rounded-2xl md:rounded-3xl shadow-xl p-3 md:p-6">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">
                     <i class="fas fa-sms text-green-600"></i> Simulador SMS
                 </h2>
 
                 <!-- SMS Chat -->
-                <div class="border-2 border-gray-200 rounded-lg h-64 overflow-y-auto p-3 mb-3 bg-gray-50" id="smsChat">
+                <div class="border-2 border-gray-200 rounded-lg h-48 md:h-64 overflow-y-auto p-3 mb-3 bg-gray-50" id="smsChat">
                     <div class="text-center text-gray-500 text-sm">
-                        <i class="fas fa-comments text-4xl mb-2"></i>
+                        <i class="fas fa-comments text-3xl md:text-4xl mb-2"></i>
                         <p>SMS aparecem aqui...</p>
                     </div>
                 </div>
@@ -204,7 +141,7 @@
                         <i class="fas fa-mobile-alt text-gray-600 mr-1 text-xs"></i>
                         <span class="text-xs text-gray-600">Para: +258 84 123 4567</span>
                     </div>
-                    <div class="flex space-x-1">
+                    <div class="flex space-x-1 md:space-x-2">
                         <input
                             type="text"
                             id="smsInput"
@@ -214,7 +151,7 @@
                         >
                         <button
                             onclick="sendSMS()"
-                            class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-sm"
+                            class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-sm transition-colors"
                         >
                             <i class="fas fa-paper-plane text-xs"></i>
                         </button>
@@ -222,19 +159,19 @@
                 </div>
 
                 <!-- SMS Templates -->
-                <div class="mt-2">
+                <div class="mt-2 md:mt-3">
                     <p class="text-xs text-gray-600 mb-1">Templates:</p>
-                    <div class="grid grid-cols-2 gap-1">
-                        <button onclick="useSMSTemplate('ajuda')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-1 py-1 rounded text-xs">
+                    <div class="grid grid-cols-2 gap-1 md:gap-2">
+                        <button onclick="useSMSTemplate('ajuda')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-2 py-1 rounded text-xs transition-colors">
                             <i class="fas fa-question-circle text-xs"></i> Ajuda
                         </button>
-                        <button onclick="useSMSTemplate('progresso')" class="bg-green-100 hover:bg-green-200 text-green-800 px-1 py-1 rounded text-xs">
+                        <button onclick="useSMSTemplate('progresso')" class="bg-green-100 hover:bg-green-200 text-green-800 px-2 py-1 rounded text-xs transition-colors">
                             <i class="fas fa-chart-line text-xs"></i> Progresso
                         </button>
-                        <button onclick="useSMSTemplate('cursos')" class="bg-purple-100 hover:bg-purple-200 text-purple-800 px-1 py-1 rounded text-xs">
+                        <button onclick="useSMSTemplate('cursos')" class="bg-purple-100 hover:bg-purple-200 text-purple-800 px-2 py-1 rounded text-xs transition-colors">
                             <i class="fas fa-book text-xs"></i> Cursos
                         </button>
-                        <button onclick="useSMSTemplate('senha')" class="bg-red-100 hover:bg-red-200 text-red-800 px-1 py-1 rounded text-xs">
+                        <button onclick="useSMSTemplate('senha')" class="bg-red-100 hover:bg-red-200 text-red-800 px-2 py-1 rounded text-xs transition-colors">
                             <i class="fas fa-key text-xs"></i> Senha
                         </button>
                     </div>
@@ -243,12 +180,12 @@
         </div>
 
         <!-- System Status -->
-        <div class="mt-4 max-w-4xl mx-auto">
-            <div class="bg-white rounded-2xl shadow-xl p-3">
+        <div class="mt-4 md:mt-6 max-w-4xl xl:max-w-6xl mx-auto">
+            <div class="bg-white rounded-2xl md:rounded-3xl shadow-xl p-3 md:p-4">
                 <h3 class="text-sm font-bold text-gray-800 mb-2">
                     <i class="fas fa-server text-purple-600 text-xs"></i> Status
                 </h3>
-                <div class="grid grid-cols-2 gap-2" id="systemStatus">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2" id="systemStatus">
                     <div class="bg-gray-50 rounded p-2">
                         <div class="flex items-center justify-between">
                             <span class="text-xs text-gray-600">USSD</span>
@@ -278,15 +215,15 @@
         </div>
 
         <!-- Instructions -->
-        <div class="mt-3 max-w-4xl mx-auto">
-            <div class="bg-blue-50 border border-blue-200 rounded-lg p-2">
+        <div class="mt-3 md:mt-4 max-w-4xl xl:max-w-6xl mx-auto">
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-2 md:p-4">
                 <h3 class="text-xs font-bold text-blue-800 mb-1">
                     <i class="fas fa-info-circle text-xs"></i> Como Funciona
                 </h3>
                 <div class="grid grid-cols-1 gap-1 text-xs text-blue-800">
                     <div>
                         <h4 class="font-semibold mb-1">📱 USSD (*123#)</h4>
-                        <ul class="space-y-0">
+                        <ul class="space-y-0 ml-4">
                             <li>• Disque *123#</li>
                             <li>• Código V####</li>
                             <li>• Menus numéricos</li>
@@ -328,14 +265,14 @@
             ussdInput = '';
             sessionId = null;
             document.getElementById('ussdInput').textContent = '';
-            document.getElementById('ussdScreen').innerHTML = '<div class="animate-pulse-slow">Aguardando comando USSD...</div><div class="typing-indicator"></div>';
+            document.getElementById('ussdScreen').innerHTML = '<div class="animate-pulse-slow">Aguardando comando USSD...</div><div class="inline-block w-2 h-5 bg-green-400 ml-1 animate-typing"></div>';
         }
 
         async function sendUSSD() {
             if (!ussdInput.trim()) return;
 
             const input = ussdInput;
-            document.getElementById('ussdScreen').innerHTML = `<div class="text-yellow-400">Enviando: ${input}</div><div class="typing-indicator"></div>`;
+            document.getElementById('ussdScreen').innerHTML = `<div class="text-yellow-400">Enviando: ${input}</div><div class="inline-block w-2 h-5 bg-green-400 ml-1 animate-typing"></div>`;
 
             try {
                 const response = await fetch('http://localhost:3000/api/ussd/test', {
@@ -417,7 +354,7 @@
             messageDiv.className = `mb-3 ${type === 'sent' ? 'text-right' : 'text-left'}`;
 
             const bubble = document.createElement('div');
-            bubble.className = `message-bubble ${type === 'sent' ? 'message-sent' : 'message-received'} px-4 py-2 inline-block`;
+            bubble.className = `max-w-[70%] word-wrap break-word ${type === 'sent' ? 'bg-blue-600 text-white rounded-2xl rounded-bl-sm px-4 py-2 inline-block' : 'bg-gray-200 text-gray-900 rounded-2xl rounded-br-sm px-4 py-2 inline-block'}`;
             bubble.textContent = message;
 
             const time = document.createElement('div');
@@ -459,7 +396,7 @@
                 { input: '2', delay: 2000, description: 'Ver progresso nos cursos' },
                 { input: '3', delay: 2000, description: 'Ver certificados' },
                 { input: '0', delay: 2000, description: 'Voltar ao menu principal' },
-                { input: '4', delay: 1500, description: 'Sair do serviço' }
+                { input: '4', delay: 2000, description: 'Sair do serviço' }
             ];
 
             for (let i = 0; i < sequences.length; i++) {
@@ -496,7 +433,6 @@
 
                 document.getElementById('smsStatus').innerHTML = `<span class="text-green-600 font-semibold">Online</span>`;
                 document.getElementById('smsCount').innerHTML = `<span class="text-purple-600 font-semibold">${smsData.totalSent || 0}</span>`;
-
             } catch (error) {
                 document.getElementById('ussdStatus').innerHTML = `<span class="text-red-600 font-semibold">Offline</span>`;
                 document.getElementById('smsStatus').innerHTML = `<span class="text-red-600 font-semibold">Offline</span>`;
