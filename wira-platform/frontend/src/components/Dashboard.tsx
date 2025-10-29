@@ -1,9 +1,11 @@
 import { useState, useEffect, memo } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { TypographyH1, TypographyH2, TypographyH4, TypographySmall, TypographyMuted } from '@/components/ui/typography';
-import { Users, GraduationCap, TrendingUp, BarChart3, Briefcase } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { TypographyH4, TypographySmall, TypographyMuted } from '@/components/ui/typography';
+import { Users, GraduationCap, TrendingUp, BarChart3, Briefcase, Activity } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Header } from './header';
+import Layout from './layout/Layout';
+import MetricCard from './ui/MetricCard';
+import StatusBadge from './ui/StatusBadge';
 import { LoadingOverlay } from '@/components/ui/loading-overlay';
 
 function DashboardComponent() {
@@ -85,177 +87,139 @@ function DashboardComponent() {
         loadDashboardData();
     }, []);
 
-    // Funções memoizadas para otimização (removidas unused functions)
-    
     return (
-        <>
+        <Layout
+            title="Dashboard WIRA"
+            subtitle="Visão geral da plataforma"
+        >
             <LoadingOverlay show={loading} message="Carregando dashboard..." />
-            <div className=" bg-background min-h-screen">
-                <Header/>
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 p-2 gap-4">
-                <TypographyH1>
-                    Dashboard WIRA
-                </TypographyH1>
+
+            {/* Metrics Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+                <MetricCard
+                    title="Usuários Totais"
+                    value={stats.totalUsers}
+                    icon={Users}
+                    trend={{
+                        value: 12,
+                        type: 'increase',
+                        period: 'este mês'
+                    }}
+                />
+                <MetricCard
+                    title="Usuários Ativos"
+                    value={stats.activeUsers}
+                    icon={TrendingUp}
+                    trend={{
+                        value: 8,
+                        type: 'increase',
+                        period: 'esta semana'
+                    }}
+                />
+                <MetricCard
+                    title="Cursos Concluídos"
+                    value={stats.coursesCompleted}
+                    icon={GraduationCap}
+                    trend={{
+                        value: 15,
+                        type: 'increase',
+                        period: 'este mês'
+                    }}
+                />
+                <MetricCard
+                    title="Certificados Emitidos"
+                    value={stats.certificatesIssued}
+                    icon={BarChart3}
+                    description="Certificados válidos"
+                />
+                <MetricCard
+                    title="Tempo Médio de Conclusão"
+                    value={`${stats.averageCompletionTime} dias`}
+                    icon={Briefcase}
+                    trend={{
+                        value: 5,
+                        type: 'decrease',
+                        period: 'vs mês passado'
+                    }}
+                />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6 p-6 ">
-                <Card>
-                    <CardContent>
-                        <div className="flex items-center gap-2 mb-2">
-                            <Users className="w-10 h-10 text-primary mr-1" />
-                            <TypographyH2>
-                                {stats.totalUsers}
-                            </TypographyH2>
-                        </div>
-                        <TypographyMuted>
-                            Usuários Totais
-                        </TypographyMuted>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardContent>
-                        <div className="flex items-center gap-2 mb-2">
-                            <TrendingUp className="w-10 h-10 text-green-600 mr-1" />
-                            <TypographyH2>
-                                {stats.activeUsers}
-                            </TypographyH2>
-                        </div>
-                        <TypographyMuted>
-                            Usuários Ativos
-                        </TypographyMuted>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardContent>
-                        <div className="flex items-center gap-2 mb-2">
-                            <GraduationCap className="w-10 h-10 text-blue-600 mr-1" />
-                            <TypographyH2>
-                                {stats.coursesCompleted}
-                            </TypographyH2>
-                        </div>
-                        <TypographyMuted>
-                            Cursos Concluídos
-                        </TypographyMuted>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardContent>
-                        <div className="flex items-center gap-2 mb-2">
-                            <BarChart3 className="w-10 h-10 text-orange-600 mr-1" />
-                            <TypographyH2>
-                                {stats.certificatesIssued}
-                            </TypographyH2>
-                        </div>
-                        <TypographyMuted>
-                            Certificados Emitidos
-                        </TypographyMuted>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardContent>
-                        <div className="flex items-center gap-2 mb-2">
-                            <Briefcase className="w-10 h-10 text-purple-600 mr-1" />
-                            <TypographyH2>
-                                {stats.averageCompletionTime} dias
-                            </TypographyH2>
-                        </div>
-                        <TypographyMuted>
-                            Tempo Médio de Conclusão
-                        </TypographyMuted>
-                    </CardContent>
-                </Card>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-                <Card>
-                    <CardContent>
-                        <TypographyH4 className="mb-4">
+            {/* Dashboard Content */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Recent Activity */}
+                <Card className="lg:col-span-1">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <Activity className="h-5 w-5" />
                             Atividade Recente
-                        </TypographyH4>
-
-                        <div className="max-h-72 overflow-auto">
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="space-y-3 max-h-80 overflow-auto">
                             {recentActivity.map((activity) => (
-                                <div key={activity.id} className="flex items-center py-2 border-b border-border">
-                                    <TypographySmall className="min-w-24">
-                                        {activity.user}
-                                    </TypographySmall>
-                                    <TypographyMuted className="ml-2 flex-1">
-                                        {activity.action}
-                                    </TypographyMuted>
-                                    <TypographySmall className="ml-auto">
-                                        {activity.time}
-                                    </TypographySmall>
-                                </div>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardContent>
-                        <TypographyH4 className="mb-4">
-                            Usuários Ativos
-                        </TypographyH4>
-
-                        <div className="max-h-72 overflow-auto">
-                            {users.filter(user => user.status === 'Ativo').map((user) => (
-                                <div key={user.id} className="flex items-center py-2 border-b border-border">
-                                    <TypographySmall className="min-w-24">
-                                        {user.code}
-                                    </TypographySmall>
-                                    <TypographyMuted className="ml-2 flex-1">
-                                        {user.name}
-                                    </TypographyMuted>
-                                    <TypographySmall className="ml-auto">
-                                        {user.ngo}
-                                    </TypographySmall>
-                                    <TypographySmall className="ml-4">
-                                        {user.lastActivity}
-                                    </TypographySmall>
-                                </div>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardContent>
-                        <TypographyH4 className="mb-4">
-                            Progresso por Curso
-                        </TypographyH4>
-
-                        <div className="max-h-72 overflow-auto">
-                            {courses.map((course) => (
-                                <div key={course.id} className="mb-4">
-                                    <div className="flex justify-between items-center mb-2">
-                                        <TypographySmall className="min-w-36">
-                                            {course.title}
+                                <div key={activity.id} className="flex items-start gap-3 p-3 rounded-lg border border-border/50 hover:bg-muted/50 transition-colors">
+                                    <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                                        <TypographySmall className="text-primary font-medium">
+                                            {activity.user.slice(-2)}
                                         </TypographySmall>
-                                        <TypographyMuted>
-                                            {course.activeUsers} usuários
-                                        </TypographyMuted>
                                     </div>
-
-                                    <div className="w-full">
-                                        <TypographySmall className="mb-2">
-                                            Taxa de Conclusão
+                                    <div className="flex-1 min-w-0">
+                                        <TypographySmall className="font-medium text-foreground">
+                                            {activity.user}
                                         </TypographySmall>
-                                        <div className="flex items-center">
-                                            <div className="flex-1 h-2 bg-muted rounded-full mr-2">
-                                                <div
-                                                    className={cn(
-                                                        "h-full rounded-full",
-                                                        course.completionRate > 70 ? 'bg-green-500' : 'bg-orange-500'
-                                                    )}
-                                                    style={{ width: `${course.completionRate}%` }}
-                                                />
-                                            </div>
-                                            <TypographySmall>
-                                                {course.completionRate}%
+                                        <TypographyMuted className="text-sm mt-1">
+                                            {activity.action}
+                                        </TypographyMuted>
+                                        <TypographySmall className="text-xs text-muted-foreground mt-1">
+                                            {activity.time}
+                                        </TypographySmall>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Active Users */}
+                <Card className="lg:col-span-2">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <Users className="h-5 w-5" />
+                            Usuários Ativos
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="space-y-3 max-h-80 overflow-auto">
+                            {users.filter(user => user.status === 'Ativo').map((user) => (
+                                <div key={user.id} className="flex items-center justify-between p-3 rounded-lg border border-border/50 hover:bg-muted/50 transition-colors">
+                                    <div className="flex items-center gap-3">
+                                        <div className="flex-shrink-0 w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                                            <TypographySmall className="text-primary font-medium">
+                                                {user.code.slice(-2)}
+                                            </TypographySmall>
+                                        </div>
+                                        <div>
+                                            <TypographySmall className="font-medium text-foreground">
+                                                {user.name}
+                                            </TypographySmall>
+                                            <TypographyMuted className="text-sm">
+                                                {user.code} • {user.ngo}
+                                            </TypographyMuted>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="text-right">
+                                            <TypographySmall className="text-sm">
+                                                {user.coursesCompleted} cursos
+                                            </TypographySmall>
+                                            <TypographySmall className="text-xs text-muted-foreground">
+                                                {user.certificatesEarned} certificados
+                                            </TypographySmall>
+                                        </div>
+                                        <StatusBadge status="active" />
+                                        <div className="text-right">
+                                            <TypographySmall className="text-xs text-muted-foreground">
+                                                {user.lastActivity}
                                             </TypographySmall>
                                         </div>
                                     </div>
@@ -264,9 +228,57 @@ function DashboardComponent() {
                         </div>
                     </CardContent>
                 </Card>
-                 </div>
+
+                {/* Course Progress */}
+                <Card className="lg:col-span-3">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <GraduationCap className="h-5 w-5" />
+                            Progresso por Curso
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {courses.map((course) => (
+                                <div key={course.id} className="space-y-3">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <TypographySmall className="font-medium text-foreground">
+                                                {course.title}
+                                            </TypographySmall>
+                                            <TypographyMuted className="text-sm">
+                                                {course.activeUsers} usuários ativos
+                                            </TypographyMuted>
+                                        </div>
+                                        <StatusBadge
+                                            status={course.completionRate > 70 ? 'success' : course.completionRate > 40 ? 'in-progress' : 'warning'}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <div className="flex justify-between items-center">
+                                            <TypographySmall className="text-sm">Taxa de Conclusão</TypographySmall>
+                                            <TypographySmall className="text-sm font-medium">
+                                                {course.completionRate}%
+                                            </TypographySmall>
+                                        </div>
+                                        <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                                            <div
+                                                className={cn(
+                                                    "h-full rounded-full transition-all duration-500 ease-out",
+                                                    course.completionRate > 70 ? 'bg-green-500' :
+                                                    course.completionRate > 40 ? 'bg-orange-500' : 'bg-red-500'
+                                                )}
+                                                style={{ width: `${course.completionRate}%` }}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
             </div>
-        </>
+        </Layout>
     );
 }
 
