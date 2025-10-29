@@ -2674,3 +2674,67 @@
 {"level":"info","message":"Sample progress data inserted","timestamp":"2025-10-29T10:35:58.629Z"}
 {"duration":"15ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","statusCode":200,"timestamp":"2025-10-29T10:36:14.106Z","url":"/health","userAgent":"curl/8.12.1"}
 {"duration":"7ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","statusCode":200,"timestamp":"2025-10-29T10:36:23.107Z","url":"/api/ussd/test","userAgent":"curl/8.12.1"}
+{"environment":"development","level":"info","message":"Database connected successfully","path":"./data/wira.db","timestamp":"2025-10-29T12:44:48.854Z"}
+{"actualPort":3001,"environment":"development","level":"warn","message":"⚠️ Porta 3000 ocupada, usando porta 3001","preferredPort":3000,"timestamp":"2025-10-29T12:44:48.870Z"}
+{"level":"info","message":"Initializing database schema","timestamp":"2025-10-29T12:44:48.855Z"}
+{"environment":"development","isDynamic":true,"level":"info","memory":{"arrayBuffers":7749419,"external":10912579,"heapTotal":346984448,"heapUsed":218207360,"rss":414527488},"message":"🚀 WIRA Platform TypeScript Server started","nodeVersion":"v24.9.0","platform":"win32","port":3001,"preferredPort":3000,"timestamp":"2025-10-29T12:44:48.872Z","typescript":"enabled"}
+{"api":"http://localhost:3001/api","documentation":"http://localhost:3001/api","health":"http://localhost:3001/health","level":"info","message":"📊 Service endpoints available","timestamp":"2025-10-29T12:44:48.873Z"}
+{"frontendUrl":"http://localhost:3001","level":"info","message":"🔧 Frontend pode precisar atualizar a URL da API","note":"Configure VITE_API_BASE_URL se necessário","timestamp":"2025-10-29T12:44:48.873Z"}
+{"level":"info","message":"Listening on port 3001","timestamp":"2025-10-29T12:44:48.873Z"}
+{"level":"info","message":"Users table created successfully","timestamp":"2025-10-29T12:44:48.875Z"}
+{"level":"info","message":"Certificates table created successfully","timestamp":"2025-10-29T12:44:48.875Z"}
+{"level":"info","message":"Audit logs table created successfully","timestamp":"2025-10-29T12:44:48.875Z"}
+{"level":"info","message":"Progress table created successfully","timestamp":"2025-10-29T12:44:48.876Z"}
+{"level":"info","message":"NGOs table created successfully","timestamp":"2025-10-29T12:44:48.876Z"}
+{"level":"info","message":"Courses table created successfully","timestamp":"2025-10-29T12:44:48.876Z"}
+{"level":"info","message":"Inserting sample data for development","timestamp":"2025-10-29T12:44:49.868Z"}
+{"anonymousCode":"V0042","level":"info","message":"Sample user inserted","timestamp":"2025-10-29T12:44:49.883Z"}
+{"anonymousCode":"V0038","level":"info","message":"Sample user inserted","timestamp":"2025-10-29T12:44:49.884Z"}
+{"anonymousCode":"V0031","level":"info","message":"Sample user inserted","timestamp":"2025-10-29T12:44:49.885Z"}
+{"level":"info","message":"Sample data insertion completed","timestamp":"2025-10-29T12:44:49.885Z"}
+{"level":"info","message":"Inserting sample progress data","timestamp":"2025-10-29T12:44:49.885Z"}
+{"level":"info","message":"Sample progress data inserted","timestamp":"2025-10-29T12:44:49.885Z"}
+{"duration":"4ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","statusCode":200,"timestamp":"2025-10-29T12:44:59.293Z","url":"/health","userAgent":"curl/8.12.1"}
+{"duration":"2ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","statusCode":200,"timestamp":"2025-10-29T12:45:07.384Z","url":"/api/ussd/test","userAgent":"curl/8.12.1"}
+{"environment":"development","level":"info","message":"Database connected successfully","path":"./data/wira.db","timestamp":"2025-10-29T12:47:18.803Z"}
+{"actualPort":3002,"environment":"development","level":"warn","message":"⚠️ Porta 3000 ocupada, usando porta 3002","preferredPort":3000,"timestamp":"2025-10-29T12:47:18.814Z"}
+{"level":"info","message":"Initializing database schema","timestamp":"2025-10-29T12:47:18.805Z"}
+{"environment":"development","isDynamic":true,"level":"info","memory":{"arrayBuffers":7702666,"external":10865826,"heapTotal":344625152,"heapUsed":213828288,"rss":410972160},"message":"🚀 WIRA Platform TypeScript Server started","nodeVersion":"v24.9.0","platform":"win32","port":3002,"preferredPort":3000,"timestamp":"2025-10-29T12:47:18.816Z","typescript":"enabled"}
+{"api":"http://localhost:3002/api","documentation":"http://localhost:3002/api","health":"http://localhost:3002/health","level":"info","message":"📊 Service endpoints available","timestamp":"2025-10-29T12:47:18.817Z"}
+{"frontendUrl":"http://localhost:3002","level":"info","message":"🔧 Frontend pode precisar atualizar a URL da API","note":"Configure VITE_API_BASE_URL se necessário","timestamp":"2025-10-29T12:47:18.818Z"}
+{"level":"info","message":"Listening on port 3002","timestamp":"2025-10-29T12:47:18.818Z"}
+{"level":"info","message":"Users table created successfully","timestamp":"2025-10-29T12:47:18.820Z"}
+{"level":"info","message":"Audit logs table created successfully","timestamp":"2025-10-29T12:47:18.820Z"}
+{"level":"info","message":"NGOs table created successfully","timestamp":"2025-10-29T12:47:18.821Z"}
+{"level":"info","message":"Courses table created successfully","timestamp":"2025-10-29T12:47:18.821Z"}
+{"level":"info","message":"Certificates table created successfully","timestamp":"2025-10-29T12:47:18.821Z"}
+{"level":"info","message":"Progress table created successfully","timestamp":"2025-10-29T12:47:18.822Z"}
+{"level":"info","message":"Inserting sample data for development","timestamp":"2025-10-29T12:47:19.820Z"}
+{"anonymousCode":"V0042","level":"info","message":"Sample user inserted","timestamp":"2025-10-29T12:47:19.823Z"}
+{"anonymousCode":"V0038","level":"info","message":"Sample user inserted","timestamp":"2025-10-29T12:47:19.824Z"}
+{"anonymousCode":"V0031","level":"info","message":"Sample user inserted","timestamp":"2025-10-29T12:47:19.825Z"}
+{"level":"info","message":"Sample data insertion completed","timestamp":"2025-10-29T12:47:19.825Z"}
+{"level":"info","message":"Inserting sample progress data","timestamp":"2025-10-29T12:47:19.826Z"}
+{"level":"info","message":"Sample progress data inserted","timestamp":"2025-10-29T12:47:19.826Z"}
+{"level":"info","message":"Received SIGINT, closing database connection","timestamp":"2025-10-29T12:48:00.158Z"}
+{"level":"info","message":"Received SIGINT, starting graceful shutdown","timestamp":"2025-10-29T12:48:00.159Z"}
+{"actualPort":3002,"environment":"development","level":"warn","message":"⚠️ Porta 3000 ocupada, usando porta 3002","preferredPort":3000,"timestamp":"2025-10-29T12:51:42.050Z"}
+{"environment":"development","level":"info","message":"Database connected successfully","path":"./data/wira.db","timestamp":"2025-10-29T12:51:42.041Z"}
+{"environment":"development","isDynamic":true,"level":"info","memory":{"arrayBuffers":7694075,"external":10857235,"heapTotal":350916608,"heapUsed":217772960,"rss":422866944},"message":"🚀 WIRA Platform TypeScript Server started","nodeVersion":"v24.9.0","platform":"win32","port":3002,"preferredPort":3000,"timestamp":"2025-10-29T12:51:42.053Z","typescript":"enabled"}
+{"api":"http://localhost:3002/api","documentation":"http://localhost:3002/api","health":"http://localhost:3002/health","level":"info","message":"📊 Service endpoints available","timestamp":"2025-10-29T12:51:42.053Z"}
+{"frontendUrl":"http://localhost:3002","level":"info","message":"🔧 Frontend pode precisar atualizar a URL da API","note":"Configure VITE_API_BASE_URL se necessário","timestamp":"2025-10-29T12:51:42.054Z"}
+{"level":"info","message":"Listening on port 3002","timestamp":"2025-10-29T12:51:42.054Z"}
+{"level":"info","message":"Initializing database schema","timestamp":"2025-10-29T12:51:42.042Z"}
+{"level":"info","message":"Users table created successfully","timestamp":"2025-10-29T12:51:42.057Z"}
+{"level":"info","message":"Courses table created successfully","timestamp":"2025-10-29T12:51:42.058Z"}
+{"level":"info","message":"Certificates table created successfully","timestamp":"2025-10-29T12:51:42.059Z"}
+{"level":"info","message":"Audit logs table created successfully","timestamp":"2025-10-29T12:51:42.059Z"}
+{"level":"info","message":"Progress table created successfully","timestamp":"2025-10-29T12:51:42.059Z"}
+{"level":"info","message":"NGOs table created successfully","timestamp":"2025-10-29T12:51:42.060Z"}
+{"level":"info","message":"Inserting sample data for development","timestamp":"2025-10-29T12:51:43.044Z"}
+{"anonymousCode":"V0042","level":"info","message":"Sample user inserted","timestamp":"2025-10-29T12:51:43.048Z"}
+{"anonymousCode":"V0038","level":"info","message":"Sample user inserted","timestamp":"2025-10-29T12:51:43.049Z"}
+{"anonymousCode":"V0031","level":"info","message":"Sample user inserted","timestamp":"2025-10-29T12:51:43.050Z"}
+{"level":"info","message":"Sample data insertion completed","timestamp":"2025-10-29T12:51:43.051Z"}
+{"level":"info","message":"Inserting sample progress data","timestamp":"2025-10-29T12:51:43.051Z"}
+{"level":"info","message":"Sample progress data inserted","timestamp":"2025-10-29T12:51:43.052Z"}
