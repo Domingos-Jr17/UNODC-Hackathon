@@ -1,6 +1,10 @@
 // Serviço de API para integração com backend
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+// Importar sistema de detecção de portas dinâmicas
+import { getApiBaseUrl } from '../utils/portDetector';
+
+// URL base dinâmica com fallback estático
+const STATIC_API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
 interface ApiResponse<T = any> {
   data?: T;
@@ -20,7 +24,7 @@ class ApiService {
   private baseURL: string;
   private timeout: number;
 
-  constructor(baseURL: string = API_BASE_URL, timeout: number = 10000) {
+  constructor(baseURL: string = STATIC_API_URL, timeout: number = 10000) {
     this.baseURL = baseURL;
     this.timeout = timeout;
   }
@@ -29,7 +33,20 @@ class ApiService {
     endpoint: string,
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
-    const url = `${this.baseURL}${endpoint}`;
+    // Try to use dynamic port detection for better connection reliability
+    let baseUrl = this.baseURL;
+
+    // If using static URL and it fails, try dynamic detection
+    if (baseUrl === STATIC_API_URL) {
+      try {
+        baseUrl = await getApiBaseUrl();
+        console.log(`🔗 Usando URL dinâmica detectada: ${baseUrl}`);
+      } catch (error) {
+        console.warn(`⚠️ Falha ao detectar porta dinâmica, usando URL estática: ${baseUrl}`, error);
+      }
+    }
+
+    const url = `${baseUrl}${endpoint}`;
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), this.timeout);
 
@@ -162,7 +179,34 @@ class ApiService {
 
   // Health check
   async healthCheck() {
-    return this.get('/health');
+    // For health check, always try dynamic port detection first
+    try {
+      const baseUrl = await getApiBaseUrl();
+      const url = `${baseUrl}/health`;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        signal: AbortSignal.timeout(5000),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        return {
+          data,
+          status: response.status,
+          message: 'Success'
+        };
+      } else {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+    } catch (error) {
+      console.warn('❌ Falha no health check com porta dinâmica, tentando método padrão:', error);
+      // Fallback to standard method
+      return this.get('/health');
+    }
   }
 
   // Testar conexão com API

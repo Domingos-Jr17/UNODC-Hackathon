@@ -238,6 +238,48 @@
         let ussdInput = '';
         let sessionId = null;
         let phoneNumber = '+258840000000';
+        let backendPort = 3000; // Default port, will be updated dynamically
+
+        // Dynamic port detection for backend
+        async function detectBackendPort() {
+            const possiblePorts = [3000, 3001, 3002, 3003, 3004, 3005];
+
+            for (const port of possiblePorts) {
+                try {
+                    const response = await fetch(`http://localhost:${port}/health`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        signal: AbortSignal.timeout(2000)
+                    });
+
+                    if (response.ok) {
+                        console.log(`✅ Backend detectado na porta ${port}`);
+                        backendPort = port;
+                        return port;
+                    }
+                } catch (error) {
+                    console.log(`❌ Porta ${port} não disponível, tentando próxima...`);
+                }
+            }
+
+            throw new Error('Não foi possível detectar o backend WIRA');
+        }
+
+        // Initialize port detection on page load
+        async function initializeBackendConnection() {
+            try {
+                await detectBackendPort();
+                console.log(`🔗 Conectado ao backend na porta ${backendPort}`);
+                updateSystemStatus(); // Update status after detecting port
+            } catch (error) {
+                console.error('❌ Erro ao detectar porta do backend:', error);
+                // Show error in status
+                document.getElementById('ussdStatus').innerHTML = `<span class="text-red-600 font-semibold">Erro</span>`;
+                document.getElementById('smsStatus').innerHTML = `<span class="text-red-600 font-semibold">Erro</span>`;
+            }
+        }
 
         // Update phone time
         function updatePhoneTime() {
@@ -275,7 +317,7 @@
             document.getElementById('ussdScreen').innerHTML = `<div class="text-yellow-400">Enviando: ${input}</div><div class="inline-block w-2 h-5 bg-green-400 ml-1 animate-typing"></div>`;
 
             try {
-                const response = await fetch('http://localhost:3000/api/ussd/test', {
+                const response = await fetch(`http://localhost:${backendPort}/api/ussd/test`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -303,7 +345,7 @@
                     document.getElementById('ussdScreen').innerHTML = '<div class="text-red-400">Erro: ' + (data.error || 'Falha na comunicação') + '</div>';
                 }
             } catch (error) {
-                document.getElementById('ussdScreen').innerHTML = '<div class="text-red-400">Erro de conexão com o servidor</div>';
+                document.getElementById('ussdScreen').innerHTML = '<div class="text-red-400">Erro de conexão com o servidor (porta ' + backendPort + ')</div>';
             }
         }
 
@@ -318,7 +360,7 @@
             input.value = '';
 
             try {
-                const response = await fetch('http://localhost:3000/api/sms/send', {
+                const response = await fetch(`http://localhost:${backendPort}/api/sms/send`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -338,7 +380,7 @@
                     addSMSMessage('❌ Falha ao enviar SMS', 'received');
                 }
             } catch (error) {
-                addSMSMessage('❌ Erro de conexão', 'received');
+                addSMSMessage('❌ Erro de conexão (porta ' + backendPort + ')', 'received');
             }
         }
 
@@ -421,14 +463,14 @@
         async function updateSystemStatus() {
             try {
                 // Check USSD Status
-                const ussdResponse = await fetch('http://localhost:3000/api/ussd/status');
+                const ussdResponse = await fetch(`http://localhost:${backendPort}/api/ussd/status`);
                 const ussdData = await ussdResponse.json();
 
                 document.getElementById('ussdStatus').innerHTML = `<span class="text-green-600 font-semibold">Online</span>`;
                 document.getElementById('sessionsStatus').innerHTML = `<span class="text-blue-600 font-semibold">${ussdData.activeSessions || 0}</span>`;
 
                 // Check SMS Status
-                const smsResponse = await fetch('http://localhost:3000/api/sms/status');
+                const smsResponse = await fetch(`http://localhost:${backendPort}/api/sms/status`);
                 const smsData = await smsResponse.json();
 
                 document.getElementById('smsStatus').innerHTML = `<span class="text-green-600 font-semibold">Online</span>`;
@@ -443,9 +485,14 @@
             updateSystemStatus();
         }
 
+        // Missing function for demo sequence
+        function addMessage(type, message) {
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            updateSystemStatus();
+            initializeBackendConnection(); // First detect backend port
             setInterval(updateSystemStatus, 10000); // Update every 10 seconds
         });
     </script>
