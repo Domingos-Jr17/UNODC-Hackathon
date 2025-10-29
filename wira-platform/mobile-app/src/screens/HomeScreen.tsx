@@ -28,8 +28,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     };
 
     const handleProgress = () => {
-        // Progress screen not implemented yet
-        console.log('Navigate to Progress');
+        navigation.navigate('Progress' as any);
     };
 
     const handleCertificates = () => {

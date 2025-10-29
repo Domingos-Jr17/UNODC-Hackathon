@@ -11,6 +11,7 @@ import VideoLessonScreen from './src/screens/VideoLessonScreen';
 import QuizScreen from './src/screens/QuizScreen';
 import CertificateScreen from './src/screens/CertificateScreen';
 import JobsMockupScreen from './src/screens/JobsMockupScreen';
+import ProgressScreen from './src/screens/ProgressScreen';
 import { RootStackParamList } from './src/types/navigation';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -62,6 +63,11 @@ function App() {
         <Stack.Screen
           name="JobsMockup"
           component={JobsMockupScreen as any}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Progress"
+          component={ProgressScreen as any}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

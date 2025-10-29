@@ -24,6 +24,12 @@ interface QuizData {
     costura: {
         questions: Question[];
     };
+    culinaria: {
+        questions: Question[];
+    };
+    agricultura: {
+        questions: Question[];
+    };
 }
 
 export default function QuizScreen({ route, navigation }: QuizScreenProps) {
@@ -97,10 +103,138 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
                     explanation: 'O ponto de arremate tem múltiplas finalidades: decorar, fortalecer e evitar desfiamento.'
                 }
             ]
+        },
+        culinaria: {
+            questions: [
+                {
+                    id: 1,
+                    question: 'Qual é a temperatura interna segura para cozinhar frango?',
+                    options: [
+                        '60°C',
+                        '74°C',
+                        '80°C',
+                        '85°C'
+                    ],
+                    correctAnswer: 1,
+                    explanation: 'A temperatura interna de 74°C é necessária para garantir que o frango esteja completamente cozido e seguro para consumo.'
+                },
+                {
+                    id: 2,
+                    question: 'Qual técnica de corte é usada para criar cubos uniformes de vegetais?',
+                    options: [
+                        'Julienne',
+                        'Brunoise',
+                        'Macedoine',
+                        'Chiffonade'
+                    ],
+                    correctAnswer: 2,
+                    explanation: 'Brunoise é a técnica de cortar vegetais em cubos pequenos e uniformes (cerca de 3mm), ideal para molhos e guarnições.'
+                },
+                {
+                    id: 3,
+                    question: 'O que significa "mise en place" na cozinha profissional?',
+                    options: [
+                        'Técnica de emulsificação',
+                        'Método de cozimento lento',
+                        'Organização prévia dos ingredientes',
+                        'Tipo de corte de legumes'
+                    ],
+                    correctAnswer: 2,
+                    explanation: '"Mise en place" é o termo francês para organizar todos os ingredientes e equipamentos antes de começar a cozinhar.'
+                },
+                {
+                    id: 4,
+                    question: 'Qual é a principal diferença entre caldo e sopa?',
+                    options: [
+                        'Temperatura de serving',
+                        'Presença de ingredientes sólidos',
+                        'Tempo de cozimento',
+                        'Tipo de tempero'
+                    ],
+                    correctAnswer: 1,
+                    explanation: 'Caldo é principalmente líquido, enquanto sopa contém ingredientes sólidos significativos.'
+                },
+                {
+                    id: 5,
+                    question: 'Como se deve armazenar properly facas de cozinha?',
+                    options: [
+                        'Lavar na máquina de lavar loiça',
+                        'Guardar na gaveta com outros talheres',
+                        'Higienizar à mão e guardar em bloco ou suporte',
+                        'Deixar de molho em solução desinfetante'
+                    ],
+                    correctAnswer: 2,
+                    explanation: 'Facas devem ser lavadas à mão, secas imediatamente e guardadas em bloco ou suporte para manter o fio e prevenir acidentes.'
+                }
+            ]
+        },
+        agricultura: {
+            questions: [
+                {
+                    id: 1,
+                    question: 'Qual é o pH ideal para a maioria das culturas vegetais?',
+                    options: [
+                        '4.0 - 5.5',
+                        '6.0 - 7.0',
+                        '7.5 - 8.5',
+                        '8.0 - 9.0'
+                    ],
+                    correctAnswer: 1,
+                    explanation: 'A maioria das culturas vegetais se desenvolve melhor em solo com pH entre 6.0 e 7.0, que permite boa disponibilidade de nutrientes.'
+                },
+                {
+                    id: 2,
+                    question: 'O que é rotação de culturas na agricultura sustentável?',
+                    options: [
+                        'Irrigação por rotação',
+                        'Alternar diferentes culturas na mesma área',
+                        'Plantar em círculos',
+                        'Rodar as plantas durante o crescimento'
+                    ],
+                    correctAnswer: 1,
+                    explanation: 'Rotação de culturas é a prática de alternar diferentes culturas na mesma área ao longo do tempo para melhorar a saúde do solo.'
+                },
+                {
+                    id: 3,
+                    question: 'Qual método de irrigação é mais eficiente em termos de conservação de água?',
+                    options: [
+                        'Irrigação por inundação',
+                        'Aspersão convencional',
+                        'Gotejamento',
+                        'Sulcos'
+                    ],
+                    correctAnswer: 2,
+                    explanation: 'Irrigação por gotejamento é a mais eficiente, entregando água diretamente às raízes e minimizando evaporação.'
+                },
+                {
+                    id: 4,
+                    question: 'O que são "leguminosas fixadoras de nitrogênio"?',
+                    options: [
+                        'Plantas que produzem excesso de nitrogênio',
+                        'Plantas que convertem nitrogênio atmosférico em forma utilizável',
+                        'Fertilizantes sintéticos',
+                        'Plantas que exigem muito nitrogênio'
+                    ],
+                    correctAnswer: 1,
+                    explanation: 'Leguminosas como feijão e ervilha têm bactérias em suas raízes que convertem nitrogênio atmosférico em formas que as plantas podem usar.'
+                },
+                {
+                    id: 5,
+                    question: 'Qual é a principal vantagem da agricultura orgânica?',
+                    options: [
+                        'Menor custo inicial',
+                        'Maior produtividade por área',
+                        'Melhor saúde do solo e menor impacto ambiental',
+                        'Menor necessidade de mão de obra'
+                    ],
+                    correctAnswer: 2,
+                    explanation: 'Agricultura orgânica prioriza saúde do solo, biodiversidade e reduz impacto ambiental, evitando sintéticos e promovendo ecossistemas sustentáveis.'
+                }
+            ]
         }
     };
 
-    const courseQuiz = quizData[courseId as 'costura'] || quizData.costura;
+    const courseQuiz = quizData[courseId as keyof QuizData] || quizData.costura;
     const questions = courseQuiz.questions;
 
     const handleAnswerSelect = (questionId: number, answerIndex: number) => {

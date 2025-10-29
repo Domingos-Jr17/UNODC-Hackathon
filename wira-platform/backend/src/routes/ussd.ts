@@ -315,7 +315,7 @@ router.get('/sms/status', (_req: Request, res: Response): void => {
  * POST /api/sms/send
  * Send an SMS message
  */
-router.post('/sms/send', authenticateToken, (req: Request, res: Response): void => {
+router.post('/sms/send', (req: Request, res: Response): void => {
   const { phoneNumber, message } = req.body;
 
   if (!phoneNumber || !message) {

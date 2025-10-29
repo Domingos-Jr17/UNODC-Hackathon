@@ -364,7 +364,8 @@
             input.value = '';
 
             try {
-                const response = await fetch(`http://localhost:${backendPort}/api/sms/send`, {
+                // Fixed route to match backend SMS endpoint
+                const response = await fetch(`http://localhost:${backendPort}/api/ussd/sms/send`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -435,13 +436,11 @@
             addMessage('system', 'Iniciando demonstração do WIRA USSD para contexto moçambicano...');
 
             const sequences = [
-                { input: '', delay: 1500, description: 'Aceder ao serviço USSD' },
-                { input: '*123#', delay: 2500, description: 'Discar código USSD' },
-                { input: 'V0042', delay: 3500, description: 'Inserir código de usuário (Maria)' },
-                { input: '1', delay: 2000, description: 'Ver cursos disponíveis' },
-                { input: '2', delay: 2000, description: 'Ver progresso nos cursos' },
-                { input: '3', delay: 2000, description: 'Ver certificados' },
-                { input: '0', delay: 2000, description: 'Voltar ao menu principal' },
+                { input: '', delay: 1500, description: 'Iniciar sessão USSD (bem-vindo)' },
+                { input: 'V0042', delay: 3000, description: 'Inserir código de usuário (Maria - V0042)' },
+                { input: '1', delay: 3000, description: 'Ver cursos disponíveis' },
+                { input: '2', delay: 3000, description: 'Ver progresso nos cursos' },
+                { input: '3', delay: 3000, description: 'Ver ajuda e suporte' },
                 { input: '4', delay: 2000, description: 'Sair do serviço' }
             ];
 
@@ -461,6 +460,7 @@
             }
 
             addMessage('system', '✅ Demonstração concluída! O WIRA está pronto para ajudar sobreviventes em Moçambique.');
+            addMessage('system', '💡 Nota: Em uso real, o usuário discaria *123# no telemóvel');
         }
 
         // System Status
@@ -473,8 +473,8 @@
                 document.getElementById('ussdStatus').innerHTML = `<span class="text-green-600 font-semibold">Online</span>`;
                 document.getElementById('sessionsStatus').innerHTML = `<span class="text-blue-600 font-semibold">${ussdData.activeSessions || 0}</span>`;
 
-                // Check SMS Status
-                const smsResponse = await fetch(`http://localhost:${backendPort}/api/sms/status`);
+                // Check SMS Status - Fixed route to match backend
+                const smsResponse = await fetch(`http://localhost:${backendPort}/api/ussd/sms/status`);
                 const smsData = await smsResponse.json();
 
                 document.getElementById('smsStatus').innerHTML = `<span class="text-green-600 font-semibold">Online</span>`;
