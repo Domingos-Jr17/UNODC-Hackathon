@@ -88,18 +88,14 @@ export default function StaffLogin() {
             id="staff-login-title"
             className='flex justify-center text-2xl font-bold'
           >
-            WIRA Platform
+            WIRA
           </CardTitle>
           <CardDescription>
-            Portal da Equipe - ONGs e Staff
+            Portal da Equipe
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="staff" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="staff">Staff</TabsTrigger>
-              <TabsTrigger value="victim">Vítima</TabsTrigger>
-            </TabsList>
 
             <TabsContent value="staff" className="space-y-4">
               <form onSubmit={staffForm.handleSubmit(onStaffSubmit)} className="space-y-4">
@@ -137,13 +133,17 @@ export default function StaffLogin() {
                   )}
                 </div>
 
-                <Button
+                  <div className='flex justify-center'>
+                  <Button
                   type="submit"
-                  className="w-full"
+                  className="fit-content "
                   disabled={staffForm.formState.isSubmitting}
                 >
-                  {staffForm.formState.isSubmitting ? 'Entrando...' : 'Entrar como Staff'}
+                  {staffForm.formState.isSubmitting ? 'Entrando...' : 'Entrar'}
                 </Button>
+                  </div>
+
+                
               </form>
             </TabsContent>
 
@@ -183,7 +183,7 @@ export default function StaffLogin() {
         </CardContent>
         <CardFooter className="text-center">
           <p className="text-sm text-muted-foreground w-full">
-            Staff: Use email e senha • Vítima: Use código V####
+            Use o seu email e senha para aceder a plataforma
           </p>
         </CardFooter>
       </Card>
