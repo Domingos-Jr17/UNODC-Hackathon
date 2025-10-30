@@ -1,7 +1,7 @@
 import { useState, useEffect, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TypographySmall, TypographyMuted } from '@/components/ui/typography';
-import { Users, GraduationCap, TrendingUp, BarChart3, Briefcase, Activity } from 'lucide-react';
+import { Users, GraduationCap, TrendingUp, BarChart3, Briefcase} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Layout from './layout/Layout';
 import MetricCard from './ui/MetricCard';
