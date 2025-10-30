@@ -30,7 +30,7 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
             <Text style={styles.title}>WIRA</Text>
 
             <Text style={styles.subtitle}>
-                A Universidade Digital que{'\n'}Empodera Sobreviventes
+                A Plataforma Digital que{'\n'}Empodera Sobreviventes
             </Text>
 
             <View style={styles.buttonContainer}>
@@ -54,8 +54,8 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
             </View>
 
             <Text style={styles.footerText}>
-                📚 Capacitação Profissional Certificada{'\n'}
-                🎓 Reconhecida pelo Ministério do Trabalho
+                 Capacitação Profissional Certificada{'\n'}
+                
             </Text>
         </View>
     );

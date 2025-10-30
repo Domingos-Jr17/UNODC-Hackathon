@@ -261,7 +261,19 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
                 'Parabéns!',
                 `Você acertou ${correctAnswers} de ${questions.length} perguntas (${finalScore}%). Módulo concluído com sucesso!`,
                 [
-                    { text: 'OK', onPress: () => navigation.goBack() }
+                    {
+                        text: 'Ver Certificado',
+                        onPress: () => {
+                            navigation.navigate('Certificate', {
+                                courseId: courseId,
+                                score: finalScore
+                            });
+                        }
+                    },
+                    {
+                        text: 'Voltar ao Curso',
+                        onPress: () => navigation.goBack()
+                    }
                 ]
             );
         } else {
@@ -269,7 +281,8 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
                 'Continue Estudando',
                 `Você acertou ${correctAnswers} de ${questions.length} perguntas (${finalScore}%). Estude mais e tente novamente.`,
                 [
-                    { text: 'OK', onPress: () => setShowResults(false) }
+                    { text: 'Tentar Novamente', onPress: handleRetry },
+                    { text: 'Voltar ao Curso', onPress: () => navigation.goBack() }
                 ]
             );
         }

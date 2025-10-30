@@ -15,6 +15,7 @@ interface CourseDetailScreenProps {
 export default function CourseDetailScreen({ navigation, route }: CourseDetailScreenProps) {
     const { courseId } = route.params;
     const [activeTab, setActiveTab] = useState('modules');
+    const [selectedModuleId, setSelectedModuleId] = useState<string>('1'); // Módulo padrão
 
     // Dados demo para hackathon
     const coursesData = {
@@ -99,12 +100,25 @@ export default function CourseDetailScreen({ navigation, route }: CourseDetailSc
             Alert.alert('Erro', 'Módulo não encontrado.');
             return;
         }
+
+        // Define o módulo selecionado para o quiz
+        setSelectedModuleId(moduleId.toString());
+
         if (module.completed) {
-            Alert.alert('Módulo Concluído', 'Você já completou este módulo.');
+            Alert.alert('Módulo Concluído', 'Você já completou este módulo. Deseja refazer o quiz?', [
+                { text: 'Cancelar', style: 'cancel' },
+                { text: 'Refazer Quiz', onPress: () => handleStartQuiz() }
+            ]);
         } else {
             Alert.alert('Iniciar Módulo', `Iniciar "${module.title}"?`, [
                 { text: 'Cancelar', style: 'cancel' },
-                { text: 'Iniciar', onPress: () => console.log('Iniciar módulo', moduleId) }
+                { text: 'Fazer Quiz', onPress: () => handleStartQuiz() },
+                { text: 'Ver Aula', onPress: () => {
+                    navigation.navigate('VideoLesson', {
+                        courseId: courseId,
+                        moduleId: moduleId.toString()
+                    });
+                }}
             ]);
         }
     };
@@ -114,7 +128,25 @@ export default function CourseDetailScreen({ navigation, route }: CourseDetailSc
     };
 
     const handleStartQuiz = () => {
-        Alert.alert('Quiz', 'Iniciar avaliação do módulo atual?');
+        Alert.alert(
+            'Iniciar Quiz',
+            `Deseja iniciar a avaliação do módulo ${selectedModuleId}?`,
+            [
+                {
+                    text: 'Cancelar',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Iniciar',
+                    onPress: () => {
+                        navigation.navigate('Quiz', {
+                            courseId: courseId,
+                            moduleId: selectedModuleId
+                        });
+                    }
+                }
+            ]
+        );
     };
 
     return (

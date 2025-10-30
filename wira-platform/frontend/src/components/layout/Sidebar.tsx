@@ -40,13 +40,13 @@ const sidebarItems: SidebarItem[] = [
     path: '/active',
     description: 'Ativação de novos usuários'
   },
-  {
-    id: 'monitor',
-    label: 'Monitorar Progresso',
-    icon: BarChart3,
-    path: '/monitor',
-    description: 'Acompanhamento de progresso'
-  },
+  // {
+  //   id: 'monitor',
+  //   label: 'Monitorar Progresso',
+  //   icon: BarChart3,
+  //   path: '/monitor',
+  //   description: 'Acompanhamento de progresso'
+  // },
   {
     id: 'users',
     label: 'Usuários',
