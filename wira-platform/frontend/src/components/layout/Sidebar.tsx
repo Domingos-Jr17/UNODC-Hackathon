@@ -10,7 +10,7 @@ import {
   X,
   Home,
   UserCheck,
-  BarChart3
+  // BarChart3
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';

@@ -18,12 +18,12 @@ function DashboardComponent() {
         averageCompletionTime: 0
     });
 
-    interface Activity {
-        id: number;
-        user: string;
-        action: string;
-        time: string;
-    }
+    // interface Activity {
+    //     id: number;
+    //     user: string;
+    //     action: string;
+    //     time: string;
+    // }
 
     interface User {
         id: number;
@@ -43,7 +43,7 @@ function DashboardComponent() {
         completionRate: number;
     }
 
-    const [recentActivity, setRecentActivity] = useState<Activity[]>([]);
+    // const [recentActivity, setRecentActivity] = useState<Activity[]>([]);
     const [users, setUsers] = useState<User[]>([]);
     const [courses, setCourses] = useState<Course[]>([]);
     const [loading, setLoading] = useState(true);
@@ -62,12 +62,12 @@ function DashboardComponent() {
                 averageCompletionTime: 45
             });
 
-            setRecentActivity([
-                { id: 1, user: 'V0042', action: 'Completou módulo Costura', time: '2 horas atrás' },
-                { id: 2, user: 'V0038', action: 'Iniciou curso Culinária', time: '5 horas atrás' },
-                { id: 3, user: 'V0031', action: 'Gerou certificado', time: '1 dia atrás' },
-                { id: 4, user: 'V0042', action: 'Baixou vídeo offline', time: '3 horas atrás' }
-            ]);
+            // setRecentActivity([
+            //     { id: 1, user: 'V0042', action: 'Completou módulo Costura', time: '2 horas atrás' },
+            //     { id: 2, user: 'V0038', action: 'Iniciou curso Culinária', time: '5 horas atrás' },
+            //     { id: 3, user: 'V0031', action: 'Gerou certificado', time: '1 dia atrás' },
+            //     { id: 4, user: 'V0042', action: 'Baixou vídeo offline', time: '3 horas atrás' }
+            // ]);
 
             setUsers([
                 { id: 1, code: 'V0042', name: 'Maria Silva', ngo: 'ONG-001', status: 'Ativo', lastActivity: '2 horas atrás', coursesCompleted: 1, certificatesEarned: 1 },
@@ -147,14 +147,14 @@ function DashboardComponent() {
             {/* Dashboard Content */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Recent Activity */}
-                <Card className="lg:col-span-1">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Activity className="h-5 w-5" />
-                            Atividade Recente
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
+                {/* <Card className="lg:col-span-1"> */}
+                {/* <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                        <Activity className="h-5 w-5" />
+                        Atividade Recente
+                    </CardTitle>
+                </CardHeader> */}
+                    {/* <CardContent>
                         <div className="space-y-3 max-h-80 overflow-auto">
                             {recentActivity.map((activity) => (
                                 <div key={activity.id} className="flex items-start gap-3 p-3 rounded-lg border border-border/50 hover:bg-muted/50 transition-colors">
@@ -177,11 +177,11 @@ function DashboardComponent() {
                                 </div>
                             ))}
                         </div>
-                    </CardContent>
-                </Card>
+                    </CardContent> */}
+                {/* </Card> */}
 
                 {/* Active Users */}
-                <Card className="lg:col-span-2">
+                <Card className="lg:col-span-3">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <Users className="h-5 w-5" />
