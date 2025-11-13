@@ -1,19 +1,5 @@
-dessa forma agora irei compartilhar o desafio que pretendemos resolver o desafio 2: agora quero que pense bastante quanto a minha proposta e o problema que tento resolver:Bem-vindo às Nações Unidas
-Nações Unidas
-Nações Unidas
-Escritório Regional do UNODC para a África Austral
-/index.html
-Pesquisa no site
-Pesquise no site
-Lar
-Sobre nós
-Áreas de investimento
-Histórias
-Escritórios
-Recursos
-Carreiras
-Contate-nos
-texto alternativo está faltando
+Bem-vindo às Nações Unidas
+
 Candidaturas: 26 de Agosto a 18 de Setembro de 2025 (online)
 Bootcamp: 13 a 17 de outubro de 2025 (presencial)
 Competição: 28 a 30 de outubro de 2025 (presencial)
@@ -65,10 +51,10 @@ Os candidatos selecionados serão notificados até 25 de Setembro de 2025 e deve
 Após um limite de dados do período de candidaturas, não serão aceitas candidaturas. Os candidatos não selecionados serão notificados até, no máximo, dia 2 de outubro de 2025.
 DESAFIOS
 Os participantes do hackathon serão convidados a desenvolver uma ideia ou solução tecnológica que aborde um dos seguintes desafios relacionados com o Tráfico de Pessoas em Moçambique.
-1
-Prevenção da vitimização online
-2
-Reintegração das vítimas
+
+1. Prevenção da vitimização online
+2. Reintegração das vítimas
+   
 Desafio 1 – Prevenção da vitimização: Combater o uso mal intencionado da tecnologia, em particular das plataformas de redes sociais, por grupos de tráfico de seres humanos
 A Internet tornou-se um instrumento cada vez mais poderoso para os traficantes identificarem, recrutarem e explorarem indivíduos vulneráveis, especialmente jovens, mulheres e migrantes. As redes sociais, as plataformas de emprego online, as aplicações de mensagens e os mercados digitais são frequentemente utilizados para atrair as vítimas através de falsas promessas de emprego, educação ou relacionamentos. Em Moçambique e em todo o mundo, a utilização crescente de plataformas digitais por populações vulneráveis, muitas vezes sem alfabetização digital ou consciência dos riscos online, torna a prevenção mais urgente do que nunca.
 Apesar da natureza digital das táticas modernas de tráfico, existem poucas salvaguardas em linha ou estratégias de prevenção direcionadas para proteger os grupos em risco de serem enganados ou manipulados em linha. Comunidades, educadores, famílias e trabalhadores da linha de frente muitas vezes não têm ferramentas para verificar padrões de recrutamento on-line ou intervir cedo ou suficiente.
