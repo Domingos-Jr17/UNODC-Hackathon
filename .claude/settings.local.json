@@ -18,7 +18,9 @@
       "Bash(npm run dev:*)",
       "Bash(npx ts-node:*)",
       "Bash(npm run test:integration:*)",
-      "Bash(taskkill:*)"
+      "Bash(taskkill:*)",
+      "Bash(tree:*)",
+      "Bash(nul:*)"
     ],
     "deny": [],
     "ask": []
