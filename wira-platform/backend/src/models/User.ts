@@ -179,7 +179,7 @@ class UserModel {
         where: { is_active: true }
       });
 
-      return users.map(user => ({
+      return users.map((user: any) => ({
         ...user,
         created_at: user.created_at.toISOString(),
         updated_at: user.updated_at?.toISOString() || undefined,

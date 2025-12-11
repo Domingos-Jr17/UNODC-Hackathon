@@ -237,7 +237,7 @@ class CertificateModel {
         orderBy: { created_at: 'desc' }
       });
 
-      return certificates.map(cert => {
+      return certificates.map((cert: any) => {
         // Transform fields to match Certificate interface with exact optional types
         const result: CertificateInterface = {
           id: cert.id,

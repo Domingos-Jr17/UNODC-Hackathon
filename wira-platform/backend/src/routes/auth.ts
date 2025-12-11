@@ -5,7 +5,7 @@ import {
   validateStaffLogin,
   handleValidationErrors
 } from '../middleware/security';
-import AuthController from '../controllers/authController';
+import AuthController from '../controllers/AuthController';
 
 const router = express.Router();
 

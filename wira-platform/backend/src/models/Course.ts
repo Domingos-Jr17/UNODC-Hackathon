@@ -11,7 +11,7 @@ class CourseModel {
         orderBy: { created_at: 'asc' }
       });
 
-      return courses.map(course => ({
+      return courses.map((course: any) => ({
         ...course,
         created_at: course.created_at.toISOString(),
         updated_at: course.updated_at?.toISOString()
