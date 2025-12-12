@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 export type StatusType =
   | 'active'
   | 'inactive'
+  | 'draft'
   | 'pending'
   | 'completed'
   | 'in-progress'
@@ -41,6 +42,11 @@ const statusConfig = {
     className: 'bg-blue-100 text-blue-800 hover:bg-blue-200',
     variant: 'secondary' as const
   },
+  draft: {
+    label: 'Rascunho',
+    className: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200',
+    variant: 'secondary' as const
+  },
   'in-progress': {
     label: 'Em Progresso',
     className: 'bg-purple-100 text-purple-800 hover:bg-purple-200',
@@ -74,7 +80,7 @@ export default function StatusBadge({
   className,
   variant
 }: StatusBadgeProps) {
-  const config = statusConfig[status];
+  const config = statusConfig[status] || statusConfig.pending; // Use 'pending' as fallback
   const displayText = children || config.label;
 
   return (
