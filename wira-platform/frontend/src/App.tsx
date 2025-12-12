@@ -8,6 +8,9 @@ import StaffLoginPage from './components/StaffLoginPage.tsx';
 import UsersPage from './components/UsersPage.tsx';
 import ReportsPage from './components/ReportsPage.tsx';
 import CoursesPage from './components/CoursesPage.tsx';
+import CourseDetail from './components/CourseDetail.tsx';
+import SettingsPage from './components/SettingsPage.tsx';
+import UserDetail from './components/UserDetail.tsx';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -58,10 +61,7 @@ function App() {
             <Route path="/users/:id" element={
               <ProtectedRoute>
                 <ErrorBoundary>
-                  <div className="p-6">
-                    <h1 className="text-2xl font-bold">Detalhes do Usuário</h1>
-                    <p className="text-muted-foreground">Em desenvolvimento...</p>
-                  </div>
+                  <UserDetail />
                 </ErrorBoundary>
               </ProtectedRoute>
             } />
@@ -75,10 +75,7 @@ function App() {
             <Route path="/courses/:id" element={
               <ProtectedRoute>
                 <ErrorBoundary>
-                  <div className="p-6">
-                    <h1 className="text-2xl font-bold">Detalhes do Curso</h1>
-                    <p className="text-muted-foreground">Em desenvolvimento...</p>
-                  </div>
+                  <CourseDetail />
                 </ErrorBoundary>
               </ProtectedRoute>
             } />
@@ -92,20 +89,14 @@ function App() {
             <Route path="/settings" element={
               <ProtectedRoute>
                 <ErrorBoundary>
-                  <div className="p-6">
-                    <h1 className="text-2xl font-bold">Configurações</h1>
-                    <p className="text-muted-foreground">Em desenvolvimento...</p>
-                  </div>
+                  <SettingsPage />
                 </ErrorBoundary>
               </ProtectedRoute>
             } />
             <Route path="/settings/profile" element={
               <ProtectedRoute>
                 <ErrorBoundary>
-                  <div className="p-6">
-                    <h1 className="text-2xl font-bold">Perfil do Staff</h1>
-                    <p className="text-muted-foreground">Em desenvolvimento...</p>
-                  </div>
+                  <SettingsPage />
                 </ErrorBoundary>
               </ProtectedRoute>
             } />
