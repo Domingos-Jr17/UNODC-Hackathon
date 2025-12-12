@@ -229,7 +229,7 @@ export default function UserDetail() {
               <CardContent>
                 <div className="space-y-4">
                   {user.courses.map((course) => (
-                    <div key={course.id} className="border rounded-lg p-4">
+                    <div key={course.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
                       <div className="flex items-center justify-between mb-3">
                         <h4 className="font-medium">{course.title}</h4>
                         <div className="flex items-center gap-2">
@@ -356,13 +356,13 @@ export default function UserDetail() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  <Button className="w-full" variant="outline">
+                  <Button className="w-full hover:shadow-md transition-shadow duration-200" variant="outline">
                     Enviar Mensagem
                   </Button>
-                  <Button className="w-full" variant="outline">
+                  <Button className="w-full hover:shadow-md transition-shadow duration-200" variant="outline">
                     Atualizar Progresso
                   </Button>
-                  <Button className="w-full">
+                  <Button className="w-full hover:shadow-md transition-shadow duration-200">
                     Gerar Relatório
                   </Button>
                 </div>

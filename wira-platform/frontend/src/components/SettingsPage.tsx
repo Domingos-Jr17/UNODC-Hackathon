@@ -150,7 +150,7 @@ export default function SettingsPage() {
                     </div>
                   </div>
 
-                  <Button type="submit">
+                  <Button type="submit" className="hover:shadow-md transition-shadow duration-200">
                     <Save className="mr-2 h-4 w-4" />
                     Salvar Alterações
                   </Button>
@@ -202,7 +202,7 @@ export default function SettingsPage() {
                     </div>
                   </div>
 
-                  <Button type="submit">
+                  <Button type="submit" className="hover:shadow-md transition-shadow duration-200">
                     <Key className="mr-2 h-4 w-4" />
                     Atualizar Senha
                   </Button>
@@ -248,15 +248,15 @@ export default function SettingsPage() {
                       <Label className="font-normal">Notificações por Email</Label>
                       <p className="text-sm text-muted-foreground">Receber atualizações de cursos e progresso</p>
                     </div>
-                    <Button variant="outline" size="sm">Ativado</Button>
+                    <Button variant="outline" size="sm" className="hover:bg-accent hover:text-accent-foreground">Ativado</Button>
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div>
                       <Label className="font-normal">Notificações Push</Label>
                       <p className="text-sm text-muted-foreground">Receber notificações no navegador</p>
                     </div>
-                    <Button variant="outline" size="sm">Ativado</Button>
+                    <Button variant="outline" size="sm" className="hover:bg-accent hover:text-accent-foreground">Ativado</Button>
                   </div>
                   
                   <div className="flex items-center justify-between">
@@ -264,7 +264,7 @@ export default function SettingsPage() {
                       <Label className="font-normal">SMS de Lembretes</Label>
                       <p className="text-sm text-muted-foreground">Receber lembretes por SMS</p>
                     </div>
-                    <Button variant="outline" size="sm">Desativado</Button>
+                    <Button variant="outline" size="sm" className="hover:bg-accent hover:text-accent-foreground">Desativado</Button>
                   </div>
                   
                   <div className="flex items-center justify-between">
@@ -289,23 +289,23 @@ export default function SettingsPage() {
                       <Label className="font-normal">Conclusão de Módulo</Label>
                       <p className="text-sm text-muted-foreground">Quando você completa um módulo</p>
                     </div>
-                    <Button variant="outline" size="sm">Ativado</Button>
+                    <Button variant="outline" size="sm" className="hover:bg-accent hover:text-accent-foreground">Ativado</Button>
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div>
                       <Label className="font-normal">Novos Cursos</Label>
                       <p className="text-sm text-muted-foreground">Quando novos cursos são adicionados</p>
                     </div>
-                    <Button variant="outline" size="sm">Ativado</Button>
+                    <Button variant="outline" size="sm" className="hover:bg-accent hover:text-accent-foreground">Ativado</Button>
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div>
                       <Label className="font-normal">Certificados</Label>
                       <p className="text-sm text-muted-foreground">Quando você ganha um certificado</p>
                     </div>
-                    <Button variant="outline" size="sm">Ativado</Button>
+                    <Button variant="outline" size="sm" className="hover:bg-accent hover:text-accent-foreground">Ativado</Button>
                   </div>
                 </div>
               </CardContent>
