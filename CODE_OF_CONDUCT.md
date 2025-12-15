@@ -1,56 +1,56 @@
-# Código de Conduta para Colaboradores
+# Contributor Code of Conduct
 
-## Nossa Promessa
+## Our Pledge
 
-Como participantes, colaboradores e líderes do projeto WIRA, comprometemo-nos a tornar a participação em nossa comunidade uma experiência livre de assédio para todas as pessoas, independentemente de:
+In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to make participation in our project and our community a harassment-free experience for everyone, regardless of:
 
-- Idade
-- Cor de pele
-- Etnia
-- Crença religiosa
-- Identidade e expressão de gênero
-- Identidade sexual
-- Nacionalidade
-- Pessoas com deficiência
-- Status sócio-econômico
-- Outras características humanas
+- Age
+- Skin color
+- Ethnicity
+- Religion
+- Gender identity and expression
+- Sexual identity
+- Nationality
+- People with disabilities
+- Socioeconomic status
+- Other human characteristics
 
-## Nossos Padrões
+## Our Standards
 
-Exemplos de comportamentos que contribuem para criar um ambiente positivo:
+Examples of behavior that contributes to creating a positive environment:
 
-- Usar linguagem acolhedora e inclusiva
-- Respeitar diferentes pontos de vista e experiências
-- Aceitar críticas construtivas com graça
-- Focar no que é melhor para a comunidade
-- Mostrar empatia com outros membros da comunidade
+- Using welcoming and inclusive language
+- Respecting different viewpoints and experiences
+- Accepting constructive criticism gracefully
+- Focusing on what is best for the community
+- Showing empathy towards other community members
 
-Exemplos de comportamentos inaceitáveis:
+Examples of unacceptable behavior:
 
-- Uso de linguagem ou imagens sexualizadas
-- Comentários ofensivos, insultos ou ataques pessoais
-- Assédio público ou privado
-- Publicação de informações privadas de outros sem permissão explícita
-- Outra conduta que razoavelmente possa ser considerada inadequada
+- Using sexualized language or imagery
+- Offensive comments, insults, or personal attacks
+- Public or private harassment
+- Publishing others' private information without explicit permission
+- Other conduct that could reasonably be considered inappropriate
 
-## Nossas Responsabilidades
+## Our Responsibilities
 
-Os mantenedores do projeto são responsáveis por esclarecer os padrões de comportamento aceitável e devem tomar ação corretiva apropriada em resposta a quaisquer instâncias de comportamento inaceitável.
+Project maintainers are responsible for clarifying acceptable behavior standards and should take appropriate and fair corrective action in response to any cases of unacceptable behavior.
 
-## Escopo
+## Scope
 
-Este Código de Conduta aplica-se em todos os espaços do projeto, tanto online quanto offline, e também quando um indivíduo estiver representando a comunidade em eventos públicos.
+This Code of Conduct applies to all project spaces, both online and offline, and also when an individual represents the community at public events.
 
-## Aplicação
+## Enforcement
 
-Instâncias de comportamento abusivo, de assédio ou inaceitável podem ser reportadas contatando a equipe do projeto em [email de contato]. Todas as reclamações serão revisadas e investigadas e resultarão em resposta considerada necessária e apropriada às circunstâncias.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team at [contact email]. All complaints will be reviewed and investigated and will result in a response deemed necessary and appropriate under the circumstances.
 
-## Atribuição
+## Attribution
 
-Este Código de Conduta é adaptado do [Contributor Covenant](https://www.contributor-covenant.org), versão 2.0.
+This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org), version 2.0.
 
-Para respostas a perguntas comuns sobre este código de conduta, consulte a FAQ em: https://www.contributor-covenant.org/faq
+For answers to common questions about this code of conduct, see the FAQ at: https://www.contributor-covenant.org/faq
 
 ---
 
-*Data de vigência: 27 de abril de 2025*
+*Effective date: April 27, 2025*
