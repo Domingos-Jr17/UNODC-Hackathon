@@ -1,164 +1,164 @@
-# Guia para Beneficiárias - Plataforma WIRA
+# Guide for Beneficiaries - WIRA Platform
 
-## Bem-vinda à Plataforma WIRA
+## Welcome to WIRA Platform
 
-A WIRA (Women's Integrated Reintegration Academy) é uma plataforma criada especialmente para apoiar vítimas de tráfico humano em Moçambique. Aqui, você pode acessar cursos profissionalizantes de forma anônima e segura, com foco na sua reintegração econômica.
+WIRA (Women's Integrated Reintegration Academy) is a platform created especially to support human trafficking survivors in Mozambique. Here, you can access professional training courses anonymously and safely, focusing on your economic reintegration.
 
-## Como Acessar a Plataforma
+## How to Access the Platform
 
-### Via Aplicativo Móvel
-1. Instale o aplicativo WIRA na loja de aplicativos do seu celular
-2. Abra o aplicativo
-3. Digite seu **código de acesso**, fornecido pela sua ONG parceira (formato: V0042)
-4. Comece a explorar os cursos disponíveis
+### Via Mobile App
+1. Install the WIRA app from your phone's app store
+2. Open the app
+3. Enter your **access code**, provided by your partner NGO (format: V0042)
+4. Start exploring available courses
 
-### Via Acesso USSD (para celulares básicos)
-1. No seu celular, digite *123# e pressione chamada
-2. Quando solicitado, digite seu código de acesso (V0042)
-3. Use as opções numéricas para navegar pelos cursos e informações
+### Via USSD Access (for basic phones)
+1. On your phone, dial *123# and press call
+2. When prompted, enter your access code (V0042)
+3. Use numeric options to navigate courses and information
 
-### Via Web (se disponível em centro de computadores)
-1. Acesse o site da plataforma (quando disponível)
-2. Digite seu código de acesso (V0042)
+### Via Web (if available at computer centers)
+1. Access the platform website (when available)
+2. Enter your access code (V0042)
 
-## Sobre Seu Código de Acesso
+## About Your Access Code
 
-- Seu código é anônimo (ex: V0042) e você não precisa fornecer seu nome real para acessar os cursos
-- Guarde seu código em um lugar seguro
-- Não compartilhe seu código com outras pessoas
-- Este código dá acesso apenas às suas informações e progresso
+- Your code is anonymous (e.g., V0042) and you don't need to provide your real name to access courses
+- Keep your code in a safe place
+- Don't share your code with other people
+- This code provides access only to your information and progress
 
-## Cursos Disponíveis
+## Available Courses
 
-### Costura Profissional
-- Aprenda técnicas básicas e avançadas de costura
-- Criação de roupas e produtos têxteis
-- 40 horas de conteúdo com 8 módulos
+### Professional Sewing
+- Learn basic and advanced sewing techniques
+- Creation of clothing and textile products
+- 40 hours of content with 8 modules
 
-### Culinária Profissional
-- Técnicas básicas de cozinha
-- Preparo de pratos tradicionais e contemporâneos
-- Higiene alimentar e segurança
+### Professional Cooking
+- Basic cooking techniques
+- Preparation of traditional and contemporary dishes
+- Food hygiene and safety
 
-### Agricultura Sustentável
-- Técnicas agrícolas sustentáveis
-- Produção de hortaliças e pequenas culturas
-- Gestão de recursos naturais
+### Sustainable Agriculture
+- Sustainable farming techniques
+- Vegetable production and small crops
+- Natural resource management
 
-## Navegando nos Cursos
+## Navigating Courses
 
-1. Após o login, você verá uma lista de cursos disponíveis
-2. Clique em um curso para ver detalhes e começar
-3. Cada curso é dividido em módulos que você pode completar em seu próprio ritmo
-4. Seu progresso é salvo automaticamente
+1. After login, you'll see a list of available courses
+2. Click on a course to view details and start
+3. Each course is divided into modules you can complete at your own pace
+4. Your progress is saved automatically
 
-### Completando Módulos
-- Leia o conteúdo fornecido em cada módulo
-- Assista a vídeos quando disponíveis
-- Responda aos quizzes para testar seu conhecimento
-- Avance ao próximo módulo quando se sentir preparada
+### Completing Modules
+- Read provided content in each module
+- Watch videos when available
+- Answer quizzes to test your knowledge
+- Advance to next module when ready
 
-### Avaliações e Quizzes
-- Cada curso inclui quizzes para testar seu conhecimento
-- Você precisa alcançar 70% de acerto para completar o curso
-- Se não passar, pode tentar novamente
+### Assessments and Quizzes
+- Each course includes quizzes to test your knowledge
+- You need to achieve 70% to complete the course
+- If you don't pass, you can try again
 
-## Acompanhamento de Progresso
+## Progress Tracking
 
-### Ver Seu Progresso
-- No menu principal, selecione "Meu Progresso"
-- Veja o percentual completo de cada curso
-- Confira seus resultados em quizzes
-- Veja sua última atividade
+### View Your Progress
+- In the main menu, select "My Progress"
+- See completion percentage of each course
+- Check your quiz results
+- See your last activity
 
-### Certificados
-- Ao completar um curso com sucesso, você pode solicitar um certificado
-- O certificado será gerado com um código QR para verificação
-- O certificado reconhece seu aproveitamento e pode ser usado para oportunidades de emprego
-- Seu certificado é registrado em nome do código anônimo, mantendo sua privacidade
+### Certificates
+- Upon completing a course successfully, you can request a certificate
+- The certificate will be generated with a QR code for verification
+- The certificate recognizes your achievement and can be used for job opportunities
+- Your certificate is registered under the anonymous code, maintaining your privacy
 
-## Segurança e Privacidade
+## Security and Privacy
 
-### Sua Privacidade é Nossa Prioridade
-- Seu nome real não é conectado ao seu código de acesso na interface que você usa
-- Apenas pessoal autorizado da sua ONG tem acesso à conexão entre seu código e sua identidade
-- Nenhuma informação pessoal é solicitada para acessar os cursos
-- Todas as suas atividades são armazenadas de forma segura
+### Your Privacy is Our Priority
+- Your real name is not linked to your access code in the interface you use
+- Only authorized NGO staff have access to the connection between your code and your identity
+- No personal information is requested to access courses
+- All your activities are stored securely
 
-### Dicas de Segurança
-- Não compartilhe seu código de acesso com ninguém
-- Use a plataforma em locais seguros
-- Se tiver alguma preocupação com segurança, contate sua ONG imediatamente
-- Lembre-se que sua identidade real está protegida
+### Security Tips
+- Don't share your access code with anyone
+- Use the platform in safe places
+- If you have any security concerns, contact your NGO immediately
+- Remember that your real identity is protected
 
-## Sistema USSD para Celulares Básicos
+## USSD System for Basic Phones
 
-Se você tem um celular básico (não smartphone), ainda pode acessar:
-1. Digite *123# no seu celular
-2. Digite seu código de acesso quando solicitado
-3. Use as opções numéricas (1, 2, 3, etc.) para navegar
-4. Opções incluem: ver cursos, conferir progresso, obter ajuda
+If you have a basic phone (not smartphone), you can still access:
+1. Dial *123# on your phone
+2. Enter your access code when prompted
+3. Use numeric options (1, 2, 3, etc.) to navigate
+4. Options include: view courses, check progress, get help
 
-## Recursos de Apoio
+## Support Resources
 
-### Central de Ajuda no Sistema
-- No aplicativo, ache a seção "Ajuda" para instruções
-- Perguntas frequentes respondem a dúvidas comuns
-- Tutoriais em vídeo para iniciantes
+### Help Center in System
+- In the app, find "Help" section for instructions
+- Frequently asked questions answer common doubts
+- Video tutorials for beginners
 
-### Suporte por SMS
-- Em breve, você receberá mensagens SMS com dicas e lembretes
-- Estas mensagens são enviadas apenas com seu consentimento
+### SMS Support
+- Soon, you'll receive SMS messages with tips and reminders
+- These messages are sent only with your consent
 
-### Apoio da Sua ONG
-- Contate o funcionário da sua ONG para suporte técnico
-- Eles podem ajudar com problemas de acesso ou navegação
-- Eles também podem responder perguntas sobre cursos e oportunidades
+### NGO Support
+- Contact your NGO staff for technical support
+- They can help with access problems or navigation
+- They can also answer questions about courses and opportunities
 
-## Perguntas Frequentes
+## Frequently Asked Questions
 
-### Q: Preciso fornecer meu nome real para fazer os cursos?
-A: Não, você só precisa do seu código de acesso anônimo. Seu nome real permanece protegido.
+### Q: Do I need to provide my real name to take the courses?
+A: No, you only need your anonymous access code. Your real name remains protected.
 
-### Q: Posso acessar os cursos em qualquer lugar?
-A: Sim, mas lembre-se de fazê-lo em locais seguros. O aplicativo também funciona offline para conteúdos já baixados.
+### Q: Can I access courses anywhere?
+A: Yes, but remember to do so in safe places. The app also works offline for already downloaded content.
 
-### Q: O que acontece se perder meu código de acesso?
-A: Contate a sua ONG parceira para recuperação de acesso com verificação de identidade.
+### Q: What happens if I lose my access code?
+A: Contact your partner NGO for access recovery with identity verification.
 
-### Q: Posso obter mais de um certificado?
-A: Sim, você pode completar e obter certificados para quantos cursos desejar.
+### Q: Can I get more than one certificate?
+A: Yes, you can complete and get certificates for as many courses as you wish.
 
-### Q: Quantos cursos posso fazer ao mesmo tempo?
-A: Você pode se inscrever em todos os cursos disponíveis e completá-los no seu próprio ritmo.
+### Q: How many courses can I take at once?
+A: You can enroll in all available courses and complete them at your own pace.
 
-### Q: Meus dados estão seguros?
-A: Sim, a plataforma usa criptografia e medidas de segurança avançadas. Sua identidade real está protegida.
+### Q: Are my data safe?
+A: Yes, the platform uses encryption and advanced security measures. Your real identity is protected.
 
-## Próximos Passos
+## Next Steps
 
-1. Comece com o curso que mais te interessa
-2. Complete os módulos no seu próprio ritmo
-3. Participe dos quizzes para testar seu conhecimento
-4. Solicite certificados quando completar os cursos
-5. Compartilhe seus certificados para oportunidades de emprego
+1. Start with the course that interests you most
+2. Complete modules at your own pace
+3. Participate in quizzes to test your knowledge
+4. Request certificates when completing courses
+5. Share your certificates for job opportunities
 
-## Contato de Suporte
+## Support Contact
 
-Se você tiver problemas técnicos ou dúvidas sobre os cursos:
+If you have technical problems or questions about courses:
 
-- Central de Ajuda: help@wira.org
+- Help Center: help@wira.org
 - WhatsApp: +258 84 XXXX XXXX
-- Suporte por voz: +258 84 XXXX XXXX (disponível em português)
-- Horário de atendimento: Segunda a Sexta, 8h-17h (Moçambique)
+- Voice Support: +258 84 XXXX XXXX (available in Portuguese)
+- Support hours: Monday to Friday, 8am-5pm (Mozambique)
 
-## Lembre-se
+## Remember
 
-- Você tem controle total sobre sua aprendizagem
-- A plataforma está aqui para apoiar sua reinserção econômica
-- Seu progresso é importante e é celebrado
-- Você não está sozinha - a comunidade WIRA está aqui para apoiar você
+- You have complete control over your learning
+- The platform is here to support your economic reintegration
+- Your progress is important and celebrated
+- You're not alone - the WIRA community is here to support you
 
 ---
 
-**A WIRA acredita em você e em seu potencial. Cada módulo completado é um passo importante rumo à sua independência econômica e empoderamento.**
+**WIRA believes in you and your potential. Each completed module is an important step toward your economic independence and empowerment.**

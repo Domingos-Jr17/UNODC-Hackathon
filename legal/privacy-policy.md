@@ -1,105 +1,105 @@
-# Política de Privacidade da Plataforma WIRA
+# Privacy Policy for WIRA Platform
 
-## 1. Introdução
+## 1. Introduction
 
-A WIRA (Women's Integrated Reintegration Academy) leva muito a sério a privacidade e proteção das informações das beneficiárias da plataforma, especialmente considerando a natureza sensível da população que atende - vítimas de tráfico humano em Moçambique. Esta Política de Privacidade descreve como coletamos, usamos, protegemos e compartilhamos informações na plataforma WIRA.
+WIRA (Women's Integrated Reintegration Academy) takes very seriously the privacy and protection of information from beneficiaries of the platform, especially considering the sensitive nature of the population served - human trafficking survivors in Mozambique. This Privacy Policy describes how we collect, use, protect, and share information on the WIRA Platform.
 
-## 2. Compromisso com a Privacidade e Segurança
+## 2. Privacy and Security Commitment
 
-### 2.1. Princípio da Anonimidade
-- O acesso à plataforma é feito exclusivamente por meio de códigos anônimos no formato V#### (ex: V0042)
-- Nenhuma informação pessoalmente identificável é exigida para o acesso aos cursos
-- O nome real da beneficiária não é vinculado ao seu código de acesso nos sistemas acessíveis diretamente pela vítima
+### 2.1. Anonymity Principle
+- Access to the platform is exclusively through anonymous codes in the format V#### (e.g., V0042)
+- No personally identifiable information is required to access courses
+- The real name of the beneficiary is not linked to their access code in directly accessible systems
 
-### 2.2. Minimização de Dados
-- Coletamos apenas os dados estritamente necessários para fornecer os serviços educacionais
-- Dados sensíveis são armazenados em sistemas seguros e acessados apenas por pessoal autorizado
-- Os dados são armazenados em servidores localizados em conformidade com as leis de proteção de dados aplicáveis
+### 2.2. Data Minimization
+- We collect only data strictly necessary to provide educational services
+- Sensitive data is stored in secure systems and accessed only by authorized personnel
+- Data is stored on servers located in compliance with applicable data protection laws
 
-## 3. Tipos de Informações Coletadas
+## 3. Types of Information Collected
 
-### 3.1. Informações Anônimas
-- Códigos de acesso anônimos (V####)
-- Progresso nos cursos
-- Resultados de avaliações
-- Certificados emitidos
+### 3.1. Anonymous Information
+- Anonymous access codes (V####)
+- Course progress
+- Assessment results
+- Certificates issued
 
-### 3.2. Informações Acessíveis Apenas por Pessoal Autorizado
-- Informações de identificação real fornecidas pelas ONGs parceiras
-- Informações de contato fornecidas pelas ONGs parceiras
-- Informações de histórico e contexto fornecidas pelas ONGs parceiras
+### 3.2. Information Accessible Only by Authorized Personnel
+- Real identification information provided by partner NGOs
+- Contact information provided by partner NGOs
+- History and context information provided by partner NGOs
 
-## 4. Uso das Informações
+## 4. Information Use
 
-### 4.1. Apenas para Propósito de Apoio Educacional
-- Acompanhamento do progresso educacional
-- Geração de certificados
-- Melhoria contínua da plataforma
-- Comunicação entre a plataforma e as ONGs parceiras
+### 4.1. For Educational Support Only
+- Tracking educational progress
+- Generating certificates
+- Continuous platform improvement
+- Communication between platform and partner NGOs
 
-### 4.2. Proibido o Uso para Outros Fins
-- Nenhuma informação será vendida, alugada ou compartilhada com terceiros
-- Nenhuma informação será usada para fins de marketing
-- Nenhuma informação será usada para fins de vigilância ou discriminação
+### 4.2. Prohibited Uses
+- No information will be sold, rented, or shared with third parties
+- No information will be used for marketing purposes
+- No information will be used for surveillance or discrimination purposes
 
-## 5. Segurança das Informações
+## 5. Information Security
 
-### 5.1. Medidas Técnicas
-- Criptografia de dados em trânsito (TLS)
-- Criptografia de dados em repouso (AES-256)
-- Armazenamento separado de dados anônimos e identificáveis
-- Auditoria de acesso a dados sensíveis
-- Limitação de acesso baseada em função e necessidade de uso
+### 5.1. Technical Measures
+- Encryption of data in transit (TLS)
+- Encryption of data at rest (AES-256)
+- Separate storage of anonymous and identifiable data
+- Access auditing of sensitive data
+- Access limitation based on function and need-to-know
 
-### 5.2. Medidas Organizacionais
-- Treinamento de pessoal em proteção de dados
-- Contratos de confidencialidade com todos os membros da equipe
-- Políticas rigorosas de acesso a dados sensíveis
-- Procedimentos de resposta a incidentes de segurança
+### 5.2. Organizational Measures
+- Staff training in data protection
+- Confidentiality agreements with all team members
+- Strict data access policies
+- Incident response procedures
 
-## 6. Compartilhamento de Informações
+## 6. Information Sharing
 
-### 6.1. Com ONGs Parceiras
-- Apenas informações necessárias para o acompanhamento e suporte às beneficiárias
-- Nenhuma informação é compartilhada com as ONGs que possa identificar a beneficiária sem sua permissão explícita
+### 6.1. With Partner NGOs
+- Only information necessary for beneficiary support
+- No information is shared with NGOs that can identify the beneficiary without explicit consent
 
-### 6.2. Com Autoridades
-- Somente conforme exigido por lei
-- Apenas após avaliação cuidadosa do impacto sobre as beneficiárias
-- Com aviso prévio às partes interessadas, quando possível
+### 6.2. With Authorities
+- Only as required by law
+- After careful evaluation of impact on beneficiaries
+- With prior notice to interested parties, when possible
 
-## 7. Retenção e Eliminação de Dados
+## 7. Data Retention and Elimination
 
-### 7.1. Dados de Progresso
-- Mantidos durante o tempo em que a beneficiária estiver ativa na plataforma
-- Poderão ser mantidos por até 2 anos após a inatividade, para fins de reengajamento opcional
+### 7.1. Progress Data
+- Maintained while the beneficiary is active on the platform
+- May be retained for up to 2 years after inactivity for optional re-engagement
 
-### 7.2. Dados de Identificação Real
-- Mantidos apenas enquanto necessário para o fornecimento de serviços
-- Eliminados de forma segura quando não mais necessários ou a pedido da beneficiária
+### 7.2. Real Identification Data
+- Maintained only as long as necessary for service provision
+- Securely deleted when no longer necessary or upon beneficiary request
 
-## 8. Direitos das Beneficiárias
+## 8. Beneficiary Rights
 
-### 8.1. Direitos de Acesso
-- Direito de solicitar informações sobre dados pessoais mantidos
-- Direito de corrigir informações imprecisas
-- Direito de solicitar a eliminação de dados (com ressalvas para obrigações legais)
+### 8.1. Access Rights
+- Right to request information about personal data held
+- Right to correct inaccurate information
+- Right to request data deletion (subject to legal obligations)
 
-### 8.2. Controle
-- Direito de revogar o consentimento (com ressalvas para obrigações legais)
-- Direito de limitar o processamento de dados em certas circunstâncias
+### 8.2. Control
+- Right to withdraw consent (subject to legal obligations)
+- Right to limit data processing in certain circumstances
 
-## 9. Contato
+## 9. Contact
 
-Para perguntas ou preocupações sobre esta Política de Privacidade, entre em contato com nossa equipe:
+For questions or concerns about this Privacy Policy, contact our team:
 
 - Email: privacy@wira-platform.org
-- Endereço: [Endereço físico a ser adicionado]
-- Representante de Proteção de Dados: [Nome a ser adicionado]
+- Address: [To be added address]
+- Data Protection Officer: [To be added name]
 
-## 10. Alterações a Esta Política
+## 10. Changes to This Policy
 
-Esta política pode ser atualizada periodicamente. As alterações mais significativas serão comunicadas às beneficiárias por meio de notificações na plataforma ou por outros meios apropriados.
+This policy may be updated periodically. Significant changes will be communicated to beneficiaries through platform notifications or other appropriate means.
 
-**Data da Última Atualização:** [Data de implementação]
-**Entrada em Vigor:** [Data de implementação]
+**Date of Last Update:** [Implementation date]
+**Effective Date:** [Implementation date]

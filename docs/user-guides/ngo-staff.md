@@ -1,169 +1,169 @@
-# Guia para Funcionários de ONGs - Plataforma WIRA
+# Guide for NGO Staff - WIRA Platform
 
-## Visão Geral
+## Overview
 
-Este guia é destinado a funcionários de ONGs parceiras que utilizam a plataforma WIRA para apoiar vítimas de tráfico humano em Moçambique. A plataforma permite gerenciar beneficiárias, acompanhar seu progresso educacional e emitir certificados de conclusão de cursos.
+This guide is intended for staff of partner NGOs who use the WIRA platform to support human trafficking survivors in Mozambique. The platform allows you to manage beneficiaries, track their educational progress, and issue completion certificates.
 
-## Acesso ao Sistema
+## System Access
 
-### Login no Dashboard
-1. Acesse a URL do dashboard da sua ONG (ex: `https://wira.org/dashboard`)
-2. Use suas credenciais de login:
-   - Email fornecido pela equipe de suporte
-   - Senha criada durante o registro
-3. Após o login, você verá o painel principal com opções de gerenciamento
+### Dashboard Login
+1. Access your NGO's dashboard URL (e.g., `https://wira.org/dashboard`)
+2. Use your login credentials:
+   - Email provided by support team
+   - Password created during registration
+3. After login, you'll see the main dashboard with management options
 
-### Recuperação de Senha
-- Clique em "Esqueceu sua senha?" na página de login
-- Preencha seu email
-- Verifique sua caixa de entrada para instruções de redefinição
+### Password Recovery
+- Click "Forgot your password?" on the login page
+- Fill in your email
+- Check your inbox for reset instructions
 
-## Gerenciamento de Beneficiárias
+## Beneficiary Management
 
-### Ativar Nova Beneficiária
-1. No painel, clique em "Gerenciar Beneficiárias"
-2. Clique em "Adicionar Nova Beneficiária"
-3. Preencha as informações:
-   - Nome completo (informação mantida em sistema isolado)
-   - Informações de contato (telefone, email)
-   - ONG responsável (selecione a sua)
-   - Habilidades iniciais (opcional)
-4. Após salvar, um **código de acesso único** será gerado (formato V####)
-5. Comunique esse código à beneficiária de forma segura
-6. A beneficiária usará esse código para acessar os cursos (não precisa de nome real)
+### Activate New Beneficiary
+1. In dashboard, click "Manage Beneficiaries"
+2. Click "Add New Beneficiary"
+3. Fill in information:
+   - Full name (information kept in isolated system)
+   - Contact information (phone, email)
+   - Responsible NGO (select yours)
+   - Initial skills (optional)
+4. After saving, a **unique access code** will be generated (V#### format)
+5. Communicate this code securely to the beneficiary
+6. The beneficiary will use this code to access courses (no real name needed)
 
-### Visualizar Lista de Beneficiárias
-- Acesse "Gerenciar Beneficiárias" para ver todas sob sua responsabilidade
-- Filtros disponíveis: ativas, inativas, progresso
-- Colunas mostram: código anônimo, último acesso, cursos inscritos, progresso
+### View Beneficiary List
+- Access "Manage Beneficiaries" to see all under your responsibility
+- Available filters: active, inactive, progress
+- Columns show: anonymous code, last access, enrolled courses, progress
 
-### Atualizar Informações
-- Clique em uma beneficiária na lista para ver detalhes
-- Edite informações quando necessário
-- Todas as alterações são registradas para auditoria
+### Update Information
+- Click on a beneficiary in the list to view details
+- Edit information when necessary
+- All changes are logged for audit
 
-## Acompanhamento de Progresso
+## Progress Tracking
 
-### Visão Geral de Progresso
-1. Acesse "Acompanhar Progresso" no menu
-2. Veja estatísticas gerais:
-   - Número total de beneficiárias
-   - Cursos mais populares
-   - Taxa média de conclusão
-   - Últimas atividades
+### Overview of Progress
+1. Access "Track Progress" in menu
+2. View general statistics:
+   - Total number of beneficiaries
+   - Most popular courses
+   - Average completion rate
+   - Recent activities
 
-### Progresso Individual
-1. Selecione uma beneficiária específica
-2. Veja detalhes de:
-   - Cursos inscritos
-   - Progresso em cada módulo
-   - Data da última atividade
-   - Notas em quizzes
-   - Certificados emitidos
+### Individual Progress
+1. Select a specific beneficiary
+2. View details of:
+   - Enrolled courses
+   - Progress in each module
+   - Date of last activity
+   - Quiz scores
+   - Issued certificates
 
-### Exportar Relatórios
-- Clique em "Exportar Dados" para gerar relatórios em PDF ou Excel
-- Opções de relatórios personalizados disponíveis
-- Útil para relatórios para doadores e autoridades
+### Export Reports
+- Click "Export Data" to generate reports in PDF or Excel
+- Customizable report options available
+- Useful for donor and authority reports
 
-## Cursos e Certificados
+## Courses and Certificates
 
-### Ver Cursos Disponíveis
-- Acesse "Catálogo de Cursos" para ver todos os cursos disponíveis
-- Informações incluem: título, descrição, duração, número de módulos
-- Cursos ativos podem ser acessados pelas beneficiárias
+### View Available Courses
+- Access "Course Catalog" to see all available courses
+- Information includes: title, description, duration, number of modules
+- Active courses can be accessed by beneficiaries
 
-### Acompanhar Conclusão de Cursos
-- Veja quais beneficiárias completaram cursos
-- Acompanhe taxas de conclusão por curso
-- Identifique cursos que precisam de mais suporte
+### Track Course Completion
+- See which beneficiaries have completed courses
+- Track completion rates by course
+- Identify courses needing more support
 
-### Emitir Certificados
-1. Selecione uma beneficiária que completou um curso
-2. Clique em "Emitir Certificado"
-3. Verifique as informações automaticamente preenchidas:
-   - Nome da beneficiária (sistema interno)
-   - Curso completado
-   - Data de conclusão
-   - Nota alcançada
-4. O certificado gerado inclui:
-   - Código QR para verificação
-   - Assinatura digital
-   - Formato pronto para impressão
+### Issue Certificates
+1. Select a beneficiary who has completed a course
+2. Click "Issue Certificate"
+3. Verify automatically populated information:
+   - Beneficiary name (internal system)
+   - Completed course
+   - Completion date
+   - Achieved score
+4. The generated certificate includes:
+   - QR code for verification
+   - Digital signature
+   - Print-ready format
 
-### Verificar Certificados
-- Use a função de verificação para confirmar autenticidade de certificados
-- Útil para empregadores ou instituições educacionais
+### Verify Certificates
+- Use verification function to confirm certificate authenticity
+- Useful for employers or educational institutions
 
-## Recursos de Segurança
+## Security Features
 
-### Política de Privacidade
-- O nome real da beneficiária NÃO é revelado nos sistemas acessíveis diretamente por ela
-- Apenas códigos anônimos (V####) são usados na interface com beneficiárias
-- Informações reais são mantidas em sistema isolado e seguro
+### Privacy Policy
+- The beneficiary's real name is NOT shown in directly accessible systems
+- Only anonymous codes (V####) are used in the beneficiary-facing interface
+- Real information is maintained in isolated, secure system
 
-### Controle de Acesso
-- Cada conta de ONG tem acesso limitado às suas próprias beneficiárias
-- Todas as ações são registradas para auditoria
-- Recomendamos o uso de autenticação de dois fatores (quando disponível)
+### Access Control
+- Each NGO account has limited access to its own beneficiaries
+- All actions are logged for audit
+- 2-factor authentication recommended (when available)
 
-## Comunicação
+## Communication
 
-### Notificações no Sistema
-- O sistema envia alertas importantes:
-  - Beneficiárias que não acessam há mais de 2 semanas
-  - Conclusões de cursos
-  - Novas atividades importantes
+### In-System Notifications
+- The system sends important alerts:
+  - Beneficiaries inactive for more than 2 weeks
+  - Course completions
+  - Important new activities
 
-### Canais de Suporte
+### Support Channels
 - Email: support@wira.org
 - WhatsApp: +258 84 XXXX XXXX
-- Horário de suporte: Segunda a Sexta, 8h-17h (Moçambique)
+- Support hours: Monday to Friday, 8am-5pm (Mozambique)
 
-## Melhores Práticas
+## Best Practices
 
-### Acompanhamento Regular
-- Acesse o sistema pelo menos 2 vezes por semana
-- Verifique o progresso das beneficiárias
-- Entre em contato com beneficiárias que parecem desconectadas
+### Regular Tracking
+- Access system at least 2 times per week
+- Check beneficiary progress
+- Contact inactive beneficiaries
 
-### Manutenção de Dados
-- Atualize informações regularmente
-- Remova ou desative contas de beneficiárias que não estão mais sob seu cuidado
-- Use a função de anotações para registrar observações importantes
+### Data Maintenance
+- Update information regularly
+- Remove or deactivate accounts for beneficiaries no longer under your care
+- Use notes function to record important observations
 
-### Suporte à Beneficiária
-- Instrua beneficiárias sobre como usar o sistema
-- Ajude com problemas iniciais de acesso
-- Explique a importância de manter seu código de acesso seguro
+### Beneficiary Support
+- Instruct beneficiaries on how to use the system
+- Help with initial access problems
+- Explain importance of keeping access code secure
 
-## USSD e Acesso por Celular Básico
+## USSD and Basic Phone Access
 
-### Informando Beneficiárias
-- Explique que elas podem acessar cursos via USSD com o código *123#
-- O código de acesso (V####) funciona tanto no aplicativo quanto no USSD
-- USSD é especialmente útil para beneficiárias com celulares básicos
+### Informing Beneficiaries
+- Explain they can access courses via USSD by dialing *123#
+- Access code (V####) works both in app and USSD
+- USSD is especially useful for beneficiaries with basic phones
 
-## Perguntas Frequentes
+## Frequently Asked Questions
 
-### Q: Onde está o nome real da beneficiária na interface?
-A: Por segurança, nomes reais só aparecem em partes do sistema com acesso restringido. Usamos códigos V#### na interface principal.
+### Q: Where is the real name of the beneficiary in the interface?
+A: For security, real names only appear in restricted system areas. We use V#### codes in main interface.
 
-### Q: Posso alterar o código de acesso de uma beneficiária?
-A: Não, os códigos são permanentes para manter consistência no sistema.
+### Q: Can I change a beneficiary's access code?
+A: No, codes are permanent to maintain system consistency.
 
-### Q: Como uma beneficiária recupera sua conta se esquecer do código?
-A: Contate o suporte técnico com as informações de identificação para verificação.
+### Q: How does a beneficiary recover their account if they forget the code?
+A: Contact technical support with identification information for verification.
 
-### Q: O sistema armazena o histórico de todas as ações?
-A: Sim, todos os acessos e alterações são registrados para auditoria e segurança.
+### Q: Does the system store history of all actions?
+A: Yes, all accesses and changes are logged for audit and security.
 
-## Contato de Emergência
+## Emergency Contact
 
-- Suporte Técnico: tech@wira.org
-- Questões de Segurança: security@wira.org
-- Emergência: +258 84 XXXX XXXX
+- Technical Support: tech@wira.org
+- Security Issues: security@wira.org
+- Emergency: +258 84 XXXX XXXX
 
 ---
 
-**Lembrete Importante**: Esta plataforma foi criada com foco especial na proteção e privacidade das beneficiárias. Sua responsabilidade como funcionário de ONG inclui manter informações seguras e garantir que o sistema seja usado exclusivamente para apoiar a reintegração econômica das vítimas de tráfico humano.
+**Important Reminder**: This platform was created with special focus on protecting and preserving beneficiary privacy. Your responsibility as an NGO staff includes maintaining information security and ensuring the system is used exclusively to support economic reintegration of trafficking survivors.

@@ -1,41 +1,44 @@
 # Changelog
 
-Todas as mudanças significativas no projeto WIRA Platform serão documentadas neste arquivo.
+All significant changes to the WIRA Platform project will be documented in this file.
 
-## [Versão 1.1.0] - 2025-04-27
+## [Version 1.1.0] - 2024-12-14
 
-### Adicionado
-- Estrutura de diretórios organizada seguindo melhores práticas de engenharia de software
-- Documentação técnica completa (arquitetura, API, setup)
-- Guias de usuário para funcionários de ONGs e beneficiárias
-- Scripts de desenvolvimento para setup, testes e build
-- Política de privacidade e documentos legais
-- Diretório de business com relatórios e propostas organizados
+### Added
+- Complete reorganization of project structure removing redundant directory levels
+- Consolidated backend, frontend, and mobile-app directories to root level
+- Improved README.md reflecting new consolidated structure
+- Added proper documentation in English for all major components
 
-### Alterado
-- Reorganização completa da estrutura de diretórios
-- Movido documentos de negócio para `/business/`
-- Documentação técnica para `/docs/technical/`
-- Guias de usuário para `/docs/user-guides/`
-- Scripts de desenvolvimento para `/wira-platform/scripts/`
-- Recursos compartilhados para `/wira-platform/shared/`
+### Changed
+- Eliminated redundant `wira-platform/wira-platform` nested directory structure
+- Moved all major components (backend, frontend, mobile-app) to root level
+- Updated documentation to reflect simplified project structure
+- All markdown documentation files are now in English
 
-### Melhorado
-- Estrutura de diretórios mais clara e escalável
-- Separação adequada de responsabilidades
-- Melhor organização para manutenibilidade
-- Melhor documentação para novos desenvolvedores
+### Removed
+- Duplicate directory structure that was causing confusion
+- Redundant README files in nested directories
 
-## [Versão 1.0.0] - 2025-04-27
+## [Version 1.0.0] - 2024-12-14
 
-### Adicionado
-- Plataforma WIRA completa com backend, frontend e mobile
-- Sistema de cursos profissionalizantes
-- Sistema de autenticação anônima com códigos V####
-- Dashboard para ONGs
-- Sistema USSD para celulares básicos
-- Sistema de certificados com verificação QR
+### Added
+- Complete WIRA platform with backend, frontend and mobile components
+- Anonymous access system with V#### codes for survivor privacy
+- Professional courses in sewing, cooking, and agriculture
+- NGO dashboard for monitoring and managing beneficiaries
+- USSD system for basic phone access
+- Certificate generation with QR verification
+- Complete security and privacy protection system
 
-### Notas
-- Versão inicial do projeto WIRA para o Hackathon da UNODC
-- Implementação funcional com ênfase na privacidade e segurança
+### Features
+- Anonymous authentication system
+- Professional training modules
+- Progress tracking and certification
+- Mobile-first design with offline capabilities
+- NGO management dashboard
+- USSD access for basic phones
+- Digital certificates with verification
+- Employment opportunity matching
+
+---

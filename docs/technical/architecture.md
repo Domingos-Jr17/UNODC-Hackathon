@@ -1,147 +1,145 @@
-# Arquitetura da Plataforma WIRA
+# Architecture of WIRA Platform
 
-## Visão Geral
+## Overview
 
-A plataforma WIRA (Women's Integrated Reintegration Academy) é um sistema de código aberto desenvolvido para apoiar a capacitação profissional e reintegração econômica de vítimas de tráfico humano em Moçambique. A arquitetura foi projetada para priorizar a privacidade, segurança e acessibilidade das beneficiárias.
+The WIRA Platform (Women's Integrated Reintegration Academy) is an open-source system developed to support professional training and economic reintegration of human trafficking survivors in Mozambique. The architecture was designed to prioritize the privacy, security, and accessibility of beneficiaries.
 
-## Componentes do Sistema
+## System Components
 
 ### 1. Backend (API)
-- **Tecnologia**: Node.js com TypeScript e Express
-- **ORM**: Prisma com banco de dados SQLite (desenvolvimento) / PostgreSQL (produção)
-- **Autenticação**: Tokens JWT com códigos anônimos (V####)
-- **Segurança**: Helmet.js, express-rate-limit, CORS, sanitização de entrada
-- **Funções**: Gerenciamento de usuários, cursos, progresso e certificados
+- **Technology**: Node.js with TypeScript and Express
+- **ORM**: Prisma with SQLite database (development) / PostgreSQL (production)
+- **Authentication**: JWT tokens with anonymous codes (V####)
+- **Security**: Helmet.js, express-rate-limit, CORS, input sanitization
+- **Functions**: User management, courses, progress, and certificates
 
-### 2. Frontend Web (Dashboard ONG)
-- **Tecnologia**: React com TypeScript e Vite
-- **Estilo**: Tailwind CSS com componentes acessíveis
-- **Navegação**: React Router
-- **Funções**: Gestão de beneficiárias, monitoramento de progresso, relatórios
+### 2. Web Frontend (NGO Dashboard)
+- **Technology**: React with TypeScript and Vite
+- **Style**: Tailwind CSS with accessible components
+- **Navigation**: React Router
+- **Functions**: Beneficiary management, progress monitoring, reports
 
-### 3. Aplicativo Móvel
-- **Tecnologia**: React Native com Expo
-- **Navegação**: React Navigation
-- **Armazenamento Offline**: AsyncStorage
-- **Funções**: Acesso a cursos, progresso individual, quizzes, certificados
+### 3. Mobile App
+- **Technology**: React Native with Expo
+- **Navigation**: React Navigation
+- **Offline Storage**: AsyncStorage
+- **Functions**: Course access, individual progress, quizzes, certificates
 
-### 4. Sistema USSD
-- **Integração**: Simulação de requisições USSD via endpoint HTTP
-- **Formato**: Menus textuais simples para celulares básicos
-- **Código Acesso**: *123# como código padrão
-- **Funções**: Acesso a cursos, progresso e informações básicas
+### 4. USSD System
+- **Integration**: USSD request simulation via HTTP endpoint
+- **Format**: Simple text menus for basic phones
+- **Access Code**: *123# as standard code
+- **Functions**: Course access, progress, and basic information
 
-## Camadas de Segurança
+## Security Layers
 
-### 1. Anonimização
-- Códigos de acesso no formato V#### (ex: V0042)
-- Nenhuma informação pessoalmente identificável exigida para acesso aos cursos
-- Separação de dados anônimos e identificáveis
+### 1. Anonymization
+- Access codes in V#### format (e.g., V0042)
+- No personally identifiable information required for course access
+- Separation of anonymous and identifiable data
 
-### 2. Autenticação e Autorização
-- Tokens JWT com expiração
-- Limitação de taxa de requisições
-- Validação rigorosa de entrada
-- Autenticação baseada em papel para acesso de ONGs
+### 2. Authentication and Authorization
+- JWT tokens with expiration
+- Rate limiting
+- Rigorous input validation
+- Role-based authentication for NGO access
 
-### 3. Criptografia
-- Dados em trânsito: TLS 1.3
-- Dados em repouso: AES-256 (planejado para produção)
-- Hashing de senhas: bcrypt
+### 3. Encryption
+- Transit data: TLS 1.3
+- Rest data: AES-256 (planned for production)
+- Password hashing: bcrypt
 
-## Estrutura de Dados
+## Data Structure
 
-### 1. Entidades Principais
-- **Usuários**: Armazenam códigos de acesso anônimos; dados reais isolados
-- **ONGs**: Organizações parceiras que ativam e acompanham beneficiárias
-- **Cursos**: Programas de capacitação profissional (costura, culinária, agricultura)
-- **Progresso**: Rastreamento individual por módulo e curso
-- **Certificados**: Geração com códigos QR e verificação
+### 1. Main Entities
+- **Users**: Store anonymous access codes; real data is isolated
+- **NGOs**: Partner organizations that activate and monitor beneficiaries
+- **Courses**: Professional training programs (sewing, cooking, agriculture)
+- **Progress**: Individual tracking by module and course
+- **Certificates**: Generation with QR verification
 
-### 2. Isolamento de Dados Sensíveis
-- Informações de identificação real armazenadas separadamente
-- Acesso restrito por autorização
-- Auditoria de todas as operações de acesso
+### 2. Sensitive Data Isolation
+- Real identification information stored separately
+- Access restricted by authorization
+- Audit of all access operations
 
-## Infraestrutura
+## Infrastructure
 
-### 1. Hospedagem
-- Backend: Servidor Node.js com balanceamento de carga
-- Frontend: Hospedagem estática
-- Mobile: Distribuição via lojas de aplicativos
-- Banco de dados: PostgreSQL gerenciado
+### 1. Hosting
+- Backend: Node.js server with load balancing
+- Frontend: Static hosting
+- Mobile: App store distribution
+- Database: Managed PostgreSQL
 
-### 2. Escalabilidade
-- Arquitetura baseada em microsserviços (planejada)
-- Cache com Redis
-- Filas para processamento assíncrono
-- CDNs para conteúdo estático
+### 2. Scalability
+- Microservices-based architecture (planned)
+- Redis caching
+- Asynchronous processing queues
+- CDNs for static content
 
-## Integrações Externas
+## External Integrations
 
-### 1. Telecomunicações
-- Integração com operadoras móveis para serviço USSD
-- Gateway SMS para comunicações automatizadas
+### 1. Telecommunications
+- Integration with mobile operators for USSD service
+- SMS gateway for automated communications
 
-### 2. Terceiros
-- Serviços de hospedagem
-- Provedores de pagamento (planejado)
-- Plataformas de emprego (planejado)
+### 2. Third Parties
+- Hosting providers
+- Payment providers (planned)
+- Job platforms (planned)
 
-## Considerações Especiais para o Contexto de Moçambique
+## Mozambique Context Considerations
 
-### 1. Acessibilidade
-- Sistema USSD para celulares básicos
-- Interface em português (língua oficial)
-- Design responsivo para diferentes dispositivos
+### 1. Accessibility
+- USSD system for basic phones
+- Interface in Portuguese (official language)
+- Responsive design for different devices
 
-### 2. Conectividade
-- Funcionalidade offline para aplicativo móvel
-- Otimização para conexões de baixa velocidade
-- Conteúdo compacto para redução de uso de dados
+### 2. Connectivity
+- Offline functionality for mobile app
+- Optimization for low-speed connections
+- Compact content to reduce data usage
 
-## Segurança e Conformidade
+## Security and Compliance
 
-### 1. Normas e Padrões
-- Conformidade com GDPR para proteção de dados
-- Adesão às diretrizes da ONU sobre assistência a vítimas
-- Práticas recomendadas de segurança OWASP
+### 1. Standards and Protocols
+- GDPR compliance for data protection
+- UN guidelines compliance for survivor assistance
+- OWASP recommended security practices
 
-### 2. Monitoramento
-- Logs detalhados de todas as operações
-- Alertas para atividades suspeitas
-- Relatórios de segurança regulares
+### 2. Monitoring
+- Detailed logs of all operations
+- Alerts for suspicious activities
+- Regular security reports
 
-## Evolução Futura
+## Future Evolution
 
-### 1. Próximas Implementações
-- Integração com sistemas governamentais
-- IA para recomendação de cursos
-- Sistema de mentoria
-- Marketplace de serviços
+### 1. Upcoming Implementations
+- Integration with government systems
+- AI for course recommendation
+- Mentorship system
+- Service marketplace
 
-### 2. Melhorias Planejadas
-- Autenticação biométrica
-- Integração com blockchain para certificados
-- Sistema de tradução automática para idiomas locais
-- Funcionalidades off-grid
+### 2. Planned Improvements
+- Biometric authentication
+- Blockchain integration for certificates
+- Automatic translation system for local languages
+- Off-grid functionality
 
-## Diagrama de Componentes
+## Component Diagram
 
 ```
 +-------------------+     +--------------------+     +------------------+
-|   Aplicativo      | <-- |  API Backend       | --> | Banco de Dados   |
-|   Móvel           |     |  (Node.js)         |     |  (PostgreSQL)    |
-|   (React Native)  |     |                    |     |                  |
+|   Mobile App      | <-- |  Backend API       | --> | Database         |
+|   (React Native)  |     |  (Node.js)         |     |  (PostgreSQL)    |
 +-------------------+     +--------------------+     +------------------+
          |                          |                           |
          |                          |                           |
          v                          v                           v
 +-------------------+     +--------------------+     +------------------+
-|     Sistema       |     |    Dashboard       |     | Sistema de       |
-|     USSD          |     |    Web ONG         |     |    Logs        |
-|   (Integração)    |     |   (React)          |     |   (Segurança)    |
+|     USSD          |     |    Web Dashboard   |     | Log System       |
+|   (Integration)   |     |    (React)         |     |   (Security)     |
 +-------------------+     +-------------------+     +------------------+
 ```
 
-Esta arquitetura permite uma plataforma robusta, segura e acessível que atende às necessidades específicas de vítimas de tráfico humano em Moçambique, com foco especial em privacidade e inclusão digital.
+This architecture allows for a robust, secure, and accessible platform that meets the specific needs of trafficking survivors in Mozambique, with special focus on privacy and digital inclusion.

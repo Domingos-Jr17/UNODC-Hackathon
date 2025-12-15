@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "edit"
-    ],
-    "deny": [],
-    "ask": []
-  }
-}

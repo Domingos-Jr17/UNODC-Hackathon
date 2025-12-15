@@ -1,21 +1,21 @@
-# Documentação da API da Plataforma WIRA
+# Documentation of WIRA Platform API
 
-## Visão Geral
+## Overview
 
-A API da plataforma WIRA fornece endpoints para gerenciamento de beneficiárias, cursos, progresso e certificados. A API utiliza autenticação baseada em JWT e prioriza a privacidade e segurança dos dados das beneficiárias.
+The WIRA platform API provides endpoints for managing beneficiaries, courses, progress, and certificates. The API uses JWT-based authentication and prioritizes the privacy and security of beneficiary data.
 
-## Convenções da API
+## API Conventions
 
-- **Formato de resposta**: JSON
-- **Codificação**: UTF-8
-- **Autenticação**: JWT via cabeçalho `Authorization: Bearer <token>`
-- **Códigos de status**: Seguindo convenções HTTP
-- **Campos**: Utilizando camelCase
-- **Códigos de Beneficiárias**: Formato V#### (ex: V0042)
+- **Response Format**: JSON
+- **Encoding**: UTF-8
+- **Authentication**: JWT via `Authorization: Bearer <token>` header
+- **Status Codes**: Following HTTP conventions
+- **Fields**: Using camelCase
+- **Beneficiary Codes**: V#### format (e.g., V0042)
 
-## Autenticação
+## Authentication
 
-### Login com Código Anônimo
+### Login with Anonymous Code
 ```
 POST /api/auth/login
 Content-Type: application/json
@@ -25,11 +25,11 @@ Content-Type: application/json
 }
 ```
 
-**Resposta de Sucesso:**
+**Success Response:**
 ```json
 {
   "success": true,
-  "token": "jwt_token_aqui",
+  "token": "jwt_token_here",
   "user": {
     "anonymousCode": "V0042",
     "role": "VICTIM"
@@ -39,32 +39,32 @@ Content-Type: application/json
 
 ## Endpoints
 
-### Autenticação
+### Authentication
 #### POST /api/auth/login
-Autentica uma beneficiária com código anônimo.
+Authenticates a beneficiary with anonymous code.
 
-**Parâmetros:**
-- `code` (string, obrigatório): Código de acesso no formato V####
+**Parameters:**
+- `code` (string, required): Access code in V#### format
 
 #### POST /api/auth/validate
-Valida um token JWT existente.
+Validates an existing JWT token.
 
 **Headers:**
 - `Authorization: Bearer <token>`
 
-### Cursos
+### Courses
 #### GET /api/courses
-Lista todos os cursos ativos.
+Lists all active courses.
 
-**Resposta:**
+**Response:**
 ```json
 {
   "success": true,
   "courses": [
     {
-      "id": "costura-001",
-      "title": "Costura Profissional",
-      "description": "Curso completo de costura",
+      "id": "sewing-001",
+      "title": "Professional Sewing",
+      "description": "Complete sewing course",
       "duration_hours": 40,
       "modules_count": 8
     }
@@ -73,145 +73,147 @@ Lista todos os cursos ativos.
 ```
 
 #### GET /api/courses/:id
-Obtém detalhes de um curso específico.
+Gets details of a specific course.
 
 #### GET /api/courses/:id/modules
-Lista os módulos de um curso.
+Lists modules of a course.
 
 #### GET /api/courses/:id/quiz
-Obtém o quiz de um curso.
+Gets course quiz.
 
-### Progresso
+### Progress
 #### GET /api/progress/user/:userCode/course/:courseId
-Obtém o progresso de uma beneficiária em um curso específico.
+Gets a beneficiary's progress in a specific course.
 
 **Headers:**
 - `Authorization: Bearer <token>`
 
 #### PUT /api/progress/user/:userCode/course/:courseId
-Atualiza o progresso de uma beneficiária em um curso.
+Updates a beneficiary's progress in a course.
 
-**Parâmetros:**
-- `completed_modules` (array): Lista de módulos completados
-- `current_module` (integer): Módulo atual
-- `percentage` (integer): Porcentagem de conclusão
+**Parameters:**
+- `completed_modules` (array): List of completed modules
+- `current_module` (integer): Current module
+- `percentage` (integer): Completion percentage
 
-### Certificados
+### Certificates
 #### POST /api/certificates/generate
-Gera um certificado para uma beneficiária que completou um curso.
+Generates a certificate for a beneficiary who completed a course.
 
-**Parâmetros:**
-- `anonymousCode` (string): Código da beneficiária
-- `courseId` (string): ID do curso
-- `score` (integer): Pontuação obtida (0-100)
+**Parameters:**
+- `anonymousCode` (string): Beneficiary code
+- `courseId` (string): Course ID
+- `score` (integer): Score obtained (0-100)
 
 #### GET /api/certificates/verify/:verificationCode
-Verifica a autenticidade de um certificado.
+Verifies certificate authenticity.
 
 #### GET /api/certificates/user/:anonymousCode/course/:courseId
-Obtém o certificado de uma beneficiária para um curso específico.
+Gets a beneficiary's certificate for a specific course.
 
-### ONGs
+### NGOs
 #### GET /api/ngos
-Lista todas as ONGs parceiras (requer autenticação de administrador).
+Lists all partner NGOs.
+
+**Requires admin authentication.**
 
 #### GET /api/ngos/:id
-Obtém detalhes de uma ONG específica.
+Gets details of a specific NGO.
 
 #### POST /api/ngos
-Cria uma nova ONG (requer autenticação de administrador).
+Creates a new NGO (requires admin authentication).
 
-### Logs de Auditoria
+### Audit Logs
 #### GET /api/audit-logs
-Lista os logs de auditoria (requer autenticação de administrador).
+Lists audit logs (requires admin authentication).
 
 #### GET /api/audit-logs/user/:userCode
-Obtém logs de auditoria para uma beneficiária específica.
+Gets audit logs for a specific beneficiary.
 
 ### USSD
 #### POST /api/ussd
-Processa requisições USSD provenientes de operadoras móveis.
+Processes USSD requests from mobile operators.
 
-**Parâmetros:**
-- `sessionId` (string): ID da sessão USSD
-- `serviceCode` (string): Código do serviço USSD
-- `phoneNumber` (string): Número de telefone do usuário
-- `text` (string): Texto digitado pelo usuário
+**Parameters:**
+- `sessionId` (string): USSD session ID
+- `serviceCode` (string): USSD service code
+- `phoneNumber` (string): User's phone number
+- `text` (string): User input text
 
 #### POST /api/ussd/test
-Endpoint para testar funcionalidades USSD.
+Endpoint to test USSD functionality.
 
 #### GET /api/ussd/status
-Obtém o status do serviço USSD.
+Gets USSD service status.
 
 #### POST /api/sms/send
-Envia uma mensagem SMS (simulação para demonstração).
+Sends an SMS message (simulation for demonstration).
 
-## Códigos de Status HTTP
+## HTTP Status Codes
 
-- `200 OK`: Requisição bem-sucedida
-- `201 Created`: Recurso criado com sucesso
-- `400 Bad Request`: Requisição inválida
-- `401 Unauthorized`: Não autenticado
-- `403 Forbidden`: Não autorizado para acessar o recurso
-- `404 Not Found`: Recurso não encontrado
-- `429 Too Many Requests`: Limite de requisições excedido
-- `500 Internal Server Error`: Erro interno do servidor
+- `200 OK`: Request successful
+- `201 Created`: Resource created successfully
+- `400 Bad Request`: Invalid request
+- `401 Unauthorized`: Not authenticated
+- `403 Forbidden`: Not authorized to access resource
+- `404 Not Found`: Resource not found
+- `429 Too Many Requests`: Request rate limit exceeded
+- `500 Internal Server Error`: Server error
 
-## Segurança
+## Security
 
-### Validação de Entrada
-Todos os endpoints realizam validação rigorosa de entrada:
-- Formato do código de beneficiária (V####)
-- Limites para pontuações (0-100)
-- Validação de IDs existentes
-- Sanitização de dados
+### Input Validation
+All endpoints perform rigorous input validation:
+- Beneficiary code format (V####)
+- Score limits (0-100)
+- Validation of existing IDs
+- Data sanitization
 
-### Limitação de Taxa
-- Geral: 100 requisições por 15 minutos por IP
-- Autenticação: 5 tentativas por 15 minutos por IP
-- USSD: 20 requisições por 5 minutos por número
+### Rate Limiting
+- General: 100 requests per 15 minutes per IP
+- Authentication: 5 attempts per 15 minutes per IP
+- USSD: 20 requests per 5 minutes per number
 
-### Criptografia
-- Dados em trânsito: HTTPS/TLS
-- Dados sensíveis: Criptografia AES-256 (em implementação)
-- Senhas: Hash bcrypt
+### Encryption
+- Transit data: HTTPS/TLS
+- Sensitive data: AES-256 encryption (implementation planned)
+- Passwords: bcrypt hashing
 
-## Exemplos de Uso
+## Usage Examples
 
-### Consultando Progresso de uma Beneficiária
+### Querying a Beneficiary's Progress
 ```
-GET /api/progress/user/V0042/course/costura-001
-Authorization: Bearer <token_valido>
+GET /api/progress/user/V0042/course/sewing-001
+Authorization: Bearer <valid_token>
 ```
 
-### Gerando um Certificado
+### Generating a Certificate
 ```
 POST /api/certificates/generate
-Authorization: Bearer <token_valido>
+Authorization: Bearer <valid_token>
 Content-Type: application/json
 
 {
   "anonymousCode": "V0042",
-  "courseId": "costura-001",
+  "courseId": "sewing-001",
   "score": 85
 }
 ```
 
-## Tratamento de Erros
+## Error Handling
 
-Todos os endpoints retornam erros no formato:
+All endpoints return errors in format:
 ```json
 {
   "success": false,
-  "error": "Mensagem de erro descritiva",
-  "details": "Informações adicionais (opcional)"
+  "error": "Descriptive error message",
+  "details": "Additional information (optional)"
 }
 ```
 
-## Considerações de Privacidade
+## Privacy Considerations
 
-- Nenhuma informação pessoalmente identificável é exposta via API pública
-- Dados sensíveis são acessados apenas por pessoal autorizado
-- Todos os acessos são registrados para auditoria
-- Tokens têm tempo de expiração limitado
+- No personally identifiable information is exposed via public API
+- Sensitive data is accessed only by authorized personnel
+- All accesses are logged for audit
+- Tokens have limited expiration time
