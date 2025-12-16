@@ -2,16 +2,20 @@
 CREATE TABLE "User" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "anonymous_code" TEXT NOT NULL,
+    "email" TEXT,
+    "password" TEXT,
+    "role" TEXT NOT NULL DEFAULT 'VICTIM',
     "real_name" TEXT,
     "phone" TEXT,
-    "email" TEXT,
     "ngo_id" TEXT,
+    "email_verified" BOOLEAN NOT NULL DEFAULT false,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATETIME,
     "last_login_at" DATETIME,
     "is_active" BOOLEAN NOT NULL DEFAULT true,
     "login_attempts" INTEGER NOT NULL DEFAULT 0,
-    "locked_until" DATETIME
+    "locked_until" DATETIME,
+    CONSTRAINT "User_ngo_id_fkey" FOREIGN KEY ("ngo_id") REFERENCES "NGO" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -54,7 +58,9 @@ CREATE TABLE "Progress" (
     "quiz_attempts" INTEGER NOT NULL DEFAULT 0,
     "last_quiz_score" INTEGER,
     "last_activity" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "completed_at" DATETIME
+    "completed_at" DATETIME,
+    CONSTRAINT "Progress_user_code_fkey" FOREIGN KEY ("user_code") REFERENCES "User" ("anonymous_code") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Progress_course_id_fkey" FOREIGN KEY ("course_id") REFERENCES "Course" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -75,13 +81,16 @@ CREATE TABLE "Certificate" (
     "verification_ip" TEXT,
     "revoked" BOOLEAN NOT NULL DEFAULT false,
     "revocation_reason" TEXT,
-    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "Certificate_anonymous_code_fkey" FOREIGN KEY ("anonymous_code") REFERENCES "User" ("anonymous_code") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Certificate_course_id_fkey" FOREIGN KEY ("course_id") REFERENCES "Course" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
 CREATE TABLE "AuditLog" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "user_code" TEXT,
+    "user_id" INTEGER,
     "action" TEXT NOT NULL,
     "table_name" TEXT,
     "record_id" TEXT,
@@ -89,20 +98,18 @@ CREATE TABLE "AuditLog" (
     "new_values" TEXT,
     "ip_address" TEXT,
     "user_agent" TEXT,
-    "timestamp" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    "timestamp" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "AuditLog_user_code_fkey" FOREIGN KEY ("user_code") REFERENCES "User" ("anonymous_code") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_anonymous_code_key" ON "User"("anonymous_code");
 
 -- CreateIndex
-CREATE INDEX "User_ngo_id_idx" ON "User"("ngo_id");
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE INDEX "Progress_user_code_course_id_key" ON "Progress"("user_code", "course_id");
+CREATE UNIQUE INDEX "Progress_user_code_course_id_key" ON "Progress"("user_code", "course_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Certificate_verification_code_key" ON "Certificate"("verification_code");
-
--- CreateIndex
-CREATE INDEX "AuditLog_user_code_idx" ON "AuditLog"("user_code");
