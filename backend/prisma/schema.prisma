@@ -1,0 +1,122 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int       @id @default(autoincrement())
+  anonymous_code  String    @unique
+  email           String?   @unique
+  password        String?   // Bcrypt hashed (only for STAFF/ADMIN)
+  role            UserRole  @default(VICTIM)
+  real_name       String?
+  phone           String?
+  ngo_id          String?
+  email_verified  Boolean   @default(false)
+  created_at      DateTime  @default(now())
+  updated_at      DateTime? @updatedAt
+  last_login_at   DateTime?
+  is_active       Boolean   @default(true)
+  login_attempts  Int       @default(0)
+  locked_until    DateTime?
+  ngo             NGO?      @relation(fields: [ngo_id], references: [id])
+  progresses      Progress[]
+  certificates    Certificate[]
+  audit_logs      AuditLog[]
+}
+
+enum UserRole {
+  VICTIM
+  STAFF
+  ADMIN
+}
+
+model NGO {
+  id              String    @id
+  name            String
+  contact_person  String?
+  phone           String?
+  email           String?
+  address         String?
+  license_number  String?
+  is_active       Boolean   @default(true)
+  created_at      DateTime  @default(now())
+  updated_at      DateTime? @updatedAt
+  users           User[]
+}
+
+model Course {
+  id              String    @id
+  title           String
+  description     String?
+  instructor      String?
+  duration_hours  Int
+  modules_count   Int
+  level           String
+  skills          String?
+  is_active       Boolean   @default(true)
+  created_at      DateTime  @default(now())
+  updated_at      DateTime? @updatedAt
+  progresses      Progress[]
+  certificates    Certificate[]
+}
+
+model Progress {
+  id                Int       @id @default(autoincrement())
+  user_code         String
+  course_id         String
+  completed_modules String
+  percentage        Int       @default(0)
+  current_module    Int       @default(1)
+  quiz_attempts      Int       @default(0)
+  last_quiz_score   Int?
+  last_activity     DateTime  @default(now())
+  completed_at      DateTime?
+  user              User      @relation(fields: [user_code], references: [anonymous_code])
+  course            Course    @relation(fields: [course_id], references: [id])
+  @@unique([user_code, course_id])
+}
+
+model Certificate {
+  id                  String    @id
+  anonymous_code      String
+  course_id           String
+  course_title        String
+  issue_date          DateTime  @default(now())
+  verification_code   String    @unique
+  qr_code             String
+  instructor          String?
+  institution         String?
+  score               Int
+  max_score           Int       @default(100)
+  verified            Boolean   @default(false)
+  verification_date   DateTime?
+  verification_ip     String?
+  revoked             Boolean   @default(false)
+  revocation_reason  String?
+  created_at          DateTime  @default(now())
+  user                User      @relation(fields: [anonymous_code], references: [anonymous_code])
+  course              Course    @relation(fields: [course_id], references: [id])
+}
+
+model AuditLog {
+  id          Int       @id @default(autoincrement())
+  user_code   String?
+  user_id     Int?
+  action      String
+  table_name  String?
+  record_id   String?
+  old_values  String?
+  new_values  String?
+  ip_address  String?
+  user_agent  String?
+  timestamp   DateTime  @default(now())
+  user        User?     @relation(fields: [user_code], references: [anonymous_code])
+}
